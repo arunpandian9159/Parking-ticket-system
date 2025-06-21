@@ -138,19 +138,26 @@ The application will be available at `http://localhost:3000`
 ```
 src/
 ├── components/          # React components
-│   ├── Dashboard.tsx    # Main dashboard
-│   ├── Navbar.tsx       # Navigation component
-│   ├── TicketList.tsx   # List of all tickets
-│   ├── CreateTicket.tsx # Form to create new tickets
-│   ├── TicketDetail.tsx # Individual ticket view
-│   ├── OfficerList.tsx  # Officer management
-│   └── VehicleList.tsx  # Vehicle registry
+│   ├── Dashboard.js     # Main dashboard
+│   ├── Navbar.js        # Navigation component
+│   ├── TicketList.js    # List of all tickets
+│   ├── CreateTicket.js  # Form to create new tickets
+│   ├── TicketDetail.js  # Individual ticket view
+│   ├── OfficerList.js   # Officer management
+│   ├── VehicleList.js   # Vehicle registry
+│   ├── SeedData.js      # Database seeding component
+│   ├── ErrorBoundary.js # Error handling component
+│   ├── LoadingSpinner.js # Loading component
+│   ├── EnhancedTable.js # Reusable table component
+│   └── TableControls.js # Table search and filter controls
 ├── lib/
-│   └── supabase.ts      # Supabase client and types
-├── App.tsx              # Main app component
+│   └── supabase.js      # Supabase client configuration
+├── utils/
+│   └── seedData.js      # Database seeding utilities
+├── App.js               # Main app component
 ├── App.css              # App-specific styles
-├── index.tsx            # Entry point
-└── index.css            # Global styles
+├── index.js             # Entry point
+└── index.css            # Global styles and design system
 ```
 
 ## Usage
@@ -197,4 +204,4 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For support or questions, please open an issue in the repository. 
+For support or questions, please open an issue in the repository.
