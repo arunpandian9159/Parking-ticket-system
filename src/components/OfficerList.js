@@ -210,8 +210,8 @@ const OfficerList = () => {
         </div>
 
         {filteredOfficers.length > 0 ? (
-          <div className="table-wrapper">
-            <table className="table">
+          <div className="recent-tickets-table-wrapper">
+            <table className="recent-tickets-table">
               <thead>
                 <tr>
                   <th>Badge</th>
@@ -226,8 +226,8 @@ const OfficerList = () => {
                   <tr key={officer.id}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '20px' }}>👮</span>
-                        <strong style={{ fontFamily: 'monospace' }}>
+                        <span style={{ fontSize: '20px', color: '#2563eb' }}>👮</span>
+                        <strong style={{ fontFamily: 'monospace', color: '#2563eb' }}>
                           {officer.badge_number}
                         </strong>
                       </div>
@@ -235,7 +235,7 @@ const OfficerList = () => {
                     <td>
                       <div>
                         <strong>{officer.first_name} {officer.last_name}</strong>
-                        <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
                           Enforcement Officer
                         </div>
                       </div>
@@ -259,8 +259,8 @@ const OfficerList = () => {
                     <td>
                       <span style={{
                         padding: '6px 12px',
-                        backgroundColor: '#dcfce7',
-                        color: '#166534',
+                        background: 'linear-gradient(90deg, #dbeafe 0%, #3b82f6 100%)',
+                        color: '#1e3a8a',
                         borderRadius: '20px',
                         fontSize: '12px',
                         fontWeight: '600'
@@ -268,7 +268,7 @@ const OfficerList = () => {
                         ✅ Active
                       </span>
                     </td>
-                    <td className="date">
+                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
                       {new Date(officer.created_at).toLocaleDateString()}
                     </td>
                   </tr>

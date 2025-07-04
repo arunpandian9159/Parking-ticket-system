@@ -37,7 +37,7 @@ const EnhancedTable = ({
 
   return (
     <div className={`table-wrapper ${className}`}>
-      <table className="table">
+      <table className="recent-tickets-table">
         <thead>
           <tr>
             {columns.map((column) => (

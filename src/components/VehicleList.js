@@ -268,8 +268,8 @@ const VehicleList = () => {
         </div>
 
         {filteredVehicles.length > 0 ? (
-          <div className="table-wrapper">
-            <table className="table">
+          <div className="recent-tickets-table-wrapper">
+            <table className="recent-tickets-table">
               <thead>
                 <tr>
                   <th>License Plate</th>
@@ -284,8 +284,8 @@ const VehicleList = () => {
                   <tr key={vehicle.id}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '20px' }}>🚗</span>
-                        <strong style={{ fontFamily: 'monospace', fontSize: '16px' }}>
+                        <span style={{ fontSize: '20px', color: '#2563eb' }}>🚗</span>
+                        <strong style={{ fontFamily: 'monospace', fontSize: '16px', color: '#2563eb' }}>
                           {vehicle.license_plate}
                         </strong>
                       </div>
@@ -304,17 +304,10 @@ const VehicleList = () => {
                             width: '16px',
                             height: '16px',
                             borderRadius: '50%',
-                            backgroundColor: vehicle.color.toLowerCase() === 'white' ? '#f3f4f6' :
-                                           vehicle.color.toLowerCase() === 'black' ? '#1f2937' :
-                                           vehicle.color.toLowerCase() === 'red' ? '#ef4444' :
-                                           vehicle.color.toLowerCase() === 'blue' ? '#3b82f6' :
-                                           vehicle.color.toLowerCase() === 'green' ? '#10b981' :
-                                           vehicle.color.toLowerCase() === 'yellow' ? '#f59e0b' :
-                                           vehicle.color.toLowerCase() === 'silver' ? '#9ca3af' :
-                                           vehicle.color.toLowerCase() === 'gray' ? '#6b7280' : '#8b5cf6',
+                            background: 'linear-gradient(90deg, #dbeafe 0%, #3b82f6 100%)',
                             border: vehicle.color.toLowerCase() === 'white' ? '1px solid #d1d5db' : 'none'
                           }}></span>
-                          <span style={{ fontSize: '12px', color: '#6b7280', textTransform: 'capitalize' }}>
+                          <span style={{ fontSize: '12px', color: '#60a5fa', textTransform: 'capitalize' }}>
                             {vehicle.color}
                           </span>
                         </div>
@@ -323,7 +316,7 @@ const VehicleList = () => {
                     <td>
                       <div>
                         <strong>{vehicle.owner_name}</strong>
-                        <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
                           Vehicle Owner
                         </div>
                       </div>
@@ -344,7 +337,7 @@ const VehicleList = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="date">
+                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
                       {new Date(vehicle.created_at).toLocaleDateString()}
                     </td>
                   </tr>

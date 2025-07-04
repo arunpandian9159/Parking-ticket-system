@@ -191,10 +191,9 @@ const Dashboard = () => {
             </span>
           )}
         </div>
-        
         {recentTickets.length > 0 ? (
-          <div className="table-wrapper">
-            <table className="table">
+          <div className="recent-tickets-table-wrapper">
+            <table className="recent-tickets-table">
               <thead>
                 <tr>
                   <th>License Plate</th>
@@ -212,48 +211,41 @@ const Dashboard = () => {
                   <tr key={ticket.id}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '20px' }}>🚗</span>
+                        <span style={{ fontSize: '20px', color: '#2563eb' }}>🚗</span>
                         <strong>{ticket.license_plate}</strong>
                       </div>
                     </td>
                     <td>
                       <div>
                         <strong>{ticket.vehicle_make} {ticket.vehicle_model}</strong>
-                        <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
                           {ticket.vehicle_color}
                         </div>
                       </div>
                     </td>
                     <td>
-                      <span style={{
-                        padding: '4px 8px',
-                        backgroundColor: '#fef3c7',
-                        color: '#92400e',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontWeight: '600'
-                      }}>
+                      <span className="violation-pill">
                         {ticket.violation_type}
                       </span>
                     </td>
-                    <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <td style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#2563eb' }}>
                       📍 {ticket.location}
                     </td>
-                    <td className="currency">
+                    <td style={{ color: '#2563eb', fontWeight: 700 }}>
                       ${ticket.fine_amount.toFixed(2)}
                     </td>
                     <td>
-                      <span className={`status-badge status-${ticket.status}`}>
+                      <span className={`status-badge status-${ticket.status}`} style={{ borderRadius: '12px', fontSize: '11px', padding: '6px 12px' }}>
                         {ticket.status}
                       </span>
                     </td>
-                    <td className="date">
+                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
                       {new Date(ticket.issued_date).toLocaleDateString()}
                     </td>
-                    <td className="actions">
+                    <td>
                       <a
                         href={`/tickets/${ticket.id}`}
-                        className="btn btn-secondary"
+                        className="btn recent-tickets-view-btn"
                         style={{ textDecoration: 'none' }}
                       >
                         👁️ View

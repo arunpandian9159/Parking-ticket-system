@@ -8,6 +8,12 @@ const Navbar = () => {
     if (path === '/') {
       return location.pathname === '/';
     }
+    if (path === '/tickets') {
+      return location.pathname === '/tickets';
+    }
+    if (path === '/tickets/create') {
+      return location.pathname === '/tickets/create';
+    }
     return location.pathname.startsWith(path);
   };
 

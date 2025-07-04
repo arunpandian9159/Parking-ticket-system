@@ -141,53 +141,18 @@ const TicketList = () => {
         </div>
 
         {filteredTickets.length > 0 ? (
-          <div className="table-wrapper">
-            <table className="table">
+          <div className="recent-tickets-table-wrapper">
+            <table className="recent-tickets-table">
               <thead>
                 <tr>
-                  <th
-                    onClick={() => handleSort('id')}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                  >
-                    Ticket ID {sortField === 'id' && (sortDirection === 'asc' ? '↑' : '↓')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('license_plate')}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                  >
-                    License Plate {sortField === 'license_plate' && (sortDirection === 'asc' ? '↑' : '↓')}
-                  </th>
+                  <th>Ticket ID</th>
+                  <th>License Plate</th>
                   <th>Vehicle</th>
-                  <th
-                    onClick={() => handleSort('violation_type')}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                  >
-                    Violation {sortField === 'violation_type' && (sortDirection === 'asc' ? '↑' : '↓')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('location')}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                  >
-                    Location {sortField === 'location' && (sortDirection === 'asc' ? '↑' : '↓')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('fine_amount')}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                  >
-                    Amount {sortField === 'fine_amount' && (sortDirection === 'asc' ? '↑' : '↓')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('status')}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                  >
-                    Status {sortField === 'status' && (sortDirection === 'asc' ? '↑' : '↓')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('issued_date')}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                  >
-                    Issued Date {sortField === 'issued_date' && (sortDirection === 'asc' ? '↑' : '↓')}
-                  </th>
+                  <th>Violation</th>
+                  <th>Location</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Issued Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -195,39 +160,43 @@ const TicketList = () => {
                 {filteredTickets.map((ticket) => (
                   <tr key={ticket.id}>
                     <td className="number">
-                      <span style={{ fontFamily: 'monospace', fontSize: '13px' }}>
+                      <span style={{ fontFamily: 'monospace', fontSize: '13px', color: '#2563eb' }}>
                         {ticket.id.slice(0, 8)}...
                       </span>
                     </td>
                     <td>
-                      <strong>{ticket.license_plate}</strong>
+                      <strong style={{ color: '#2563eb' }}>{ticket.license_plate}</strong>
                     </td>
                     <td>
                       <div>
                         <strong>{ticket.vehicle_make} {ticket.vehicle_model}</strong>
-                        <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
                           {ticket.vehicle_color}
                         </div>
                       </div>
                     </td>
-                    <td>{ticket.violation_type}</td>
-                    <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <td>
+                      <span className="violation-pill">
+                        {ticket.violation_type}
+                      </span>
+                    </td>
+                    <td style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#2563eb' }}>
                       {ticket.location}
                     </td>
-                    <td className="currency">
+                    <td style={{ color: '#2563eb', fontWeight: 700 }}>
                       ${ticket.fine_amount.toFixed(2)}
                     </td>
                     <td>
-                      <span className={`status-badge status-${ticket.status}`}>
+                      <span className={`status-badge status-${ticket.status}`} style={{ borderRadius: '12px', fontSize: '11px', padding: '6px 12px' }}>
                         {ticket.status}
                       </span>
                     </td>
-                    <td className="date">
+                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
                       {new Date(ticket.issued_date).toLocaleDateString()}
                     </td>
-                    <td className="actions">
+                    <td>
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                        <Link to={`/tickets/${ticket.id}`} className="btn btn-secondary">
+                        <Link to={`/tickets/${ticket.id}`} className="btn recent-tickets-view-btn" style={{ textDecoration: 'none' }}>
                           👁️ View
                         </Link>
                         {ticket.status === 'pending' && (
