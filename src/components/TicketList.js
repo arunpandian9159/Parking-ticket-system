@@ -72,15 +72,6 @@ const TicketList = () => {
       }
     });
 
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
-    }
-  };
-
   const updateTicketStatus = async (ticketId, newStatus) => {
     try {
       const { error } = await supabase

@@ -4,6 +4,7 @@
   "description": "A comprehensive parking ticket management system",
   "private": true,
   "dependencies": {
+    "@splinetool/react-spline": "^4.0.0",
     "@supabase/supabase-js": "^2.38.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
