@@ -2,15 +2,13 @@
 
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { Car, LogOut, Plus, LayoutDashboard, Sun, Moon } from 'lucide-react'
-import { useTheme } from "next-themes"
+import { Car, LogOut, Plus, LayoutDashboard } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Button } from './ui/Button'
 
 export default function Navbar() {
     const router = useRouter()
     const pathname = usePathname()
-    const { theme, setTheme } = useTheme()
 
     const handleLogout = async () => {
         await supabase.auth.signOut()
@@ -53,16 +51,7 @@ export default function Navbar() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                            className="!p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-                        >
-                            <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                            <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            <span className="sr-only">Toggle theme</span>
-                        </Button>
+
                         <Button variant="ghost" onClick={handleLogout} className="!p-2">
                             <LogOut className="w-5 h-5" />
                         </Button>
