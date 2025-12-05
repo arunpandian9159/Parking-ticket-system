@@ -1,25 +1,26 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
+import { DataTable, Badge, Button } from './ui/DataTable';
 import {
   Users,
   PlusCircle,
   X,
-  Search,
   Shield,
   Mail,
   Phone,
   CheckCircle2,
   UserPlus,
-  BadgeCheck
+  BadgeCheck,
+  Trash2
 } from 'lucide-react';
 
 const OfficerList = () => {
   const [officers, setOfficers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedOfficers, setSelectedOfficers] = useState([]);
   const [formData, setFormData] = useState({
     badge_number: '',
     first_name: '',
@@ -80,33 +81,106 @@ const OfficerList = () => {
     }));
   };
 
-  if (loading) {
-    return (
-      <div className="fade-in p-8 flex justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="loading-spinner border-primary-600 border-t-transparent w-12 h-12"></div>
-          <p className="text-gray-500 font-medium">Loading Officers...</p>
-        </div>
-      </div>
-    );
-  }
+  const deleteOfficers = async (officersList) => {
+    try {
+      const ids = officersList.map(o => o.id);
+      const { error } = await supabase
+        .from('officers')
+        .delete()
+        .in('id', ids);
 
-  const filteredOfficers = officers.filter(officer => {
-    if (!searchTerm) return true;
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      officer.badge_number.toLowerCase().includes(searchLower) ||
-      `${officer.first_name} ${officer.last_name}`.toLowerCase().includes(searchLower) ||
-      officer.email.toLowerCase().includes(searchLower) ||
-      officer.phone.toLowerCase().includes(searchLower)
-    );
-  });
+      if (error) throw error;
+      fetchOfficers();
+    } catch (error) {
+      console.error('Error deleting officers:', error);
+    }
+  };
+
+  const columns = useMemo(() => [
+    {
+      accessorKey: 'badge_number',
+      header: 'Badge',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-blue-50 rounded-lg">
+            <BadgeCheck className="h-5 w-5 text-blue-600" />
+          </div>
+          <strong className="font-mono text-gray-900 font-bold">
+            {row.original.badge_number}
+          </strong>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'name',
+      header: 'Officer',
+      cell: ({ row }) => (
+        <div>
+          <div className="font-medium text-gray-900">
+            {row.original.first_name} {row.original.last_name}
+          </div>
+          <div className="text-xs text-gray-500">Enforcement Officer</div>
+        </div>
+      ),
+      enableSorting: true,
+    },
+    {
+      accessorKey: 'email',
+      header: 'Contact Information',
+      cell: ({ row }) => (
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Mail className="h-3.5 w-3.5 text-gray-400" />
+            <a href={`mailto:${row.original.email}`} className="hover:text-violet-600 transition-colors">
+              {row.original.email}
+            </a>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Phone className="h-3.5 w-3.5 text-gray-400" />
+            <a href={`tel:${row.original.phone}`} className="hover:text-violet-600 transition-colors">
+              {row.original.phone}
+            </a>
+          </div>
+        </div>
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: () => (
+        <Badge variant="success">
+          <CheckCircle2 className="h-3 w-3" />
+          Active
+        </Badge>
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'created_at',
+      header: 'Joined',
+      cell: ({ row }) => (
+        <span className="text-gray-500 text-sm">
+          {new Date(row.original.created_at).toLocaleDateString()}
+        </span>
+      ),
+    },
+  ], []);
+
+  const bulkActions = [
+    {
+      label: 'Delete',
+      icon: <Trash2 className="h-4 w-4" />,
+      variant: 'destructive',
+      onClick: deleteOfficers,
+    },
+  ];
 
   return (
     <div className="fade-in space-y-6">
       <div className="page-header flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-          <Users className="text-primary" size={32} />
+          <Users className="text-violet-600" size={32} />
           Parking Enforcement Officers
         </h1>
         <div className="actions">
@@ -120,9 +194,10 @@ const OfficerList = () => {
       </div>
 
       {showForm && (
-        <div className="card bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 animate-fade-in">
+        <div className="card bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 mb-6 animate-fade-in">
+          <div className="h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500 -mt-6 -mx-6 mb-6 rounded-t-2xl" />
           <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <UserPlus size={24} className="text-primary" /> Add New Officer
+            <UserPlus size={24} className="text-violet-600" /> Add New Officer
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -226,116 +301,25 @@ const OfficerList = () => {
         </div>
       )}
 
-      <div className="card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 bg-gray-50/50">
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="text"
-                placeholder="Search officers..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-input pl-10 w-full"
-              />
-            </div>
-            <div className="text-secondary text-sm font-medium">
-              {filteredOfficers.length} officer{filteredOfficers.length !== 1 ? 's' : ''} found
-            </div>
-          </div>
-        </div>
-
-        {filteredOfficers.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-gray-50 border-b border-gray-100">
-                <tr>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Badge</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Officer</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact Information</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Joined</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredOfficers.map((officer) => (
-                  <tr key={officer.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-50 rounded-lg">
-                          <BadgeCheck size={20} className="text-blue-600" />
-                        </div>
-                        <strong className="font-mono text-gray-900 font-bold">
-                          {officer.badge_number}
-                        </strong>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div>
-                        <div className="font-medium text-gray-900">{officer.first_name} {officer.last_name}</div>
-                        <div className="text-xs text-gray-500">
-                          Enforcement Officer
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Mail size={14} className="text-gray-400" />
-                          <a href={`mailto:${officer.email}`} className="hover:text-primary transition-colors">
-                            {officer.email}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Phone size={14} className="text-gray-400" />
-                          <a href={`tel:${officer.phone}`} className="hover:text-primary transition-colors">
-                            {officer.phone}
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        <CheckCircle2 size={12} /> Active
-                      </span>
-                    </td>
-                    <td className="p-4 text-gray-500 text-sm">
-                      {new Date(officer.created_at).toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="p-12 text-center flex flex-col items-center gap-4">
-            <div className="p-4 bg-gray-50 rounded-full">
-              <Users className="text-gray-400" size={48} />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900">No Officers Found</h3>
-            <p className="text-gray-500 max-w-sm mx-auto">
-              {searchTerm
-                ? 'No officers match your search criteria. Try adjusting your search term.'
-                : 'No enforcement officers have been added yet. Add your first officer to get started.'
-              }
-            </p>
-            {!searchTerm && (
-              <button
-                onClick={() => setShowForm(true)}
-                className="btn btn-primary flex items-center gap-2 mt-2"
-              >
-                <PlusCircle size={18} /> Add First Officer
-              </button>
-            )}
-          </div>
-        )}
-
-        {filteredOfficers.length > 0 && (
-          <div className="p-4 border-t border-gray-100 text-center text-sm text-gray-500 bg-gray-50/50">
-            Showing {filteredOfficers.length} of {officers.length} officers
-          </div>
-        )}
-      </div>
+      <DataTable
+        data={officers}
+        columns={columns}
+        loading={loading}
+        searchable={true}
+        searchPlaceholder="Search officers by badge, name, email..."
+        paginated={true}
+        pageSize={10}
+        selectable={true}
+        onSelectionChange={setSelectedOfficers}
+        bulkActions={bulkActions}
+        exportable={true}
+        exportFilename="parking_officers"
+        columnToggle={true}
+        onRefresh={fetchOfficers}
+        emptyMessage="No Officers Found"
+        emptyDescription="No enforcement officers have been added yet. Add your first officer to get started."
+        emptyIcon={Users}
+      />
     </div>
   );
 };

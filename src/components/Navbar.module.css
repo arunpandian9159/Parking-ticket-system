@@ -39,7 +39,7 @@
 
 .logoIcon {
     font-size: 1.5rem;
-    background: var(--color-primary-50, #eff6ff);
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
     padding: 0.25rem;
     border-radius: var(--radius-md, 0.5rem);
     display: flex;
@@ -49,8 +49,8 @@
 }
 
 .brand:hover .logoIcon {
-    transform: scale(1.05);
-    background: var(--color-primary-100, #dbeafe);
+    transform: scale(1.1) rotate(5deg);
+    background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
 }
 
 .nav {
@@ -80,14 +80,16 @@
 }
 
 .navLink:hover {
-    color: var(--color-primary-600, #2563eb);
-    background: var(--color-gray-50, #f9fafb);
+    color: var(--color-primary-600, #7c3aed);
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    transform: translateY(-1px);
 }
 
 .navLinkActive {
-    color: var(--color-primary-700, #1d4ed8);
-    background: var(--color-primary-50, #eff6ff);
+    color: white;
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
     font-weight: 600;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
 }
 
 .navIcon {

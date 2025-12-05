@@ -1,25 +1,26 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
+import { DataTable, Badge, Button } from './ui/DataTable';
 import {
   Car,
   PlusCircle,
   X,
-  Search,
   User,
   Mail,
   Phone,
   Calendar,
   Palette,
-  FileText
+  FileText,
+  Trash2
 } from 'lucide-react';
 
 const VehicleList = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedVehicles, setSelectedVehicles] = useState([]);
   const [formData, setFormData] = useState({
     license_plate: '',
     make: '',
@@ -91,35 +92,137 @@ const VehicleList = () => {
     }));
   };
 
-  if (loading) {
-    return (
-      <div className="fade-in p-8 flex justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="loading-spinner border-primary-600 border-t-transparent w-12 h-12"></div>
-          <p className="text-gray-500 font-medium">Loading Vehicles...</p>
-        </div>
-      </div>
-    );
-  }
+  const deleteVehicles = async (vehiclesList) => {
+    try {
+      const ids = vehiclesList.map(v => v.id);
+      const { error } = await supabase
+        .from('vehicles')
+        .delete()
+        .in('id', ids);
 
-  const filteredVehicles = vehicles.filter(vehicle => {
-    if (!searchTerm) return true;
-    const searchLower = searchTerm.toLowerCase();
+      if (error) throw error;
+      fetchVehicles();
+    } catch (error) {
+      console.error('Error deleting vehicles:', error);
+    }
+  };
+
+  const getColorBadge = (color) => {
+    const colorMap = {
+      'black': 'bg-gray-900 text-white',
+      'white': 'bg-gray-100 text-gray-800 border border-gray-300',
+      'red': 'bg-red-500 text-white',
+      'blue': 'bg-blue-500 text-white',
+      'silver': 'bg-gray-400 text-white',
+      'gray': 'bg-gray-500 text-white',
+      'green': 'bg-green-500 text-white',
+      'yellow': 'bg-yellow-400 text-gray-900',
+      'orange': 'bg-orange-500 text-white',
+      'brown': 'bg-amber-700 text-white',
+    };
+    const colorClass = colorMap[color?.toLowerCase()] || 'bg-gray-200 text-gray-700';
     return (
-      vehicle.license_plate.toLowerCase().includes(searchLower) ||
-      `${vehicle.make} ${vehicle.model}`.toLowerCase().includes(searchLower) ||
-      vehicle.color.toLowerCase().includes(searchLower) ||
-      vehicle.owner_name.toLowerCase().includes(searchLower) ||
-      vehicle.owner_email.toLowerCase().includes(searchLower) ||
-      vehicle.year.toString().includes(searchLower)
+      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium capitalize ${colorClass}`}>
+        <Palette className="h-3 w-3" />
+        {color}
+      </span>
     );
-  });
+  };
+
+  const columns = useMemo(() => [
+    {
+      accessorKey: 'license_plate',
+      header: 'License Plate',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-indigo-50 rounded-lg">
+            <Car className="h-5 w-5 text-indigo-600" />
+          </div>
+          <strong className="font-mono text-gray-900 font-bold text-lg">
+            {row.original.license_plate}
+          </strong>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'vehicle',
+      header: 'Vehicle',
+      cell: ({ row }) => (
+        <div>
+          <div className="font-medium text-gray-900">
+            {row.original.make} {row.original.model}
+          </div>
+          <div className="text-xs text-gray-500 flex items-center gap-1">
+            <Calendar className="h-3 w-3" />
+            {row.original.year}
+          </div>
+        </div>
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'color',
+      header: 'Color',
+      cell: ({ row }) => getColorBadge(row.original.color),
+    },
+    {
+      accessorKey: 'owner_name',
+      header: 'Owner',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-gray-100 rounded-full">
+            <User className="h-4 w-4 text-gray-600" />
+          </div>
+          <span className="font-medium text-gray-900">{row.original.owner_name}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'contact',
+      header: 'Contact',
+      cell: ({ row }) => (
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Phone className="h-3.5 w-3.5 text-gray-400" />
+            <a href={`tel:${row.original.owner_phone}`} className="hover:text-violet-600 transition-colors">
+              {row.original.owner_phone}
+            </a>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Mail className="h-3.5 w-3.5 text-gray-400" />
+            <a href={`mailto:${row.original.owner_email}`} className="hover:text-violet-600 transition-colors">
+              {row.original.owner_email}
+            </a>
+          </div>
+        </div>
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'created_at',
+      header: 'Registered',
+      cell: ({ row }) => (
+        <span className="text-gray-500 text-sm">
+          {new Date(row.original.created_at).toLocaleDateString()}
+        </span>
+      ),
+    },
+  ], []);
+
+  const bulkActions = [
+    {
+      label: 'Delete',
+      icon: <Trash2 className="h-4 w-4" />,
+      variant: 'destructive',
+      onClick: deleteVehicles,
+    },
+  ];
 
   return (
     <div className="fade-in space-y-6">
       <div className="page-header flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-          <Car className="text-primary" size={32} />
+          <Car className="text-violet-600" size={32} />
           Vehicle Registry
         </h1>
         <div className="actions">
@@ -133,9 +236,10 @@ const VehicleList = () => {
       </div>
 
       {showForm && (
-        <div className="card bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 animate-fade-in">
+        <div className="card bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 mb-6 animate-fade-in">
+          <div className="h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500 -mt-6 -mx-6 mb-6 rounded-t-2xl" />
           <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <Car size={24} className="text-primary" /> Add New Vehicle
+            <Car size={24} className="text-violet-600" /> Add New Vehicle
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -295,122 +399,25 @@ const VehicleList = () => {
         </div>
       )}
 
-      <div className="card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 bg-gray-50/50">
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="text"
-                placeholder="Search vehicles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-input pl-10 w-full"
-              />
-            </div>
-            <div className="text-secondary text-sm font-medium">
-              {filteredVehicles.length} vehicle{filteredVehicles.length !== 1 ? 's' : ''} found
-            </div>
-          </div>
-        </div>
-
-        {filteredVehicles.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-gray-50 border-b border-gray-100">
-                <tr>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">License Plate</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Vehicle Details</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Owner Information</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Registered</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredVehicles.map((vehicle) => (
-                  <tr key={vehicle.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-indigo-50 rounded-lg">
-                          <Car size={20} className="text-indigo-600" />
-                        </div>
-                        <strong className="font-mono text-lg text-gray-900 font-bold">
-                          {vehicle.license_plate}
-                        </strong>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div>
-                        <div className="font-medium text-gray-900">{vehicle.year} {vehicle.make} {vehicle.model}</div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className={`inline-block w-3 h-3 rounded-full border border-gray-200`} style={{ backgroundColor: vehicle.color }}></span>
-                          <span className="text-xs text-gray-500 capitalize">
-                            {vehicle.color}
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div>
-                        <div className="font-medium text-gray-900">{vehicle.owner_name}</div>
-                        <div className="text-xs text-gray-500">
-                          Vehicle Owner
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Phone size={14} className="text-gray-400" />
-                          <a href={`tel:${vehicle.owner_phone}`} className="hover:text-primary transition-colors">
-                            {vehicle.owner_phone}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Mail size={14} className="text-gray-400" />
-                          <a href={`mailto:${vehicle.owner_email}`} className="hover:text-primary transition-colors">
-                            {vehicle.owner_email}
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-gray-500 text-sm">
-                      {new Date(vehicle.created_at).toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="p-12 text-center flex flex-col items-center gap-4">
-            <div className="p-4 bg-gray-50 rounded-full">
-              <Car className="text-gray-400" size={48} />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900">No Vehicles Found</h3>
-            <p className="text-gray-500 max-w-sm mx-auto">
-              {searchTerm
-                ? 'No vehicles match your search criteria. Try adjusting your search term.'
-                : 'No vehicles have been registered yet. Add your first vehicle to get started.'
-              }
-            </p>
-            {!searchTerm && (
-              <button
-                onClick={() => setShowForm(true)}
-                className="btn btn-primary flex items-center gap-2 mt-2"
-              >
-                <PlusCircle size={18} /> Add First Vehicle
-              </button>
-            )}
-          </div>
-        )}
-
-        {filteredVehicles.length > 0 && (
-          <div className="p-4 border-t border-gray-100 text-center text-sm text-gray-500 bg-gray-50/50">
-            Showing {filteredVehicles.length} of {vehicles.length} vehicles
-          </div>
-        )}
-      </div>
+      <DataTable
+        data={vehicles}
+        columns={columns}
+        loading={loading}
+        searchable={true}
+        searchPlaceholder="Search vehicles by plate, make, model, owner..."
+        paginated={true}
+        pageSize={10}
+        selectable={true}
+        onSelectionChange={setSelectedVehicles}
+        bulkActions={bulkActions}
+        exportable={true}
+        exportFilename="vehicle_registry"
+        columnToggle={true}
+        onRefresh={fetchVehicles}
+        emptyMessage="No Vehicles Found"
+        emptyDescription="No vehicles have been registered yet. Add your first vehicle to get started."
+        emptyIcon={Car}
+      />
     </div>
   );
 };

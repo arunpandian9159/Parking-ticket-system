@@ -1,30 +1,27 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { supabase } from '../lib/supabase';
+import { DataTable, Badge, Button } from './ui/DataTable';
 import {
   Ticket,
   PlusCircle,
-  Search,
-  Filter,
   Eye,
   CheckCircle2,
   AlertTriangle,
   Car,
   MapPin,
   Clock,
-  MoreHorizontal,
-  FileText
+  FileText,
+  Trash2,
+  DollarSign
 } from 'lucide-react';
 
 const TicketList = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortField] = useState('created_at');
-  const [sortDirection] = useState('desc');
+  const [selectedTickets, setSelectedTickets] = useState([]);
 
   useEffect(() => {
     fetchTickets();
@@ -47,47 +44,6 @@ const TicketList = () => {
     }
   };
 
-  const filteredTickets = tickets
-    .filter(ticket => {
-      // Filter by status
-      if (filter !== 'all' && ticket.status !== filter) return false;
-
-      // Filter by search term
-      if (searchTerm) {
-        const searchLower = searchTerm.toLowerCase();
-        return (
-          ticket.license_plate.toLowerCase().includes(searchLower) ||
-          ticket.violation_type.toLowerCase().includes(searchLower) ||
-          ticket.location.toLowerCase().includes(searchLower) ||
-          `${ticket.vehicle_make} ${ticket.vehicle_model}`.toLowerCase().includes(searchLower)
-        );
-      }
-
-      return true;
-    })
-    .sort((a, b) => {
-      let aValue = a[sortField];
-      let bValue = b[sortField];
-
-      // Handle date sorting
-      if (sortField === 'issued_date' || sortField === 'created_at') {
-        aValue = new Date(aValue).getTime();
-        bValue = new Date(bValue).getTime();
-      }
-
-      // Handle string sorting
-      if (typeof aValue === 'string') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
-      }
-
-      if (sortDirection === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
-
   const updateTicketStatus = async (ticketId, newStatus) => {
     try {
       const { error } = await supabase
@@ -96,28 +52,197 @@ const TicketList = () => {
         .eq('id', ticketId);
 
       if (error) throw error;
-      fetchTickets(); // Refresh the list
+      fetchTickets();
     } catch (error) {
       console.error('Error updating ticket status:', error);
     }
   };
 
-  if (loading) {
+  const bulkUpdateStatus = async (tickets, newStatus) => {
+    try {
+      const ids = tickets.map(t => t.id);
+      const { error } = await supabase
+        .from('parking_tickets')
+        .update({ status: newStatus })
+        .in('id', ids);
+
+      if (error) throw error;
+      fetchTickets();
+    } catch (error) {
+      console.error('Error bulk updating tickets:', error);
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    const statusConfig = {
+      paid: { variant: 'success', icon: <CheckCircle2 className="h-3 w-3" /> },
+      pending: { variant: 'warning', icon: <Clock className="h-3 w-3" /> },
+      disputed: { variant: 'error', icon: <AlertTriangle className="h-3 w-3" /> },
+      overdue: { variant: 'error', icon: <AlertTriangle className="h-3 w-3" /> },
+    };
+    const config = statusConfig[status] || { variant: 'default', icon: null };
     return (
-      <div className="fade-in p-8 flex justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="loading-spinner border-primary-600 border-t-transparent w-12 h-12"></div>
-          <p className="text-gray-500 font-medium">Loading Tickets...</p>
-        </div>
-      </div>
+      <Badge variant={config.variant}>
+        {config.icon}
+        <span className="capitalize">{status}</span>
+      </Badge>
     );
-  }
+  };
+
+  const columns = useMemo(() => [
+    {
+      accessorKey: 'id',
+      header: 'Ticket ID',
+      cell: ({ row }) => (
+        <span className="font-mono text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
+          #{row.original.id.slice(0, 8)}
+        </span>
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'license_plate',
+      header: 'License Plate',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-indigo-50 rounded-lg">
+            <Car className="h-4 w-4 text-indigo-600" />
+          </div>
+          <strong className="text-gray-900 font-semibold">{row.original.license_plate}</strong>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'vehicle',
+      header: 'Vehicle',
+      cell: ({ row }) => (
+        <div>
+          <div className="font-medium text-gray-900">
+            {row.original.vehicle_make} {row.original.vehicle_model}
+          </div>
+          <div className="text-xs text-gray-500 capitalize">{row.original.vehicle_color}</div>
+        </div>
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: 'violation_type',
+      header: 'Violation',
+      cell: ({ row }) => (
+        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-red-50 text-red-700 border border-red-100">
+          {row.original.violation_type}
+        </span>
+      ),
+    },
+    {
+      accessorKey: 'location',
+      header: 'Location',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-1.5 text-gray-600 max-w-[180px]">
+          <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
+          <span className="truncate">{row.original.location}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'fine_amount',
+      header: 'Amount',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-1">
+          <DollarSign className="h-4 w-4 text-green-600" />
+          <span className="font-bold text-gray-900">{row.original.fine_amount.toFixed(2)}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }) => getStatusBadge(row.original.status),
+      filterFn: (row, id, value) => {
+        if (!value || value === 'all') return true;
+        return row.getValue(id) === value;
+      },
+    },
+    {
+      accessorKey: 'issued_date',
+      header: 'Issued Date',
+      cell: ({ row }) => (
+        <span className="text-gray-500 text-sm">
+          {new Date(row.original.issued_date).toLocaleDateString()}
+        </span>
+      ),
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: ({ row }) => (
+        <div className="flex gap-2">
+          <Link
+            href={`/tickets/${row.original.id}`}
+            className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-violet-500 to-violet-600 text-white hover:from-violet-600 hover:to-violet-700 transition-all shadow-sm"
+          >
+            <Eye className="h-3.5 w-3.5" />
+            View
+          </Link>
+          {row.original.status === 'pending' && (
+            <>
+              <button
+                onClick={() => updateTicketStatus(row.original.id, 'paid')}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 transition-all shadow-sm"
+              >
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                Pay
+              </button>
+              <button
+                onClick={() => updateTicketStatus(row.original.id, 'disputed')}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all shadow-sm"
+              >
+                <AlertTriangle className="h-3.5 w-3.5" />
+                Dispute
+              </button>
+            </>
+          )}
+        </div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+  ], []);
+
+  const filters = [
+    {
+      id: 'status',
+      placeholder: 'All Status',
+      options: [
+        { value: 'all', label: 'All Status' },
+        { value: 'pending', label: 'Pending' },
+        { value: 'paid', label: 'Paid' },
+        { value: 'disputed', label: 'Disputed' },
+        { value: 'overdue', label: 'Overdue' },
+      ],
+    },
+  ];
+
+  const bulkActions = [
+    {
+      label: 'Mark Paid',
+      icon: <CheckCircle2 className="h-4 w-4" />,
+      variant: 'success',
+      onClick: (selected) => bulkUpdateStatus(selected, 'paid'),
+    },
+    {
+      label: 'Mark Disputed',
+      icon: <AlertTriangle className="h-4 w-4" />,
+      variant: 'destructive',
+      onClick: (selected) => bulkUpdateStatus(selected, 'disputed'),
+    },
+  ];
 
   return (
     <div className="fade-in space-y-6">
       <div className="page-header flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-          <Ticket className="text-primary" size={32} />
+          <Ticket className="text-violet-600" size={32} />
           Parking Tickets
         </h1>
         <div className="actions">
@@ -127,159 +252,27 @@ const TicketList = () => {
         </div>
       </div>
 
-      <div className="card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 bg-gray-50/50">
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="text"
-                placeholder="Search tickets..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-input pl-10 w-full"
-              />
-            </div>
-            <div className="flex items-center gap-2 w-full md:w-auto">
-              <Filter className="text-gray-400" size={18} />
-              <select
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="form-select min-w-[150px]"
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="paid">Paid</option>
-                <option value="disputed">Disputed</option>
-                <option value="overdue">Overdue</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {filteredTickets.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-gray-50 border-b border-gray-100">
-                <tr>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ticket ID</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">License Plate</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Vehicle</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Violation</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Location</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Issued Date</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredTickets.map((ticket) => (
-                  <tr key={ticket.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
-                      <span className="font-mono text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                        #{ticket.id.slice(0, 8)}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        <Car size={16} className="text-gray-400" />
-                        <strong className="text-gray-900">{ticket.license_plate}</strong>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div>
-                        <div className="font-medium text-gray-900">{ticket.vehicle_make} {ticket.vehicle_model}</div>
-                        <div className="text-xs text-gray-500">
-                          {ticket.vehicle_color}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">
-                        {ticket.violation_type}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1 text-gray-600 max-w-[180px] truncate">
-                        <MapPin size={14} className="flex-shrink-0" />
-                        <span className="truncate">{ticket.location}</span>
-                      </div>
-                    </td>
-                    <td className="p-4 font-bold text-gray-900">
-                      ${ticket.fine_amount.toFixed(2)}
-                    </td>
-                    <td className="p-4">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                        ${ticket.status === 'paid' ? 'bg-green-100 text-green-800' :
-                          ticket.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                            ticket.status === 'disputed' ? 'bg-red-100 text-red-800' :
-                              'bg-gray-100 text-gray-800'}`}>
-                        {ticket.status === 'paid' && <CheckCircle2 size={12} />}
-                        {ticket.status === 'pending' && <Clock size={12} />}
-                        {ticket.status === 'disputed' && <AlertTriangle size={12} />}
-                        {ticket.status}
-                      </span>
-                    </td>
-                    <td className="p-4 text-gray-500 text-sm">
-                      {new Date(ticket.issued_date).toLocaleDateString()}
-                    </td>
-                    <td className="p-4">
-                      <div className="flex gap-2 flex-wrap">
-                        <Link href={`/tickets/${ticket.id}`} className="btn btn-sm btn-secondary flex items-center gap-1 text-xs py-1 px-2" title="View Details">
-                          <Eye size={14} /> View
-                        </Link>
-                        {ticket.status === 'pending' && (
-                          <>
-                            <button
-                              onClick={() => updateTicketStatus(ticket.id, 'paid')}
-                              className="btn btn-sm btn-success flex items-center gap-1 text-xs py-1 px-2"
-                              title="Mark as Paid"
-                            >
-                              <CheckCircle2 size={14} /> Pay
-                            </button>
-                            <button
-                              onClick={() => updateTicketStatus(ticket.id, 'disputed')}
-                              className="btn btn-sm btn-danger flex items-center gap-1 text-xs py-1 px-2"
-                              title="Dispute Ticket"
-                            >
-                              <AlertTriangle size={14} /> Dispute
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="p-12 text-center flex flex-col items-center gap-4">
-            <div className="p-4 bg-gray-50 rounded-full">
-              <FileText className="text-gray-400" size={48} />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900">No Tickets Found</h3>
-            <p className="text-gray-500 max-w-sm mx-auto">
-              {searchTerm || filter !== 'all'
-                ? 'No tickets match your current filters. Try adjusting your search or filter criteria.'
-                : 'No parking tickets have been created yet. Create your first ticket to get started.'
-              }
-            </p>
-            {(!searchTerm && filter === 'all') && (
-              <Link href="/tickets/create" className="btn btn-primary flex items-center gap-2 mt-2">
-                <PlusCircle size={18} /> Create First Ticket
-              </Link>
-            )}
-          </div>
-        )}
-
-        {filteredTickets.length > 0 && (
-          <div className="p-4 border-t border-gray-100 text-center text-sm text-gray-500 bg-gray-50/50">
-            Showing {filteredTickets.length} of {tickets.length} tickets
-          </div>
-        )}
-      </div>
+      <DataTable
+        data={tickets}
+        columns={columns}
+        loading={loading}
+        searchable={true}
+        searchPlaceholder="Search tickets by plate, violation, location..."
+        filterable={true}
+        filters={filters}
+        paginated={true}
+        pageSize={10}
+        selectable={true}
+        onSelectionChange={setSelectedTickets}
+        bulkActions={bulkActions}
+        exportable={true}
+        exportFilename="parking_tickets"
+        columnToggle={true}
+        onRefresh={fetchTickets}
+        emptyMessage="No Tickets Found"
+        emptyDescription="No parking tickets have been created yet. Create your first ticket to get started."
+        emptyIcon={FileText}
+      />
     </div>
   );
 };

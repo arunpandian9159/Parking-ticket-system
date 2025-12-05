@@ -251,80 +251,83 @@ const Dashboard = () => {
         <SeedData />
       )}
 
-      <div className="card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+        <div className="h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500" />
         <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-gray-800">Recent Tickets</h2>
+          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <ClipboardList className="text-violet-600" size={24} />
+            Recent Tickets
+          </h2>
           {recentTickets.length > 0 && (
-            <span className="text-gray-500 text-sm">
-              Showing {recentTickets.length} of {stats.totalTickets} tickets
-            </span>
+            <Link href="/tickets" className="text-violet-600 hover:text-violet-700 text-sm font-medium flex items-center gap-1 transition-colors">
+              View All <Eye size={14} />
+            </Link>
           )}
         </div>
         {recentTickets.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-gray-50 border-b border-gray-100">
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
                 <tr>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">License Plate</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Vehicle</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Violation</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Location</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th>License Plate</th>
+                  <th>Vehicle</th>
+                  <th>Violation</th>
+                  <th>Location</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody>
                 {recentTickets.map((ticket) => (
-                  <tr key={ticket.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
+                  <tr key={ticket.id}>
+                    <td>
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                          <Car size={16} className="text-gray-600" />
+                        <div className="p-1.5 bg-indigo-50 rounded-lg">
+                          <Car size={16} className="text-indigo-600" />
                         </div>
-                        <strong className="text-gray-900">{ticket.license_plate}</strong>
+                        <strong className="text-gray-900 font-semibold">{ticket.license_plate}</strong>
                       </div>
                     </td>
-                    <td className="p-4">
+                    <td>
                       <div>
                         <div className="font-medium text-gray-900">{ticket.vehicle_make} {ticket.vehicle_model}</div>
-                        <div className="text-xs text-gray-500">
-                          {ticket.vehicle_color}
-                        </div>
+                        <div className="text-xs text-gray-500 capitalize">{ticket.vehicle_color}</div>
                       </div>
                     </td>
-                    <td className="p-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    <td>
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-red-50 text-red-700 border border-red-100">
                         {ticket.violation_type}
                       </span>
                     </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1 text-gray-600 max-w-[180px] truncate">
-                        <MapPin size={14} className="flex-shrink-0" />
+                    <td>
+                      <div className="flex items-center gap-1.5 text-gray-600 max-w-[180px]">
+                        <MapPin size={14} className="shrink-0 text-gray-400" />
                         <span className="truncate">{ticket.location}</span>
                       </div>
                     </td>
-                    <td className="p-4 font-bold text-gray-900">
-                      ${ticket.fine_amount.toFixed(2)}
+                    <td className="currency">
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="h-4 w-4" />
+                        <span>{ticket.fine_amount.toFixed(2)}</span>
+                      </div>
                     </td>
-                    <td className="p-4">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                        ${ticket.status === 'paid' ? 'bg-green-100 text-green-800' :
-                          ticket.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-gray-100 text-gray-800'}`}>
+                    <td>
+                      <span className={`status-badge status-${ticket.status} inline-flex items-center gap-1.5`}>
                         {ticket.status === 'paid' && <CheckCircle2 size={12} />}
                         {ticket.status === 'pending' && <Clock size={12} />}
+                        {ticket.status === 'disputed' && <AlertTriangle size={12} />}
                         {ticket.status}
                       </span>
                     </td>
-                    <td className="p-4 text-gray-500 text-sm">
+                    <td className="date">
                       {new Date(ticket.issued_date).toLocaleDateString()}
                     </td>
-                    <td className="p-4">
+                    <td className="actions">
                       <Link
                         href={`/tickets/${ticket.id}`}
-                        className="btn btn-sm btn-secondary flex items-center gap-2 text-xs py-1 px-3"
+                        className="btn btn-sm text-xs bg-violet-600 text-white hover:bg-violet-700 shadow-md shadow-violet-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-all"
                       >
                         <Eye size={14} /> View
                       </Link>
@@ -339,8 +342,15 @@ const Dashboard = () => {
             <div className="p-4 bg-gray-50 rounded-full">
               <ClipboardList className="text-gray-400" size={48} />
             </div>
-            <h3 className="text-lg font-medium text-gray-900">No Tickets Found</h3>
+            <h3 className="text-lg font-semibold text-gray-900">No Tickets Found</h3>
             <p className="text-gray-500 max-w-sm mx-auto">Start by creating your first parking ticket or seeding the database with sample data.</p>
+          </div>
+        )}
+        {recentTickets.length > 0 && (
+          <div className="px-4 py-3 border-t border-gray-100 bg-gray-50 text-center">
+            <span className="text-sm text-gray-500">
+              Showing {recentTickets.length} of {stats.totalTickets} tickets
+            </span>
           </div>
         )}
       </div>
