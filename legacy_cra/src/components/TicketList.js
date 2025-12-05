@@ -1,7 +1,5 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 const TicketList = () => {
@@ -101,7 +99,7 @@ const TicketList = () => {
       <div className="page-header">
         <h1>Parking Tickets</h1>
         <div className="actions">
-          <Link href="/tickets/create" className="btn btn-primary">
+          <Link to="/tickets/create" className="btn btn-primary">
             ➕ Create New Ticket
           </Link>
         </div>
@@ -189,7 +187,7 @@ const TicketList = () => {
                     </td>
                     <td>
                       <div className="flex gap-2 flex-wrap">
-                        <Link href={`/tickets/${ticket.id}`} className="btn recent-tickets-view-btn">
+                        <Link to={`/tickets/${ticket.id}`} className="btn recent-tickets-view-btn">
                           👁️ View
                         </Link>
                         {ticket.status === 'pending' && (
@@ -226,7 +224,7 @@ const TicketList = () => {
               }
             </p>
             {(!searchTerm && filter === 'all') && (
-              <Link href="/tickets/create" className="btn btn-primary">
+              <Link to="/tickets/create" className="btn btn-primary">
                 Create First Ticket
               </Link>
             )}

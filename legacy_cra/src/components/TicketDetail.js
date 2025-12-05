@@ -1,12 +1,10 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 const TicketDetail = () => {
   const { id } = useParams();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -73,7 +71,7 @@ const TicketDetail = () => {
         <div className="page-header">
           <h1>Ticket Not Found</h1>
           <div className="actions">
-            <button onClick={() => router.push('/tickets')} className="btn btn-primary">
+            <button onClick={() => navigate('/tickets')} className="btn btn-primary">
               ← Back to Tickets
             </button>
           </div>
@@ -83,7 +81,7 @@ const TicketDetail = () => {
             <div className="empty-state-icon">🎫</div>
             <h3>Ticket Not Found</h3>
             <p>The ticket you're looking for doesn't exist or may have been deleted.</p>
-            <button onClick={() => router.push('/tickets')} className="btn btn-primary">
+            <button onClick={() => navigate('/tickets')} className="btn btn-primary">
               Back to Tickets
             </button>
           </div>
@@ -97,7 +95,7 @@ const TicketDetail = () => {
       <div className="page-header">
         <h1>Ticket Details</h1>
         <div className="actions">
-          <button onClick={() => router.push('/tickets')} className="btn btn-secondary">
+          <button onClick={() => navigate('/tickets')} className="btn btn-secondary">
             ← Back to Tickets
           </button>
         </div>

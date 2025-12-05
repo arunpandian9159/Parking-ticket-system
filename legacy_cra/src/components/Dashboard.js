@@ -1,7 +1,4 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { supabase } from '../lib/supabase';
 import SeedData from './SeedData';
 
@@ -246,12 +243,12 @@ const Dashboard = () => {
                       {new Date(ticket.issued_date).toLocaleDateString()}
                     </td>
                     <td>
-                      <Link
+                      <a
                         href={`/tickets/${ticket.id}`}
                         className="btn recent-tickets-view-btn"
                       >
                         👁️ View
-                      </Link>
+                      </a>
                     </td>
                   </tr>
                 ))}

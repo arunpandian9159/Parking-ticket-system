@@ -1,11 +1,9 @@
-'use client';
-
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 const CreateTicket = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     license_plate: '',
     vehicle_make: '',
@@ -47,7 +45,7 @@ const CreateTicket = () => {
       if (error) throw error;
 
       alert('Ticket created successfully!');
-      router.push('/tickets');
+      navigate('/tickets');
     } catch (error) {
       console.error('Error creating ticket:', error);
       alert('Error creating ticket. Please try again.');
@@ -62,7 +60,7 @@ const CreateTicket = () => {
         <h1 className="text-3xl font-bold bg-gradient-gray text-transparent bg-clip-text m-0">Create New Parking Ticket</h1>
         <div className="actions">
           <button
-            onClick={() => router.push('/tickets')}
+            onClick={() => navigate('/tickets')}
             className="btn btn-secondary"
           >
             ← Back to Tickets
@@ -206,7 +204,7 @@ const CreateTicket = () => {
           <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray">
             <button
               type="button"
-              onClick={() => router.push('/tickets')}
+              onClick={() => navigate('/tickets')}
               className="btn btn-secondary"
             >
               Cancel
