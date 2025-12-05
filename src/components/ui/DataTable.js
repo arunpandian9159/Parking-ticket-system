@@ -107,7 +107,7 @@ const Select = ({ value, onChange, options, placeholder, className }) => (
     value={value}
     onChange={(e) => onChange(e.target.value)}
     className={cn(
-      "h-9 rounded-lg border border-gray-200 bg-white px-3 py-1 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 cursor-pointer transition-all",
+      "h-9 rounded-lg border-2 border-indigo-100 bg-white px-3 py-1 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 cursor-pointer transition-all shadow-sm hover:border-indigo-200",
       className
     )}
   >
@@ -123,8 +123,8 @@ const Select = ({ value, onChange, options, placeholder, className }) => (
 // Button Component
 const Button = ({ children, variant = 'default', size = 'default', className, ...props }) => {
   const variants = {
-    default: 'bg-gradient-to-r from-violet-500 to-violet-600 text-white hover:from-violet-600 hover:to-violet-700 shadow-lg shadow-violet-500/25',
-    outline: 'border border-gray-200 bg-white hover:bg-gray-50 text-gray-700',
+    default: 'bg-gradient-to-r from-violet-500 to-violet-600 text-white hover:from-violet-600 hover:to-violet-700 shadow-lg shadow-violet-500/25 border-0',
+    outline: 'border-2 border-indigo-100 bg-white hover:bg-indigo-50 text-indigo-600 hover:border-indigo-200 shadow-sm',
     ghost: 'hover:bg-gray-100 text-gray-700',
     destructive: 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700',
     success: 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700',
@@ -322,7 +322,7 @@ const DataTable = ({
                     placeholder={searchPlaceholder}
                     value={globalFilter ?? ''}
                     onChange={(e) => setGlobalFilter(e.target.value)}
-                    className="h-10 w-full sm:w-72 rounded-xl border border-gray-200 bg-white pl-10 pr-4 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all shadow-sm"
+                    className="h-10 w-full sm:w-72 rounded-xl border-2 border-indigo-100 bg-white pl-10 pr-4 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all shadow-sm hover:border-indigo-200"
                   />
                   {globalFilter && (
                     <button
@@ -457,17 +457,17 @@ const DataTable = ({
               <p className="text-gray-500 text-center max-w-sm">{emptyDescription}</p>
             </div>
           ) : (
-            <table className="w-full">
+            <table className="table w-full">
               <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id} className="bg-gradient-to-r from-gray-50 to-gray-100/80 border-b border-gray-200">
+                  <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
                         style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
                         className={cn(
-                          "px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider",
-                          header.column.getCanSort() && "cursor-pointer select-none hover:bg-gray-100 transition-colors"
+                          "px-4 py-3 text-left text-xs font-bold uppercase tracking-wider",
+                          header.column.getCanSort() && "cursor-pointer select-none transition-colors"
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                       >
@@ -480,7 +480,7 @@ const DataTable = ({
                               {{
                                 asc: <ChevronUp className="h-4 w-4" />,
                                 desc: <ChevronDown className="h-4 w-4" />,
-                              }[header.column.getIsSorted()] ?? <ChevronsUpDown className="h-4 w-4 opacity-50" />}
+                              }[header.column.getIsSorted()] ?? <ChevronsUpDown className="h-4 w-4 opacity-50 text-white/50" />}
                             </span>
                           )}
                         </div>

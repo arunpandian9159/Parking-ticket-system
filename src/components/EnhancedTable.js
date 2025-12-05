@@ -39,15 +39,15 @@ const EnhancedTable = ({
   }
 
   return (
-    <div className={`overflow-x-auto ${className}`}>
-      <table className="w-full text-left border-collapse">
-        <thead className="bg-gray-50 border-b border-gray-100">
+    <div className={`table-wrapper ${className}`}>
+      <table className="table w-full">
+        <thead>
           <tr>
             {columns.map((column) => (
               <th
                 key={column.key}
                 onClick={column.sortable ? () => handleSort(column.key) : undefined}
-                className={`p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider ${column.className || ''} ${column.sortable ? 'cursor-pointer select-none hover:bg-gray-100 transition-colors' : ''}`}
+                className={`p-4 text-xs font-semibold uppercase tracking-wider ${column.className || ''} ${column.sortable ? 'cursor-pointer select-none transition-colors' : ''}`}
               >
                 <div className="flex items-center gap-1">
                   {column.label}
