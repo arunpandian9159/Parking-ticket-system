@@ -90,12 +90,12 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
-        
+
         <div className="dashboard-grid">
           {[...Array(6)].map((_, index) => (
-            <div key={index} className="dashboard-card" style={{ opacity: 0.6 }}>
-              <div style={{ height: '20px', background: '#e1e8ed', borderRadius: '4px', marginBottom: '16px' }}></div>
-              <div style={{ height: '40px', background: '#e1e8ed', borderRadius: '4px' }}></div>
+            <div key={index} className="dashboard-card opacity-60">
+              <div className="skeleton h-5 mb-4" style={{ height: '20px' }}></div>
+              <div className="skeleton h-10" style={{ height: '40px' }}></div>
             </div>
           ))}
         </div>
@@ -114,7 +114,7 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
-        
+
         <div className="card">
           <div className="empty-state">
             <div className="empty-state-icon">⚠️</div>
@@ -139,38 +139,38 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
-      
+
       <div className="dashboard-grid">
         <div className="dashboard-card">
           <h3>Total Tickets</h3>
           <div className="number">{stats.totalTickets.toLocaleString()}</div>
           <div className="trend">📊 All time</div>
         </div>
-        
+
         <div className="dashboard-card">
           <h3>Pending Tickets</h3>
           <div className="number">{stats.pendingTickets.toLocaleString()}</div>
           <div className="trend">⏳ Awaiting payment</div>
         </div>
-        
+
         <div className="dashboard-card">
           <h3>Paid Tickets</h3>
           <div className="number">{stats.paidTickets.toLocaleString()}</div>
           <div className="trend">✅ Completed</div>
         </div>
-        
+
         <div className="dashboard-card">
           <h3>Total Officers</h3>
           <div className="number">{stats.totalOfficers.toLocaleString()}</div>
           <div className="trend">👮 Active enforcement</div>
         </div>
-        
+
         <div className="dashboard-card">
           <h3>Total Vehicles</h3>
           <div className="number">{stats.totalVehicles.toLocaleString()}</div>
           <div className="trend">🚗 Registered</div>
         </div>
-        
+
         <div className="dashboard-card">
           <h3>Total Revenue</h3>
           <div className="number">${stats.totalRevenue.toLocaleString()}</div>
@@ -183,10 +183,10 @@ const Dashboard = () => {
       )}
 
       <div className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div className="flex justify-between items-center mb-4">
           <h2>Recent Tickets</h2>
           {recentTickets.length > 0 && (
-            <span style={{ color: '#64748b', fontSize: '14px' }}>
+            <span className="text-secondary text-sm">
               Showing {recentTickets.length} of {stats.totalTickets} tickets
             </span>
           )}
@@ -210,15 +210,15 @@ const Dashboard = () => {
                 {recentTickets.map((ticket) => (
                   <tr key={ticket.id}>
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '20px', color: '#2563eb' }}>🚗</span>
-                        <strong>{ticket.license_plate}</strong>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">🚗</span>
+                        <strong className="text-primary">{ticket.license_plate}</strong>
                       </div>
                     </td>
                     <td>
                       <div>
                         <strong>{ticket.vehicle_make} {ticket.vehicle_model}</strong>
-                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
+                        <div className="text-xs text-secondary">
                           {ticket.vehicle_color}
                         </div>
                       </div>
@@ -228,25 +228,24 @@ const Dashboard = () => {
                         {ticket.violation_type}
                       </span>
                     </td>
-                    <td style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#2563eb' }}>
+                    <td className="truncate max-w-[180px] text-primary">
                       📍 {ticket.location}
                     </td>
-                    <td style={{ color: '#2563eb', fontWeight: 700 }}>
+                    <td className="text-primary font-bold">
                       ${ticket.fine_amount.toFixed(2)}
                     </td>
                     <td>
-                      <span className={`status-badge status-${ticket.status}`} style={{ borderRadius: '12px', fontSize: '11px', padding: '6px 12px' }}>
+                      <span className={`status-badge status-${ticket.status}`}>
                         {ticket.status}
                       </span>
                     </td>
-                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
+                    <td className="font-medium text-primary-dark">
                       {new Date(ticket.issued_date).toLocaleDateString()}
                     </td>
                     <td>
                       <a
                         href={`/tickets/${ticket.id}`}
                         className="btn recent-tickets-view-btn"
-                        style={{ textDecoration: 'none' }}
                       >
                         👁️ View
                       </a>

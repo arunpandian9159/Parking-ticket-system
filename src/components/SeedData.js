@@ -10,7 +10,7 @@ const SeedData = () => {
     setLoading(true);
     setMessage('🌱 Seeding database with dummy data...');
     setMessageType('');
-    
+
     try {
       const result = await seedDatabase();
       if (result.success) {
@@ -37,7 +37,7 @@ const SeedData = () => {
       setLoading(true);
       setMessage('🗑️ Clearing database...');
       setMessageType('');
-      
+
       try {
         const result = await clearDatabase();
         if (result.success) {
@@ -60,59 +60,34 @@ const SeedData = () => {
     }
   };
 
-  const getMessageStyle = () => {
-    const baseStyle = {
-      padding: '16px',
-      borderRadius: '12px',
-      marginBottom: '20px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '12px',
-      fontWeight: '500',
-      border: '1px solid'
-    };
+  const getMessageClass = () => {
+    const baseClass = "p-4 rounded-xl mb-5 flex items-center gap-3 font-medium border";
 
     if (messageType === 'success') {
-      return {
-        ...baseStyle,
-        backgroundColor: '#d1fae5',
-        color: '#065f46',
-        borderColor: '#a7f3d0'
-      };
+      return `${baseClass} bg-green-100 text-green-800 border-green-200`;
     } else if (messageType === 'error') {
-      return {
-        ...baseStyle,
-        backgroundColor: '#fee2e2',
-        color: '#991b1b',
-        borderColor: '#fca5a5'
-      };
+      return `${baseClass} bg-red-100 text-red-800 border-red-200`;
     } else {
-      return {
-        ...baseStyle,
-        backgroundColor: '#dbeafe',
-        color: '#1e40af',
-        borderColor: '#93c5fd'
-      };
+      return `${baseClass} bg-blue-100 text-blue-800 border-blue-200`;
     }
   };
 
   return (
     <div className="card fade-in">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-        <span style={{ fontSize: '2rem' }}>🎯</span>
-        <h2 style={{ margin: 0 }}>Database Management</h2>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="text-3xl">🎯</span>
+        <h2 className="m-0">Database Management</h2>
       </div>
-      
-      <p style={{ color: '#64748b', marginBottom: '24px', lineHeight: '1.6' }}>
+
+      <p className="text-secondary mb-6 leading-relaxed">
         Use these buttons to populate or clear the database with test data. This is perfect for testing and demonstration purposes.
       </p>
-      
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}>
+
+      <div className="flex gap-4 mb-6 flex-wrap">
         <button
           onClick={handleSeedData}
           disabled={loading}
-          className="btn btn-primary"
-          style={{ minWidth: '160px' }}
+          className="btn btn-primary min-w-[160px]"
         >
           {loading ? (
             <>
@@ -125,12 +100,11 @@ const SeedData = () => {
             </>
           )}
         </button>
-        
+
         <button
           onClick={handleClearData}
           disabled={loading}
-          className="btn btn-danger"
-          style={{ minWidth: '160px' }}
+          className="btn btn-danger min-w-[160px]"
         >
           {loading ? (
             <>
@@ -146,43 +120,38 @@ const SeedData = () => {
       </div>
 
       {message && (
-        <div style={getMessageStyle()}>
-          <span style={{ fontSize: '1.2rem' }}>
+        <div className={getMessageClass()}>
+          <span className="text-xl">
             {messageType === 'success' ? '✅' : messageType === 'error' ? '❌' : 'ℹ️'}
           </span>
           <span>{message}</span>
         </div>
       )}
 
-      <div style={{ 
-        background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-        padding: '20px',
-        borderRadius: '12px',
-        border: '1px solid #e2e8f0'
-      }}>
-        <h4 style={{ margin: '0 0 16px 0', color: '#334155', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="bg-gradient-gray p-5 rounded-xl border-gray">
+        <h4 className="flex items-center gap-2 mb-4 text-gray-700 m-0">
           📋 What will be added:
         </h4>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.2rem' }}>👮</span>
+        <div className="grid grid-cols-auto-fit gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">👮</span>
             <div>
               <strong>5 Officers</strong>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>Parking enforcement officers</div>
+              <div className="text-xs text-secondary">Parking enforcement officers</div>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.2rem' }}>🚗</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🚗</span>
             <div>
               <strong>8 Vehicles</strong>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>Various makes and models</div>
+              <div className="text-xs text-secondary">Various makes and models</div>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.2rem' }}>🎫</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🎫</span>
             <div>
               <strong>8 Tickets</strong>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>Different violation types</div>
+              <div className="text-xs text-secondary">Different violation types</div>
             </div>
           </div>
         </div>

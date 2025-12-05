@@ -13,14 +13,14 @@ import './App.css';
 function App() {
   return (
     <ErrorBoundary>
-      <Router future={{ 
+      <Router future={{
         v7_startTransition: true,
-        v7_relativeSplatPath: true 
+        v7_relativeSplatPath: true
       }}>
-        <div className="App">
+        <div className="min-h-screen flex flex-col bg-gradient-gray relative">
           <Navbar />
-          <main className="main-content">
-            <div className="container">
+          <main className="flex-1 py-8 animate-fade-in">
+            <div className="max-w-[1200px] mx-auto px-4">
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/tickets" element={<TicketList />} />

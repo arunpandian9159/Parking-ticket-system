@@ -151,17 +151,17 @@ const TicketList = () => {
                 {filteredTickets.map((ticket) => (
                   <tr key={ticket.id}>
                     <td className="number">
-                      <span style={{ fontFamily: 'monospace', fontSize: '13px', color: '#2563eb' }}>
+                      <span className="font-mono text-sm text-primary">
                         {ticket.id.slice(0, 8)}...
                       </span>
                     </td>
                     <td>
-                      <strong style={{ color: '#2563eb' }}>{ticket.license_plate}</strong>
+                      <strong className="text-primary">{ticket.license_plate}</strong>
                     </td>
                     <td>
                       <div>
                         <strong>{ticket.vehicle_make} {ticket.vehicle_model}</strong>
-                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
+                        <div className="text-xs text-secondary">
                           {ticket.vehicle_color}
                         </div>
                       </div>
@@ -171,23 +171,23 @@ const TicketList = () => {
                         {ticket.violation_type}
                       </span>
                     </td>
-                    <td style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#2563eb' }}>
+                    <td className="truncate max-w-[180px] text-primary">
                       {ticket.location}
                     </td>
-                    <td style={{ color: '#2563eb', fontWeight: 700 }}>
+                    <td className="text-primary font-bold">
                       ${ticket.fine_amount.toFixed(2)}
                     </td>
                     <td>
-                      <span className={`status-badge status-${ticket.status}`} style={{ borderRadius: '12px', fontSize: '11px', padding: '6px 12px' }}>
+                      <span className={`status-badge status-${ticket.status}`}>
                         {ticket.status}
                       </span>
                     </td>
-                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
+                    <td className="font-medium text-primary-dark">
                       {new Date(ticket.issued_date).toLocaleDateString()}
                     </td>
                     <td>
-                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                        <Link to={`/tickets/${ticket.id}`} className="btn recent-tickets-view-btn" style={{ textDecoration: 'none' }}>
+                      <div className="flex gap-2 flex-wrap">
+                        <Link to={`/tickets/${ticket.id}`} className="btn recent-tickets-view-btn">
                           👁️ View
                         </Link>
                         {ticket.status === 'pending' && (

@@ -2,8 +2,9 @@
 
 A modern, comprehensive parking ticket management system built with React, JavaScript, and Supabase. This application allows parking enforcement officers to create, manage, and track parking violations efficiently with a beautiful, responsive interface.
 
-#Deployed website
+## Deployed website
 https://parking-ticket-system.vercel.app/
+
 ## ✨ Features
 
 ### 🎫 Core Functionality

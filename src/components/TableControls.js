@@ -21,12 +21,12 @@ const TableControls = ({
           className="form-input"
         />
       </div>
-      
+
       <div className="table-filters">
         {filters.map((filter, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div key={index} className="flex items-center gap-2">
             {filter.label && (
-              <label style={{ fontSize: '14px', color: '#6b7280' }}>
+              <label className="text-sm text-secondary">
                 {filter.label}:
               </label>
             )}
@@ -43,13 +43,13 @@ const TableControls = ({
             </select>
           </div>
         ))}
-        
+
         {(totalCount !== undefined && filteredCount !== undefined) && (
-          <span style={{ color: '#6b7280', fontSize: '14px' }}>
+          <span className="text-sm text-secondary">
             {filteredCount} of {totalCount} items
           </span>
         )}
-        
+
         {children}
       </div>
     </div>

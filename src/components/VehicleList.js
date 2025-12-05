@@ -129,7 +129,7 @@ const VehicleList = () => {
                   placeholder="ABC123"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Make *</label>
                 <input
@@ -157,7 +157,7 @@ const VehicleList = () => {
                   placeholder="Camry"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Color *</label>
                 <input
@@ -187,7 +187,7 @@ const VehicleList = () => {
                   placeholder="2020"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Owner Name *</label>
                 <input
@@ -215,7 +215,7 @@ const VehicleList = () => {
                   placeholder="(555) 123-4567"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Owner Email *</label>
                 <input
@@ -230,7 +230,7 @@ const VehicleList = () => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+            <div className="flex gap-2 justify-end">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
@@ -261,7 +261,7 @@ const VehicleList = () => {
             />
           </div>
           <div className="table-filters">
-            <span style={{ color: '#6b7280', fontSize: '14px' }}>
+            <span className="text-secondary text-sm">
               {filteredVehicles.length} vehicle{filteredVehicles.length !== 1 ? 's' : ''}
             </span>
           </div>
@@ -283,9 +283,9 @@ const VehicleList = () => {
                 {filteredVehicles.map((vehicle) => (
                   <tr key={vehicle.id}>
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '20px', color: '#2563eb' }}>🚗</span>
-                        <strong style={{ fontFamily: 'monospace', fontSize: '16px', color: '#2563eb' }}>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl text-primary">🚗</span>
+                        <strong className="font-mono text-lg text-primary font-bold">
                           {vehicle.license_plate}
                         </strong>
                       </div>
@@ -293,21 +293,9 @@ const VehicleList = () => {
                     <td>
                       <div>
                         <strong>{vehicle.year} {vehicle.make} {vehicle.model}</strong>
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          marginTop: '4px'
-                        }}>
-                          <span style={{
-                            display: 'inline-block',
-                            width: '16px',
-                            height: '16px',
-                            borderRadius: '50%',
-                            background: 'linear-gradient(90deg, #dbeafe 0%, #3b82f6 100%)',
-                            border: vehicle.color.toLowerCase() === 'white' ? '1px solid #d1d5db' : 'none'
-                          }}></span>
-                          <span style={{ fontSize: '12px', color: '#60a5fa', textTransform: 'capitalize' }}>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`inline-block w-4 h-4 rounded-full bg-gradient-blue ${vehicle.color.toLowerCase() === 'white' ? 'border border-gray-300' : ''}`}></span>
+                          <span className="text-xs text-secondary capitalize">
                             {vehicle.color}
                           </span>
                         </div>
@@ -316,28 +304,28 @@ const VehicleList = () => {
                     <td>
                       <div>
                         <strong>{vehicle.owner_name}</strong>
-                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
+                        <div className="text-xs text-secondary">
                           Vehicle Owner
                         </div>
                       </div>
                     </td>
                     <td>
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
+                        <div className="flex items-center gap-1 mb-1">
                           <span>📞</span>
-                          <a href={`tel:${vehicle.owner_phone}`} style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                          <a href={`tel:${vehicle.owner_phone}`} className="text-primary no-underline hover:underline">
                             {vehicle.owner_phone}
                           </a>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div className="flex items-center gap-1">
                           <span>📧</span>
-                          <a href={`mailto:${vehicle.owner_email}`} style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                          <a href={`mailto:${vehicle.owner_email}`} className="text-primary no-underline hover:underline">
                             {vehicle.owner_email}
                           </a>
                         </div>
                       </div>
                     </td>
-                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
+                    <td className="text-primary-dark font-medium">
                       {new Date(vehicle.created_at).toLocaleDateString()}
                     </td>
                   </tr>

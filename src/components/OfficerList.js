@@ -116,7 +116,7 @@ const OfficerList = () => {
                   placeholder="OFF001"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">First Name *</label>
                 <input
@@ -144,7 +144,7 @@ const OfficerList = () => {
                   placeholder="Doe"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Email *</label>
                 <input
@@ -172,7 +172,7 @@ const OfficerList = () => {
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+            <div className="flex gap-2 justify-end">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
@@ -203,7 +203,7 @@ const OfficerList = () => {
             />
           </div>
           <div className="table-filters">
-            <span style={{ color: '#6b7280', fontSize: '14px' }}>
+            <span className="text-secondary text-sm">
               {filteredOfficers.length} officer{filteredOfficers.length !== 1 ? 's' : ''}
             </span>
           </div>
@@ -225,9 +225,9 @@ const OfficerList = () => {
                 {filteredOfficers.map((officer) => (
                   <tr key={officer.id}>
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '20px', color: '#2563eb' }}>👮</span>
-                        <strong style={{ fontFamily: 'monospace', color: '#2563eb' }}>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl text-primary">👮</span>
+                        <strong className="font-mono text-primary font-bold">
                           {officer.badge_number}
                         </strong>
                       </div>
@@ -235,40 +235,33 @@ const OfficerList = () => {
                     <td>
                       <div>
                         <strong>{officer.first_name} {officer.last_name}</strong>
-                        <div style={{ fontSize: '12px', color: '#60a5fa' }}>
+                        <div className="text-xs text-secondary">
                           Enforcement Officer
                         </div>
                       </div>
                     </td>
                     <td>
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
+                        <div className="flex items-center gap-1 mb-1">
                           <span>📧</span>
-                          <a href={`mailto:${officer.email}`} style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                          <a href={`mailto:${officer.email}`} className="text-primary no-underline hover:underline">
                             {officer.email}
                           </a>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div className="flex items-center gap-1">
                           <span>📞</span>
-                          <a href={`tel:${officer.phone}`} style={{ color: '#3b82f6', textDecoration: 'none' }}>
+                          <a href={`tel:${officer.phone}`} className="text-primary no-underline hover:underline">
                             {officer.phone}
                           </a>
                         </div>
                       </div>
                     </td>
                     <td>
-                      <span style={{
-                        padding: '6px 12px',
-                        background: 'linear-gradient(90deg, #dbeafe 0%, #3b82f6 100%)',
-                        color: '#1e3a8a',
-                        borderRadius: '20px',
-                        fontSize: '12px',
-                        fontWeight: '600'
-                      }}>
+                      <span className="status-badge bg-gradient-blue text-primary-dark">
                         ✅ Active
                       </span>
                     </td>
-                    <td style={{ color: '#1e40af', fontWeight: 500 }}>
+                    <td className="text-primary-dark font-medium">
                       {new Date(officer.created_at).toLocaleDateString()}
                     </td>
                   </tr>

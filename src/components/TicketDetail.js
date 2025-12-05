@@ -56,8 +56,8 @@ const TicketDetail = () => {
           <h1>Loading Ticket...</h1>
         </div>
         <div className="card">
-          <div style={{ textAlign: 'center', padding: '40px' }}>
-            <div className="loading-spinner" style={{ margin: '0 auto 16px' }}></div>
+          <div className="text-center p-8">
+            <div className="loading-spinner mx-auto mb-4"></div>
             <p>Loading ticket details...</p>
           </div>
         </div>
@@ -102,13 +102,13 @@ const TicketDetail = () => {
       </div>
 
       <div className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+        <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 style={{ margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '1.5rem' }}>🎫</span>
+            <h2 className="flex items-center gap-3 mb-2">
+              <span className="text-2xl">🎫</span>
               Ticket #{ticket.id.slice(0, 8)}...
             </h2>
-            <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+            <p className="m-0 text-secondary text-sm">
               Created on {new Date(ticket.created_at).toLocaleDateString()}
             </p>
           </div>
@@ -117,92 +117,66 @@ const TicketDetail = () => {
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', marginBottom: '32px' }}>
-          <div style={{ 
-            background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', 
-            padding: '24px', 
-            borderRadius: '16px',
-            border: '1px solid #e2e8f0'
-          }}>
-            <h3 style={{ margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="grid grid-cols-auto-fit gap-8 mb-8">
+          <div className="bg-gradient-gray p-6 rounded-xl border-gray">
+            <h3 className="flex items-center gap-2 mb-4">
               <span>🚗</span> Vehicle Information
             </h3>
-            <div style={{ display: 'grid', gap: '12px' }}>
-              <p style={{ margin: 0 }}><strong>License Plate:</strong> <span style={{ fontFamily: 'monospace', fontSize: '16px' }}>{ticket.license_plate}</span></p>
-              <p style={{ margin: 0 }}><strong>Make:</strong> {ticket.vehicle_make}</p>
-              <p style={{ margin: 0 }}><strong>Model:</strong> {ticket.vehicle_model}</p>
-              <p style={{ margin: 0 }}><strong>Color:</strong> <span style={{ textTransform: 'capitalize' }}>{ticket.vehicle_color}</span></p>
+            <div className="grid gap-3">
+              <p className="m-0"><strong>License Plate:</strong> <span className="font-mono text-lg">{ticket.license_plate}</span></p>
+              <p className="m-0"><strong>Make:</strong> {ticket.vehicle_make}</p>
+              <p className="m-0"><strong>Model:</strong> {ticket.vehicle_model}</p>
+              <p className="m-0"><strong>Color:</strong> <span className="capitalize">{ticket.vehicle_color}</span></p>
             </div>
           </div>
 
-          <div style={{ 
-            background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)', 
-            padding: '24px', 
-            borderRadius: '16px',
-            border: '1px solid #f59e0b'
-          }}>
-            <h3 style={{ margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="bg-gradient-yellow p-6 rounded-xl border-yellow">
+            <h3 className="flex items-center gap-2 mb-4">
               <span>⚠️</span> Violation Information
             </h3>
-            <div style={{ display: 'grid', gap: '12px' }}>
-              <p style={{ margin: 0 }}><strong>Type:</strong> {ticket.violation_type}</p>
-              <p style={{ margin: 0 }}><strong>Location:</strong> {ticket.location}</p>
-              <p style={{ margin: 0 }}><strong>Fine Amount:</strong> <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#059669' }}>${ticket.fine_amount.toFixed(2)}</span></p>
-              <p style={{ margin: 0 }}><strong>Officer ID:</strong> <span style={{ fontFamily: 'monospace' }}>{ticket.officer_id}</span></p>
+            <div className="grid gap-3">
+              <p className="m-0"><strong>Type:</strong> {ticket.violation_type}</p>
+              <p className="m-0"><strong>Location:</strong> {ticket.location}</p>
+              <p className="m-0"><strong>Fine Amount:</strong> <span className="text-lg font-bold text-success">${ticket.fine_amount.toFixed(2)}</span></p>
+              <p className="m-0"><strong>Officer ID:</strong> <span className="font-mono">{ticket.officer_id}</span></p>
             </div>
           </div>
         </div>
 
         {ticket.violation_description && (
-          <div style={{ 
-            background: 'white', 
-            padding: '24px', 
-            borderRadius: '16px',
-            border: '1px solid #e2e8f0',
-            marginBottom: '32px'
-          }}>
-            <h3 style={{ margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="bg-white p-6 rounded-xl border-gray mb-8">
+            <h3 className="flex items-center gap-2 mb-4">
               <span>📝</span> Violation Description
             </h3>
-            <p style={{ margin: 0, lineHeight: '1.6' }}>{ticket.violation_description}</p>
+            <p className="m-0 leading-relaxed">{ticket.violation_description}</p>
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
-          <div style={{ 
-            background: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)', 
-            padding: '24px', 
-            borderRadius: '16px',
-            border: '1px solid #3b82f6'
-          }}>
-            <h3 style={{ margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="grid grid-cols-auto-fit gap-8">
+          <div className="bg-gradient-blue p-6 rounded-xl border-blue">
+            <h3 className="flex items-center gap-2 mb-4">
               <span>📅</span> Important Dates
             </h3>
-            <div style={{ display: 'grid', gap: '12px' }}>
-              <p style={{ margin: 0 }}><strong>Issued:</strong> {new Date(ticket.issued_date).toLocaleDateString()}</p>
-              <p style={{ margin: 0 }}><strong>Due:</strong> {new Date(ticket.due_date).toLocaleDateString()}</p>
-              <p style={{ margin: 0 }}><strong>Created:</strong> {new Date(ticket.created_at).toLocaleDateString()}</p>
+            <div className="grid gap-3">
+              <p className="m-0"><strong>Issued:</strong> {new Date(ticket.issued_date).toLocaleDateString()}</p>
+              <p className="m-0"><strong>Due:</strong> {new Date(ticket.due_date).toLocaleDateString()}</p>
+              <p className="m-0"><strong>Created:</strong> {new Date(ticket.created_at).toLocaleDateString()}</p>
             </div>
           </div>
 
-          <div style={{ 
-            background: 'white', 
-            padding: '24px', 
-            borderRadius: '16px',
-            border: '1px solid #e2e8f0'
-          }}>
-            <h3 style={{ margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="bg-white p-6 rounded-xl border-gray">
+            <h3 className="flex items-center gap-2 mb-4">
               <span>⚡</span> Actions
             </h3>
             {ticket.status === 'pending' && (
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <button 
+              <div className="flex gap-3 flex-wrap">
+                <button
                   onClick={() => updateStatus('paid')}
                   className="btn btn-success"
                 >
                   ✅ Mark as Paid
                 </button>
-                <button 
+                <button
                   onClick={() => updateStatus('disputed')}
                   className="btn btn-danger"
                 >
@@ -211,7 +185,7 @@ const TicketDetail = () => {
               </div>
             )}
             {ticket.status === 'disputed' && (
-              <button 
+              <button
                 onClick={() => updateStatus('pending')}
                 className="btn btn-secondary"
               >
@@ -219,32 +193,14 @@ const TicketDetail = () => {
               </button>
             )}
             {ticket.status === 'paid' && (
-              <div style={{ 
-                padding: '16px', 
-                backgroundColor: '#dcfce7', 
-                color: '#166534', 
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontWeight: 'bold'
-              }}>
-                <span style={{ fontSize: '20px' }}>✅</span>
+              <div className="p-4 bg-gradient-green text-green-800 rounded-lg flex items-center gap-2 font-bold">
+                <span className="text-xl">✅</span>
                 This ticket has been paid
               </div>
             )}
             {ticket.status === 'overdue' && (
-              <div style={{ 
-                padding: '16px', 
-                backgroundColor: '#fee2e2', 
-                color: '#991b1b', 
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontWeight: 'bold'
-              }}>
-                <span style={{ fontSize: '20px' }}>⏰</span>
+              <div className="p-4 bg-gradient-red text-red-800 rounded-lg flex items-center gap-2 font-bold">
+                <span className="text-xl">⏰</span>
                 This ticket is overdue
               </div>
             )}

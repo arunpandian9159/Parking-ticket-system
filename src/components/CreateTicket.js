@@ -56,8 +56,8 @@ const CreateTicket = () => {
 
   return (
     <div className="fade-in">
-      <div className="page-header">
-        <h1>Create New Parking Ticket</h1>
+      <div className="page-header flex justify-between items-center mb-8 pb-5 border-b border-gray">
+        <h1 className="text-3xl font-bold bg-gradient-gray text-transparent bg-clip-text m-0">Create New Parking Ticket</h1>
         <div className="actions">
           <button
             onClick={() => navigate('/tickets')}
@@ -67,7 +67,7 @@ const CreateTicket = () => {
           </button>
         </div>
       </div>
-      
+
       <div className="card">
         <form onSubmit={handleSubmit} className="form-container">
           <div className="form-row">
@@ -83,7 +83,7 @@ const CreateTicket = () => {
                 placeholder="ABC123"
               />
             </div>
-            
+
             <div className="form-group">
               <label className="form-label">Vehicle Make *</label>
               <input
@@ -111,7 +111,7 @@ const CreateTicket = () => {
                 placeholder="Camry"
               />
             </div>
-            
+
             <div className="form-group">
               <label className="form-label">Vehicle Color *</label>
               <input
@@ -146,7 +146,7 @@ const CreateTicket = () => {
                 <option value="Other">Other</option>
               </select>
             </div>
-            
+
             <div className="form-group">
               <label className="form-label">Fine Amount ($) *</label>
               <input
@@ -201,7 +201,7 @@ const CreateTicket = () => {
             />
           </div>
 
-          <div className="form-actions">
+          <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray">
             <button
               type="button"
               onClick={() => navigate('/tickets')}

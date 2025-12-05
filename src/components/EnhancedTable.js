@@ -44,11 +44,7 @@ const EnhancedTable = ({
               <th
                 key={column.key}
                 onClick={column.sortable ? () => handleSort(column.key) : undefined}
-                style={{
-                  cursor: column.sortable ? 'pointer' : 'default',
-                  userSelect: 'none'
-                }}
-                className={column.className}
+                className={`${column.className || ''} ${column.sortable ? 'cursor-pointer select-none' : ''}`}
               >
                 {column.label} {column.sortable && getSortIcon(column.key)}
               </th>
@@ -60,7 +56,7 @@ const EnhancedTable = ({
             <tr key={row.id || index}>
               {columns.map((column) => (
                 <td key={column.key} className={column.className}>
-                  {column.render 
+                  {column.render
                     ? column.render(row[column.key], row)
                     : row[column.key]
                   }
