@@ -7,8 +7,8 @@ const TicketList = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortField, setSortField] = useState('created_at');
-  const [sortDirection, setSortDirection] = useState('desc');
+  const [sortField] = useState('created_at');
+  const [sortDirection] = useState('desc');
 
   useEffect(() => {
     fetchTickets();
