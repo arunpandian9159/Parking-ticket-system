@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ChevronUp, ChevronDown, FileText } from 'lucide-react';
 
 const EnhancedTable = ({
   data,
@@ -9,7 +10,7 @@ const EnhancedTable = ({
   sortField,
   sortDirection,
   emptyMessage = 'No data found',
-  emptyIcon = '📋',
+  emptyIcon = <FileText size={48} className="text-gray-400" />,
   className = ''
 }) => {
   const handleSort = (field) => {
@@ -20,42 +21,51 @@ const EnhancedTable = ({
 
   const getSortIcon = (field) => {
     if (sortField === field) {
-      return sortDirection === 'asc' ? '↑' : '↓';
+      return sortDirection === 'asc' ? <ChevronUp size={14} /> : <ChevronDown size={14} />;
     }
-    return '';
+    return null;
   };
 
   if (data.length === 0) {
     return (
-      <div className="empty-state">
-        <div className="empty-state-icon">{emptyIcon}</div>
-        <h3>No Data Found</h3>
-        <p>{emptyMessage}</p>
+      <div className="p-12 text-center flex flex-col items-center gap-4">
+        <div className="p-4 bg-gray-50 rounded-full">
+          {emptyIcon}
+        </div>
+        <h3 className="text-lg font-medium text-gray-900">No Data Found</h3>
+        <p className="text-gray-500 max-w-sm mx-auto">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <div className={`table-wrapper ${className}`}>
-      <table className="recent-tickets-table">
-        <thead>
+    <div className={`overflow-x-auto ${className}`}>
+      <table className="w-full text-left border-collapse">
+        <thead className="bg-gray-50 border-b border-gray-100">
           <tr>
             {columns.map((column) => (
               <th
                 key={column.key}
                 onClick={column.sortable ? () => handleSort(column.key) : undefined}
-                className={`${column.className || ''} ${column.sortable ? 'cursor-pointer select-none' : ''}`}
+                className={`p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider ${column.className || ''} ${column.sortable ? 'cursor-pointer select-none hover:bg-gray-100 transition-colors' : ''}`}
               >
-                {column.label} {column.sortable && getSortIcon(column.key)}
+                <div className="flex items-center gap-1">
+                  {column.label}
+                  {column.sortable && (
+                    <span className="text-gray-400">
+                      {getSortIcon(column.key) || <div className="w-3.5 h-3.5" />}
+                    </span>
+                  )}
+                </div>
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-gray-100">
           {data.map((row, index) => (
-            <tr key={row.id || index}>
+            <tr key={row.id || index} className="hover:bg-gray-50 transition-colors">
               {columns.map((column) => (
-                <td key={column.key} className={column.className}>
+                <td key={column.key} className={`p-4 ${column.className || ''}`}>
                   {column.render
                     ? column.render(row[column.key], row)
                     : row[column.key]
@@ -84,7 +94,7 @@ EnhancedTable.propTypes = {
   sortField: PropTypes.string,
   sortDirection: PropTypes.oneOf(['asc', 'desc']),
   emptyMessage: PropTypes.string,
-  emptyIcon: PropTypes.string,
+  emptyIcon: PropTypes.node,
   className: PropTypes.string
 };
 

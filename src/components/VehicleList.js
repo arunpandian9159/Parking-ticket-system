@@ -2,6 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import {
+  Car,
+  PlusCircle,
+  X,
+  Search,
+  User,
+  Mail,
+  Phone,
+  Calendar,
+  Palette,
+  FileText
+} from 'lucide-react';
 
 const VehicleList = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -81,8 +93,11 @@ const VehicleList = () => {
 
   if (loading) {
     return (
-      <div className="card">
-        <h2>Loading Vehicles...</h2>
+      <div className="fade-in p-8 flex justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="loading-spinner border-primary-600 border-t-transparent w-12 h-12"></div>
+          <p className="text-gray-500 font-medium">Loading Vehicles...</p>
+        </div>
       </div>
     );
   }
@@ -101,138 +116,167 @@ const VehicleList = () => {
   });
 
   return (
-    <div className="fade-in">
-      <div className="page-header">
-        <h1>Vehicle Registry</h1>
+    <div className="fade-in space-y-6">
+      <div className="page-header flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
+          <Car className="text-primary" size={32} />
+          Vehicle Registry
+        </h1>
         <div className="actions">
           <button
             onClick={() => setShowForm(!showForm)}
-            className="btn btn-primary"
+            className={`btn ${showForm ? 'btn-secondary' : 'btn-primary'} flex items-center gap-2`}
           >
-            {showForm ? '❌ Cancel' : '🚗 Add Vehicle'}
+            {showForm ? <><X size={18} /> Cancel</> : <><PlusCircle size={18} /> Add Vehicle</>}
           </button>
         </div>
       </div>
 
       {showForm && (
-        <div className="card">
-          <h2>Add New Vehicle</h2>
-          <form onSubmit={handleSubmit} className="form-container">
-            <div className="form-row">
+        <div className="card bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 animate-fade-in">
+          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <Car size={24} className="text-primary" /> Add New Vehicle
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-group">
-                <label className="form-label">License Plate *</label>
-                <input
-                  type="text"
-                  name="license_plate"
-                  value={formData.license_plate}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                  placeholder="ABC123"
-                />
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">License Plate *</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FileText size={16} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    name="license_plate"
+                    value={formData.license_plate}
+                    onChange={handleChange}
+                    className="form-input pl-10 w-full"
+                    required
+                    placeholder="ABC123"
+                  />
+                </div>
               </div>
 
               <div className="form-group">
-                <label className="form-label">Make *</label>
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">Make *</label>
                 <input
                   type="text"
                   name="make"
                   value={formData.make}
                   onChange={handleChange}
-                  className="form-input"
+                  className="form-input w-full"
                   required
                   placeholder="Toyota"
                 />
               </div>
-            </div>
 
-            <div className="form-row">
               <div className="form-group">
-                <label className="form-label">Model *</label>
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">Model *</label>
                 <input
                   type="text"
                   name="model"
                   value={formData.model}
                   onChange={handleChange}
-                  className="form-input"
+                  className="form-input w-full"
                   required
                   placeholder="Camry"
                 />
               </div>
 
               <div className="form-group">
-                <label className="form-label">Color *</label>
-                <input
-                  type="text"
-                  name="color"
-                  value={formData.color}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                  placeholder="Blue"
-                />
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">Color *</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Palette size={16} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    name="color"
+                    value={formData.color}
+                    onChange={handleChange}
+                    className="form-input pl-10 w-full"
+                    required
+                    placeholder="Blue"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">Year *</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar size={16} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="number"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleChange}
+                    className="form-input pl-10 w-full"
+                    required
+                    min="1900"
+                    max={new Date().getFullYear() + 1}
+                    placeholder="2020"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">Owner Name *</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User size={16} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    name="owner_name"
+                    value={formData.owner_name}
+                    onChange={handleChange}
+                    className="form-input pl-10 w-full"
+                    required
+                    placeholder="John Doe"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">Owner Phone *</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Phone size={16} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="tel"
+                    name="owner_phone"
+                    value={formData.owner_phone}
+                    onChange={handleChange}
+                    className="form-input pl-10 w-full"
+                    required
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label block text-sm font-medium text-gray-700 mb-1">Owner Email *</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail size={16} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="email"
+                    name="owner_email"
+                    value={formData.owner_email}
+                    onChange={handleChange}
+                    className="form-input pl-10 w-full"
+                    required
+                    placeholder="john.doe@email.com"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Year *</label>
-                <input
-                  type="number"
-                  name="year"
-                  value={formData.year}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                  min="1900"
-                  max={new Date().getFullYear() + 1}
-                  placeholder="2020"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Owner Name *</label>
-                <input
-                  type="text"
-                  name="owner_name"
-                  value={formData.owner_name}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                  placeholder="John Doe"
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Owner Phone *</label>
-                <input
-                  type="tel"
-                  name="owner_phone"
-                  value={formData.owner_phone}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                  placeholder="(555) 123-4567"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Owner Email *</label>
-                <input
-                  type="email"
-                  name="owner_email"
-                  value={formData.owner_email}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                  placeholder="john.doe@email.com"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-2 justify-end">
+            <div className="flex gap-3 justify-end pt-4 border-t border-gray-100">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
@@ -242,92 +286,95 @@ const VehicleList = () => {
               </button>
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary flex items-center gap-2"
               >
-                Add Vehicle
+                <PlusCircle size={18} /> Add Vehicle
               </button>
             </div>
           </form>
         </div>
       )}
 
-      <div className="card">
-        <div className="table-controls">
-          <div className="table-search">
-            <input
-              type="text"
-              placeholder="Search vehicles..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="form-input"
-            />
-          </div>
-          <div className="table-filters">
-            <span className="text-secondary text-sm">
-              {filteredVehicles.length} vehicle{filteredVehicles.length !== 1 ? 's' : ''}
-            </span>
+      <div className="card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+            <div className="relative w-full md:w-96">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <input
+                type="text"
+                placeholder="Search vehicles..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="form-input pl-10 w-full"
+              />
+            </div>
+            <div className="text-secondary text-sm font-medium">
+              {filteredVehicles.length} vehicle{filteredVehicles.length !== 1 ? 's' : ''} found
+            </div>
           </div>
         </div>
 
         {filteredVehicles.length > 0 ? (
-          <div className="recent-tickets-table-wrapper">
-            <table className="recent-tickets-table">
-              <thead>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  <th>License Plate</th>
-                  <th>Vehicle Details</th>
-                  <th>Owner Information</th>
-                  <th>Contact</th>
-                  <th>Registered</th>
+                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">License Plate</th>
+                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Vehicle Details</th>
+                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Owner Information</th>
+                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact</th>
+                  <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Registered</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-gray-100">
                 {filteredVehicles.map((vehicle) => (
-                  <tr key={vehicle.id}>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xl text-primary">🚗</span>
-                        <strong className="font-mono text-lg text-primary font-bold">
+                  <tr key={vehicle.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-indigo-50 rounded-lg">
+                          <Car size={20} className="text-indigo-600" />
+                        </div>
+                        <strong className="font-mono text-lg text-gray-900 font-bold">
                           {vehicle.license_plate}
                         </strong>
                       </div>
                     </td>
-                    <td>
+                    <td className="p-4">
                       <div>
-                        <strong>{vehicle.year} {vehicle.make} {vehicle.model}</strong>
+                        <div className="font-medium text-gray-900">{vehicle.year} {vehicle.make} {vehicle.model}</div>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className={`inline-block w-4 h-4 rounded-full bg-gradient-blue ${vehicle.color.toLowerCase() === 'white' ? 'border border-gray-300' : ''}`}></span>
-                          <span className="text-xs text-secondary capitalize">
+                          <span className={`inline-block w-3 h-3 rounded-full border border-gray-200`} style={{ backgroundColor: vehicle.color }}></span>
+                          <span className="text-xs text-gray-500 capitalize">
                             {vehicle.color}
                           </span>
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <td className="p-4">
                       <div>
-                        <strong>{vehicle.owner_name}</strong>
-                        <div className="text-xs text-secondary">
+                        <div className="font-medium text-gray-900">{vehicle.owner_name}</div>
+                        <div className="text-xs text-gray-500">
                           Vehicle Owner
                         </div>
                       </div>
                     </td>
-                    <td>
-                      <div>
-                        <div className="flex items-center gap-1 mb-1">
-                          <span>📞</span>
-                          <a href={`tel:${vehicle.owner_phone}`} className="text-primary no-underline hover:underline">
+                    <td className="p-4">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Phone size={14} className="text-gray-400" />
+                          <a href={`tel:${vehicle.owner_phone}`} className="hover:text-primary transition-colors">
                             {vehicle.owner_phone}
                           </a>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <span>📧</span>
-                          <a href={`mailto:${vehicle.owner_email}`} className="text-primary no-underline hover:underline">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Mail size={14} className="text-gray-400" />
+                          <a href={`mailto:${vehicle.owner_email}`} className="hover:text-primary transition-colors">
                             {vehicle.owner_email}
                           </a>
                         </div>
                       </div>
                     </td>
-                    <td className="text-primary-dark font-medium">
+                    <td className="p-4 text-gray-500 text-sm">
                       {new Date(vehicle.created_at).toLocaleDateString()}
                     </td>
                   </tr>
@@ -336,10 +383,12 @@ const VehicleList = () => {
             </table>
           </div>
         ) : (
-          <div className="empty-state">
-            <div className="empty-state-icon">🚗</div>
-            <h3>No Vehicles Found</h3>
-            <p>
+          <div className="p-12 text-center flex flex-col items-center gap-4">
+            <div className="p-4 bg-gray-50 rounded-full">
+              <Car className="text-gray-400" size={48} />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900">No Vehicles Found</h3>
+            <p className="text-gray-500 max-w-sm mx-auto">
               {searchTerm
                 ? 'No vehicles match your search criteria. Try adjusting your search term.'
                 : 'No vehicles have been registered yet. Add your first vehicle to get started.'
@@ -348,16 +397,16 @@ const VehicleList = () => {
             {!searchTerm && (
               <button
                 onClick={() => setShowForm(true)}
-                className="btn btn-primary"
+                className="btn btn-primary flex items-center gap-2 mt-2"
               >
-                Add First Vehicle
+                <PlusCircle size={18} /> Add First Vehicle
               </button>
             )}
           </div>
         )}
 
         {filteredVehicles.length > 0 && (
-          <div className="table-info">
+          <div className="p-4 border-t border-gray-100 text-center text-sm text-gray-500 bg-gray-50/50">
             Showing {filteredVehicles.length} of {vehicles.length} vehicles
           </div>
         )}

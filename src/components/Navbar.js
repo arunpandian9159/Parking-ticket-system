@@ -3,54 +3,57 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { LayoutDashboard, Ticket, PlusCircle, Users, Car } from 'lucide-react';
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const pathname = usePathname();
 
   const isActive = (path) => {
-    if (path === '/') {
-      return pathname === '/';
-    }
+    if (path === '/') return pathname === '/';
+    if (path === '/tickets/create') return pathname === '/tickets/create';
     if (path === '/tickets') {
-      return pathname === '/tickets';
-    }
-    if (path === '/tickets/create') {
-      return pathname === '/tickets/create';
+      return pathname.startsWith('/tickets') && pathname !== '/tickets/create';
     }
     return pathname.startsWith(path);
   };
 
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: '📊' },
-    { path: '/tickets', label: 'Tickets', icon: '🎫' },
-    { path: '/tickets/create', label: 'Create Ticket', icon: '➕' },
-    { path: '/officers', label: 'Officers', icon: '👮' },
-    { path: '/vehicles', label: 'Vehicles', icon: '🚗' }
+    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/tickets', label: 'Tickets', icon: Ticket },
+    { path: '/tickets/create', label: 'New Ticket', icon: PlusCircle },
+    { path: '/officers', label: 'Officers', icon: Users },
+    { path: '/vehicles', label: 'Vehicles', icon: Car }
   ];
 
   return (
-    <nav className="navbar bg-white-90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray">
-      <div className="navbar-container max-w-[1200px] mx-auto px-4 flex justify-between items-center h-16">
-        <Link href="/" className="navbar-brand flex items-center gap-2 text-xl font-bold text-gray-800 no-underline hover:text-primary transition-colors">
-          <span className="text-2xl">🚗</span>
-          Parking Ticket System
+    <nav className={styles.navbar}>
+      <div className={styles.container}>
+        <Link href="/" className={styles.brand}>
+          <div className={styles.logoIcon}>
+            <Car size={24} className="text-primary-600" />
+          </div>
+          <span>Parking Ticket System</span>
         </Link>
-        <ul className="navbar-nav flex gap-6 m-0 p-0 list-none items-center">
-          {navItems.map((item) => (
-            <li key={item.path} className="nav-item">
-              <Link
-                href={item.path}
-                className={`nav-link flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all no-underline ${isActive(item.path)
-                  ? 'bg-primary text-white shadow-md'
-                  : 'text-secondary hover:bg-blue-50 hover:text-primary'
-                  }`}
-                title={item.label}
-              >
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            </li>
-          ))}
+        <ul className={styles.nav}>
+          {navItems.map((item) => {
+            const active = isActive(item.path);
+            const Icon = item.icon;
+            return (
+              <li key={item.path} className={styles.navItem}>
+                <Link
+                  href={item.path}
+                  className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+                  title={item.label}
+                >
+                  <span className={styles.navIcon}>
+                    <Icon size={18} />
+                  </span>
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </nav>
