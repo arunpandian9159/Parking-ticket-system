@@ -31,7 +31,7 @@ Follow these steps to set up the project locally.
 
 *   Node.js (v18 or higher recommended)
 *   npm or yarn
-*   A Supabase account
+*   A Supabase account 
 
 ### Installation
 
