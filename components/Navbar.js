@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase'
 import { Button } from './ui/Button'
 
 export default function Navbar() {
-    const router = useRouter()
+    const router = useRouter() 
     const pathname = usePathname()
 
     const handleLogout = async () => {
