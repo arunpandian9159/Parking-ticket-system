@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-    title: "Parking Ticket System",
+    title: "Parking Ticket System", 
     description: "Officer Dashboard for Parking Management",
 };
 
