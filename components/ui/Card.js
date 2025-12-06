@@ -5,6 +5,6 @@ export function Card({ children, className, ...props }) {
             {...props}
         >
             {children}
-        </div>
+        </div> 
     );
 }
