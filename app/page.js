@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
-import { Card } from '@/components/ui/Card'
+import { Card } from '@/components/ui/Card' 
 import { Plus, Search, Calendar, MapPin, Clock } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 
