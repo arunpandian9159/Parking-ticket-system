@@ -8,7 +8,7 @@ export function Button({ children, className, variant = 'primary', ...props }) {
         ghost: "text-gray-600 hover:bg-gray-100 focus:ring-gray-500",
         danger: "bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/30 focus:ring-red-500"
     };
-
+ 
     return (
         <button
             className={`${baseStyles} ${variants[variant]} ${className || ''}`}
