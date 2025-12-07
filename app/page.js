@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
-import { Card } from '@/components/ui/Card' 
-import { Plus, Search, Calendar, MapPin, Clock } from 'lucide-react'
+import { Plus, Search, MapPin } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 
 export default function Dashboard() {
@@ -81,50 +80,75 @@ export default function Dashboard() {
                 />
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredTickets.length === 0 ? (
-                    <div className="col-span-full text-center py-12 text-gray-500">
-                        No tickets found.
-                    </div>
-                ) : (
-                    filteredTickets.map((ticket) => (
-                        <Card key={ticket.id} className="cursor-pointer hover:shadow-2xl transition-shadow relative overflow-hidden group">
-                            <div className="absolute top-0 left-0 w-1 h-full bg-blue-600 group-hover:bg-blue-500 transition-colors"></div>
-
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 className="font-bold text-lg text-gray-900">{ticket.license_plate}</h3>
-                                    <p className="text-sm text-gray-500">{ticket.vehicle_name || 'Unknown Vehicle'}</p>
-                                </div>
-                                <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-bold">
-                                    ₹{ticket.price}
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 text-sm text-gray-600">
-                                <div className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-gray-400" />
-                                    {ticket.parking_spot}
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Clock className="w-4 h-4 text-gray-400" />
-                                    {ticket.hours} hours
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4 text-gray-400" />
-                                    {new Date(ticket.created_at).toLocaleDateString()}
-                                </div>
-                            </div>
-
-                            <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center text-sm">
-                                <span className="text-gray-500">{ticket.customer_name}</span>
-                                <span className={`font-medium ${ticket.status === 'Paid' ? 'text-green-600' : 'text-amber-600'}`}>
-                                    {ticket.status}
-                                </span>
-                            </div>
-                        </Card>
-                    ))
-                )}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead>
+                            <tr className="bg-gray-50 border-b border-gray-100 text-xs uppercase font-semibold text-gray-500">
+                                <th className="px-6 py-4">License Plate</th>
+                                <th className="px-6 py-4">Vehicle</th>
+                                <th className="px-6 py-4">Spot</th>
+                                <th className="px-6 py-4">Date</th>
+                                <th className="px-6 py-4">Customer</th>
+                                <th className="px-6 py-4">Status</th>
+                                <th className="px-6 py-4 text-right">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {filteredTickets.length === 0 ? (
+                                <tr>
+                                    <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
+                                        No tickets found.
+                                    </td>
+                                </tr>
+                            ) : (
+                                filteredTickets.map((ticket) => (
+                                    <tr
+                                        key={ticket.id}
+                                        className="hover:bg-gray-50/50 transition-colors group cursor-pointer"
+                                        onClick={() => console.log('View ticket', ticket.id)} // Placeholder for detail view if needed later
+                                    >
+                                        <td className="px-6 py-4">
+                                            <div className="font-bold text-gray-900">{ticket.license_plate}</div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-600">{ticket.vehicle_name || '-'}</div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                                                <MapPin className="w-4 h-4 text-gray-400" />
+                                                {ticket.parking_spot}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-600">
+                                                {new Date(ticket.created_at).toLocaleDateString()}
+                                                <span className="text-gray-400 ml-1 text-xs">
+                                                    {new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-900">{ticket.customer_name}</div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${ticket.status === 'Paid'
+                                                ? 'bg-green-50 text-green-700'
+                                                : 'bg-amber-50 text-amber-700'
+                                                }`}>
+                                                {ticket.status}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <div className="font-bold text-gray-900">₹{ticket.price}</div>
+                                            <div className="text-xs text-gray-500">{ticket.hours} hours</div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     )
