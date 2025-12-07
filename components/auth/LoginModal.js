@@ -25,7 +25,7 @@ function getPasswordStrength(password) {
 function PasswordStrengthBar({ password }) {
     const strength = getPasswordStrength(password)
     const levels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong']
-    const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500']
+    const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-teal-500', 'bg-green-500']
 
     if (!password) return null
 
@@ -37,7 +37,7 @@ function PasswordStrengthBar({ password }) {
                         key={i}
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: i < strength ? 1 : 0.3 }}
-                        className={`h-full flex-1 rounded-full origin-left transition-all duration-300 ${i < strength ? colors[strength - 1] : 'bg-white/10'
+                        className={`h-full flex-1 rounded-full origin-left transition-all duration-300 ${i < strength ? colors[strength - 1] : 'bg-charcoal-600'
                             }`}
                     />
                 ))}
@@ -48,7 +48,7 @@ function PasswordStrengthBar({ password }) {
                 className={`text-xs mt-1.5 ${strength <= 1 ? 'text-red-400' :
                     strength <= 2 ? 'text-orange-400' :
                         strength <= 3 ? 'text-yellow-400' :
-                            strength === 4 ? 'text-blue-400' : 'text-green-400'
+                            strength === 4 ? 'text-teal-400' : 'text-green-400'
                     }`}
             >
                 Password strength: {levels[strength - 1] || 'Too Short'}
@@ -77,18 +77,18 @@ function FloatingInput({
             <div className={`relative group transition-all duration-300 ${error ? 'animate-shake' : ''}`}>
                 {/* Glow effect on focus */}
                 <div className={`absolute -inset-0.5 rounded-xl transition-all duration-300 ${isFocused
-                    ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur'
+                    ? 'bg-gradient-to-r from-teal-500/30 to-cyan-500/30 blur'
                     : 'bg-transparent'
                     }`} />
 
                 <div className={`relative flex items-center border rounded-xl transition-all duration-300 ${error
                     ? 'border-red-500/50 bg-red-500/5'
                     : isFocused
-                        ? 'border-blue-500/50 bg-white/5'
-                        : 'border-white/10 bg-white/5 hover:border-white/20'
+                        ? 'border-teal-500/50 bg-charcoal-700/50'
+                        : 'border-charcoal-600 bg-charcoal-700/30 hover:border-charcoal-500'
                     }`}>
                     {/* Icon */}
-                    <div className={`pl-4 transition-colors duration-300 ${isFocused ? 'text-blue-400' : 'text-gray-500'
+                    <div className={`pl-4 transition-colors duration-300 ${isFocused ? 'text-teal-400' : 'text-gray-500'
                         }`}>
                         <Icon className="w-5 h-5" />
                     </div>
@@ -106,7 +106,7 @@ function FloatingInput({
 
                     {/* Floating Label */}
                     <label className={`absolute left-12 transition-all duration-300 pointer-events-none ${isActive
-                        ? 'top-2 text-xs text-blue-400'
+                        ? 'top-2 text-xs text-teal-400'
                         : 'top-1/2 -translate-y-1/2 text-sm text-gray-500'
                         }`}>
                         {label}
@@ -156,7 +156,7 @@ function TabButton({ active, onClick, children }) {
             {active && (
                 <motion.div
                     layoutId="activeTab"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500"
                     initial={false}
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
@@ -172,7 +172,7 @@ function SocialButton({ icon: Icon, label, onClick, disabled }) {
             type="button"
             onClick={onClick}
             disabled={disabled}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-gray-300 hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-charcoal-600 bg-charcoal-700/30 hover:bg-charcoal-700 hover:border-charcoal-500 transition-all duration-300 text-gray-300 hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
         >
             <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
             <span className="text-sm font-medium">{label}</span>
@@ -330,18 +330,18 @@ export default function LoginModal({ isOpen, onClose }) {
                     >
                         <div className="relative">
                             {/* Animated gradient background glow */}
-                            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-3xl blur-xl opacity-50 animate-pulse" />
+                            <div className="absolute -inset-1 bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-600 rounded-3xl blur-xl opacity-50 animate-pulse" />
 
                             {/* Main Card */}
-                            <div className="relative bg-neutral-900/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+                            <div className="relative bg-charcoal-800/95 backdrop-blur-xl rounded-2xl border border-charcoal-700 shadow-2xl overflow-hidden">
                                 {/* Decorative gradient orbs */}
-                                <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl" />
-                                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl" />
+                                <div className="absolute -top-24 -right-24 w-48 h-48 bg-teal-500/20 rounded-full blur-3xl" />
+                                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl" />
 
                                 {/* Close button */}
                                 <button
                                     onClick={onClose}
-                                    className="absolute right-4 top-4 z-10 p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-300 group"
+                                    className="absolute right-4 top-4 z-10 p-2 rounded-xl text-gray-400 hover:text-white hover:bg-charcoal-700 transition-all duration-300 group"
                                 >
                                     <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                                 </button>
@@ -358,7 +358,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                                 damping: 25,
                                                 delay: 0.1
                                             }}
-                                            className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/25"
+                                            className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center mb-5 shadow-lg shadow-teal-500/25"
                                         >
                                             <Car className="w-8 h-8 text-white" />
                                         </motion.div>
@@ -383,7 +383,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                     </div>
 
                                     {/* Tab Switcher */}
-                                    <div className="flex border-b border-white/10 mb-6">
+                                    <div className="flex border-b border-charcoal-700 mb-6">
                                         <TabButton
                                             active={!isSignUp}
                                             onClick={() => {
@@ -507,10 +507,10 @@ export default function LoginModal({ isOpen, onClose }) {
                                                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                                    className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-start gap-3"
+                                                    className="p-4 bg-teal-500/10 border border-teal-500/20 rounded-xl flex items-start gap-3"
                                                 >
-                                                    <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                                                    <p className="text-green-400 text-sm">{success}</p>
+                                                    <CheckCircle2 className="w-5 h-5 text-teal-400 flex-shrink-0 mt-0.5" />
+                                                    <p className="text-teal-400 text-sm">{success}</p>
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
@@ -520,7 +520,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                             <div className="text-right">
                                                 <button
                                                     type="button"
-                                                    className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                                    className="text-sm text-teal-400 hover:text-teal-300 transition-colors"
                                                 >
                                                     Forgot password?
                                                 </button>
@@ -531,7 +531,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                         <Button
                                             type="submit"
                                             disabled={loading}
-                                            className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 group"
+                                            className="w-full py-4 bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 text-white font-medium rounded-xl shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 group"
                                         >
                                             {loading ? (
                                                 <span className="flex items-center justify-center gap-2">
@@ -550,10 +550,10 @@ export default function LoginModal({ isOpen, onClose }) {
                                     {/* Divider */}
                                     <div className="relative my-6">
                                         <div className="absolute inset-0 flex items-center">
-                                            <div className="w-full border-t border-white/10" />
+                                            <div className="w-full border-t border-charcoal-700" />
                                         </div>
                                         <div className="relative flex justify-center text-sm">
-                                            <span className="bg-neutral-900 px-4 text-gray-500">
+                                            <span className="bg-charcoal-800 px-4 text-gray-500">
                                                 or continue with
                                             </span>
                                         </div>

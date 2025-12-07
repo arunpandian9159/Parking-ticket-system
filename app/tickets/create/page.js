@@ -36,7 +36,7 @@ export default function CreateTicketPage() {
             if (data) setRates(data)
         }
         fetchRates()
-         
+
     }, [])
 
     // Check for monthly pass when license plate changes
@@ -143,8 +143,8 @@ export default function CreateTicketPage() {
                     </Button>
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Issue New Ticket</h1>
-                    <p className="text-gray-500">Enter vehicle and parking details</p>
+                    <h1 className="text-2xl font-bold text-white">Issue New Ticket</h1>
+                    <p className="text-gray-400">Enter vehicle and parking details</p>
                 </div>
             </div>
 
@@ -154,7 +154,7 @@ export default function CreateTicketPage() {
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div className="space-y-6">
-                                    <h3 className="font-semibold text-gray-900 border-b pb-2">Customer Details</h3>
+                                    <h3 className="font-semibold text-white border-b border-charcoal-700 pb-2">Customer Details</h3>
                                     <Input
                                         label="Full Name"
                                         name="customer_name"
@@ -174,9 +174,9 @@ export default function CreateTicketPage() {
                                 </div>
 
                                 <div className="space-y-6">
-                                    <h3 className="font-semibold text-gray-900 border-b pb-2">Parking Details</h3>
+                                    <h3 className="font-semibold text-white border-b border-charcoal-700 pb-2">Parking Details</h3>
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-gray-700">Parking Spot</label>
+                                        <label className="text-sm font-medium text-gray-300">Parking Spot</label>
                                         <div className="flex gap-2">
                                             <Input
                                                 name="parking_spot"
@@ -210,9 +210,9 @@ export default function CreateTicketPage() {
                                             placeholder="2"
                                         />
                                         <div>
-                                            <label className="text-sm font-medium text-gray-700 mb-1 block">Total Price</label>
+                                            <label className="text-sm font-medium text-gray-300 mb-1 block">Total Price</label>
                                             <div className={`
-                                                h-10 px-3 flex items-center rounded-lg bg-gray-50 border border-gray-200 font-bold text-blue-600
+                                                h-10 px-3 flex items-center rounded-lg bg-charcoal-700 border border-charcoal-600 font-bold text-teal-400
                                                 ${!formData.vehicle_type && 'opacity-50'}
                                             `}>
                                                 ₹{formData.price}
@@ -223,7 +223,7 @@ export default function CreateTicketPage() {
                             </div>
 
                             <div className="space-y-6">
-                                <h3 className="font-semibold text-gray-900 border-b pb-2">Vehicle Details</h3>
+                                <h3 className="font-semibold text-white border-b border-charcoal-700 pb-2">Vehicle Details</h3>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <Input
                                         label="License Plate"
@@ -235,19 +235,19 @@ export default function CreateTicketPage() {
                                         className="uppercase"
                                     />
                                     {passHolder && (
-                                        <div className="text-sm text-green-600 font-medium bg-green-50 p-2 rounded-lg border border-green-100 flex items-center gap-2">
+                                        <div className="text-sm text-teal-400 font-medium bg-teal-500/10 p-2 rounded-lg border border-teal-500/20 flex items-center gap-2">
                                             <span>✓ Valid Monthly Pass Applied</span>
                                         </div>
                                     )}
 
                                     <div className="space-y-1">
-                                        <label className="text-sm font-medium text-gray-700">Vehicle Type</label>
+                                        <label className="text-sm font-medium text-gray-300">Vehicle Type</label>
                                         <select
                                             name="vehicle_type"
                                             value={formData.vehicle_type}
                                             onChange={handleChange}
                                             required
-                                            className="w-full h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                            className="w-full h-10 px-3 rounded-lg border border-charcoal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-charcoal-800 text-white"
                                         >
                                             <option value="">Select Type</option>
                                             {rates.map(rate => (
@@ -293,8 +293,8 @@ export default function CreateTicketPage() {
                 <div className={`md:block ${showMap ? 'block' : 'hidden'} order-first md:order-last`}>
                     <Card className="p-4 sticky top-6">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="font-semibold text-gray-900">Select Spot</h3>
-                            <button onClick={() => setShowMap(false)} className="md:hidden text-gray-500">Close</button>
+                            <h3 className="font-semibold text-white">Select Spot</h3>
+                            <button onClick={() => setShowMap(false)} className="md:hidden text-gray-400 hover:text-white">Close</button>
                         </div>
                         <ParkingMap
                             onSelectSlot={handleSlotSelect}

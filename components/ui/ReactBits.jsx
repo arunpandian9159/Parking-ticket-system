@@ -25,8 +25,8 @@ export function FadeIn({ children, className, delay = 0, duration = 0.5, ...prop
     )
 }
 
-// Animated Gradient Text
-export function GradientText({ children, className = "", colors = ["#60A5FA", "#34D399", "#60A5FA"], animationSpeed = 3, showBorder = false }) {
+// Animated Gradient Text - Updated with Teal colors
+export function GradientText({ children, className = "", colors = ["#06b6d4", "#0f766e", "#14b8a6", "#06b6d4"], animationSpeed = 3, showBorder = false }) {
     const gradientStyle = {
         backgroundImage: `linear-gradient(to right, ${colors.join(", ")})`,
         backgroundSize: "200% auto",
@@ -44,7 +44,7 @@ export function GradientText({ children, className = "", colors = ["#60A5FA", "#
                     }}
                 >
                     <div
-                        className="absolute inset-0 bg-black rounded-[1.25rem] z-[-1]"
+                        className="absolute inset-0 bg-charcoal-900 rounded-[1.25rem] z-[-1]"
                         style={{
                             width: "calc(100% - 2px)",
                             height: "calc(100% - 2px)",
@@ -69,8 +69,8 @@ export function GradientText({ children, className = "", colors = ["#60A5FA", "#
 }
 
 
-// Spotlight Card
-export function SpotlightCard({ children, className = "", spotlightColor = "rgba(255, 255, 255, 0.25)" }) {
+// Spotlight Card - Updated with Teal spotlight
+export function SpotlightCard({ children, className = "", spotlightColor = "rgba(6, 182, 212, 0.15)" }) {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -83,7 +83,7 @@ export function SpotlightCard({ children, className = "", spotlightColor = "rgba
     return (
         <div
             className={cn(
-                "group relative border border-neutral-800 bg-neutral-900 overflow-hidden rounded-xl",
+                "group relative border border-charcoal-700 bg-charcoal-800 overflow-hidden rounded-xl",
                 className
             )}
             onMouseMove={handleMouseMove}
@@ -104,4 +104,3 @@ export function SpotlightCard({ children, className = "", spotlightColor = "rgba
         </div>
     );
 }
-

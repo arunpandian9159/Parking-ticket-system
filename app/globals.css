@@ -2,29 +2,52 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Teal & Dark Gray Theme */
+    --background: 220 13% 10%;
+    --foreground: 0 0% 98%;
+    --card: 220 13% 13%;
+    --card-foreground: 0 0% 98%;
+    --popover: 220 13% 13%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 175 84% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 13% 20%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 220 13% 25%;
+    --muted-foreground: 220 10% 60%;
+    --accent: 175 84% 40%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --border: 220 13% 20%;
+    --input: 220 13% 20%;
+    --ring: 175 84% 40%;
     --radius: 0.5rem;
+
+    /* Teal color palette */
+    --teal-50: 166 76% 97%;
+    --teal-100: 167 86% 93%;
+    --teal-200: 168 84% 78%;
+    --teal-300: 170 77% 60%;
+    --teal-400: 172 66% 50%;
+    --teal-500: 175 84% 40%;
+    --teal-600: 176 91% 32%;
+    --teal-700: 175 77% 26%;
+    --teal-800: 176 69% 22%;
+    --teal-900: 176 61% 19%;
+
+    /* Charcoal/Gray palette */
+    --charcoal-50: 220 13% 95%;
+    --charcoal-100: 220 13% 90%;
+    --charcoal-200: 220 13% 80%;
+    --charcoal-300: 220 13% 60%;
+    --charcoal-400: 220 13% 40%;
+    --charcoal-500: 220 13% 30%;
+    --charcoal-600: 220 13% 20%;
+    --charcoal-700: 220 13% 15%;
+    --charcoal-800: 220 13% 13%;
+    --charcoal-900: 220 13% 10%;
   }
-
-
 }
 
 @theme inline {
@@ -47,6 +70,30 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
+
+  /* Direct teal colors */
+  --color-teal-50: hsl(var(--teal-50));
+  --color-teal-100: hsl(var(--teal-100));
+  --color-teal-200: hsl(var(--teal-200));
+  --color-teal-300: hsl(var(--teal-300));
+  --color-teal-400: hsl(var(--teal-400));
+  --color-teal-500: hsl(var(--teal-500));
+  --color-teal-600: hsl(var(--teal-600));
+  --color-teal-700: hsl(var(--teal-700));
+  --color-teal-800: hsl(var(--teal-800));
+  --color-teal-900: hsl(var(--teal-900));
+
+  /* Direct charcoal colors */
+  --color-charcoal-50: hsl(var(--charcoal-50));
+  --color-charcoal-100: hsl(var(--charcoal-100));
+  --color-charcoal-200: hsl(var(--charcoal-200));
+  --color-charcoal-300: hsl(var(--charcoal-300));
+  --color-charcoal-400: hsl(var(--charcoal-400));
+  --color-charcoal-500: hsl(var(--charcoal-500));
+  --color-charcoal-600: hsl(var(--charcoal-600));
+  --color-charcoal-700: hsl(var(--charcoal-700));
+  --color-charcoal-800: hsl(var(--charcoal-800));
+  --color-charcoal-900: hsl(var(--charcoal-900));
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -128,6 +175,18 @@
   }
 }
 
+@keyframes teal-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(6, 182, 212, 0.5);
+  }
+}
+
 .animate-shake {
   animation: shake 0.5s ease-in-out;
 }
@@ -145,9 +204,29 @@
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Focus ring for accessibility */
+.animate-teal-glow {
+  animation: teal-glow 2s ease-in-out infinite;
+}
+
+/* Teal gradient utility */
+.bg-teal-gradient {
+  background: linear-gradient(135deg, #06b6d4 0%, #0f766e 100%);
+}
+
+.bg-teal-gradient-hover:hover {
+  background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 100%);
+}
+
+.text-teal-gradient {
+  background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Focus ring for accessibility - updated for teal */
 .focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-neutral-900;
+  @apply focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-charcoal-900;
 }
 
 /* Smooth transitions for all interactive elements */
@@ -190,6 +269,25 @@ input[type="text"]::placeholder,
 input[type="email"]::placeholder,
 input[type="password"]::placeholder {
   color: rgba(156, 163, 175, 0.5);
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(220 13% 13%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(220 13% 25%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(175 84% 40%);
 }
 
 @media print {

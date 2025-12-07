@@ -76,36 +76,36 @@ export default function AnalyticsPage() {
         setTodayRevenue(today)
     }
 
-    if (loading) return <div className="p-8">Loading analytics...</div>
+    if (loading) return <div className="p-8 text-gray-400">Loading analytics...</div>
 
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900">Revenue Analytics</h1>
-                <p className="text-gray-500">Overview of earnings and performance</p>
+                <h1 className="text-3xl font-bold text-white">Revenue Analytics</h1>
+                <p className="text-gray-400">Overview of earnings and performance</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card className="p-6">
-                    <h3 className="text-sm font-medium text-gray-500 mb-1">Total Revenue</h3>
-                    <div className="text-3xl font-bold text-gray-900">₹{totalRevenue}</div>
+                    <h3 className="text-sm font-medium text-gray-400 mb-1">Total Revenue</h3>
+                    <div className="text-3xl font-bold text-white">₹{totalRevenue}</div>
                 </Card>
                 <Card className="p-6">
-                    <h3 className="text-sm font-medium text-gray-500 mb-1">Today's Revenue</h3>
-                    <div className="text-3xl font-bold text-green-600">₹{todayRevenue}</div>
+                    <h3 className="text-sm font-medium text-gray-400 mb-1">Today's Revenue</h3>
+                    <div className="text-3xl font-bold text-teal-400">₹{todayRevenue}</div>
                 </Card>
                 <Card className="p-6">
-                    <h3 className="text-sm font-medium text-gray-500 mb-1">Active Tickets</h3>
-                    <div className="text-3xl font-bold text-blue-600">-</div>
+                    <h3 className="text-sm font-medium text-gray-400 mb-1">Active Tickets</h3>
+                    <div className="text-3xl font-bold text-cyan-400">-</div>
                     {/* Could fetch active count separately if needed */}
                 </Card>
             </div>
 
             <Card className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-lg font-semibold text-gray-900">Revenue Trend (Last 7 Days)</h2>
-                    <div className="p-2 bg-gray-50 rounded-lg">
-                        <ListFilter className="w-4 h-4 text-gray-500" />
+                    <h2 className="text-lg font-semibold text-white">Revenue Trend (Last 7 Days)</h2>
+                    <div className="p-2 bg-charcoal-700 rounded-lg">
+                        <ListFilter className="w-4 h-4 text-gray-400" />
                     </div>
                 </div>
                 <RevenueChart data={chartData} />

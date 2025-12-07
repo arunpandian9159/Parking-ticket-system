@@ -46,7 +46,7 @@ export default function Navbar({ onLoginClick }) {
     // Render landing page navigation
     if (pathname === '/') {
         return (
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-white/5">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-charcoal-900/80 backdrop-blur-xl border-b border-charcoal-700/50">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
@@ -58,7 +58,7 @@ export default function Navbar({ onLoginClick }) {
                                 height={50}
                                 className="rounded-full"
                             />
-                            <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                            <span className="text-xl font-bold bg-gradient-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent">
                                 ParkSmart
                             </span>
                         </div>
@@ -69,7 +69,7 @@ export default function Navbar({ onLoginClick }) {
                                 <a
                                     key={item.href}
                                     href={item.href}
-                                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
+                                    className="text-gray-400 hover:text-teal-400 transition-colors text-sm font-medium"
                                 >
                                     {item.label}
                                 </a>
@@ -79,13 +79,13 @@ export default function Navbar({ onLoginClick }) {
                         {/* Action Buttons */}
                         <div className="flex items-center gap-4">
                             <Link href="/status">
-                                <Button variant="ghost" className="text-gray-400 hover:text-white hover:bg-white/10 text-sm">
+                                <Button variant="ghost" className="text-gray-400 hover:text-teal-400 hover:bg-teal-500/10 text-sm">
                                     Check Status
                                 </Button>
                             </Link>
                             <Button
                                 onClick={onLoginClick}
-                                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-sm px-5"
+                                className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-sm px-5"
                             >
                                 Login
                             </Button>
@@ -93,7 +93,7 @@ export default function Navbar({ onLoginClick }) {
                             {/* Mobile Menu Button */}
                             <button
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                className="md:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                                className="md:hidden p-2 rounded-lg text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-colors"
                             >
                                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                             </button>
@@ -102,23 +102,23 @@ export default function Navbar({ onLoginClick }) {
 
                     {/* Mobile Navigation */}
                     {isMenuOpen && (
-                        <div className="md:hidden py-4 border-t border-white/10">
+                        <div className="md:hidden py-4 border-t border-charcoal-700">
                             <div className="flex flex-col gap-1">
                                 {landingNavItems.map((item) => (
                                     <a
                                         key={item.href}
                                         href={item.href}
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200"
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-all duration-200"
                                     >
                                         {item.label}
                                     </a>
                                 ))}
-                                <div className="border-t border-white/10 mt-2 pt-2">
+                                <div className="border-t border-charcoal-700 mt-2 pt-2">
                                     <Link
                                         href="/status"
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200"
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-all duration-200"
                                     >
                                         Check Status
                                     </Link>
@@ -127,7 +127,7 @@ export default function Navbar({ onLoginClick }) {
                                             setIsMenuOpen(false)
                                             onLoginClick?.()
                                         }}
-                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white transition-all duration-200"
+                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-gradient-to-r from-teal-500 to-teal-600 text-white transition-all duration-200"
                                     >
                                         Login
                                     </button>
@@ -142,7 +142,7 @@ export default function Navbar({ onLoginClick }) {
 
     // Render app navigation (for other pages)
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-neutral-900/95 backdrop-blur-xl border-b border-white/10">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-charcoal-800/95 backdrop-blur-xl border-b border-charcoal-700/50">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -154,7 +154,7 @@ export default function Navbar({ onLoginClick }) {
                             height={50}
                             className="rounded-lg"
                         />
-                        <span className="text-lg font-bold text-white hidden sm:block">ParkSmart</span>
+                        <span className="text-lg font-bold bg-gradient-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent hidden sm:block">ParkSmart</span>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -166,8 +166,8 @@ export default function Navbar({ onLoginClick }) {
                                     key={item.href}
                                     href={item.href}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                                        ? 'bg-blue-600 text-white'
-                                        : 'text-gray-300 hover:text-white hover:bg-white/10'
+                                        ? 'bg-teal-600 text-white'
+                                        : 'text-gray-300 hover:text-teal-400 hover:bg-charcoal-700'
                                         }`}
                                 >
                                     <item.icon className="w-4 h-4" />
@@ -182,7 +182,7 @@ export default function Navbar({ onLoginClick }) {
                         {user && (
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200"
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-all duration-200"
                             >
                                 <LogOut className="w-4 h-4" />
                                 <span className="hidden sm:inline">Logout</span>
@@ -192,7 +192,7 @@ export default function Navbar({ onLoginClick }) {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="md:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                            className="md:hidden p-2 rounded-lg text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-colors"
                         >
                             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </button>
@@ -201,7 +201,7 @@ export default function Navbar({ onLoginClick }) {
 
                 {/* Mobile Navigation */}
                 {isMenuOpen && (
-                    <div className="md:hidden py-4 border-t border-white/10">
+                    <div className="md:hidden py-4 border-t border-charcoal-700">
                         <div className="flex flex-col gap-1">
                             {appNavItems.map((item) => {
                                 const isActive = pathname === item.href
@@ -211,8 +211,8 @@ export default function Navbar({ onLoginClick }) {
                                         href={item.href}
                                         onClick={() => setIsMenuOpen(false)}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                                            ? 'bg-blue-600 text-white'
-                                            : 'text-gray-300 hover:text-white hover:bg-white/10'
+                                            ? 'bg-teal-600 text-white'
+                                            : 'text-gray-300 hover:text-teal-400 hover:bg-charcoal-700'
                                             }`}
                                     >
                                         <item.icon className="w-5 h-5" />

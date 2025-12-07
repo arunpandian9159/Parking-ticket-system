@@ -58,14 +58,14 @@ export default function StatusPage() {
     }
 
     return (
-        <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4">
+        <div className="min-h-screen bg-charcoal-900 flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-md space-y-8">
                 <div className="text-center">
                     <h1 className="text-3xl font-bold text-white">Check Parking Status</h1>
                     <p className="text-gray-400 mt-2">Enter your vehicle number to check current bill.</p>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-charcoal-800 p-6 rounded-2xl shadow-sm border border-charcoal-700">
                     <form onSubmit={handleSearch} className="space-y-4">
                         <Input
                             placeholder="Vehicle Number (e.g. MH 12 AB 1234)"
@@ -85,47 +85,47 @@ export default function StatusPage() {
                     </form>
 
                     {error && (
-                        <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">
+                        <div className="mt-4 p-3 bg-red-500/10 text-red-400 text-sm rounded-lg text-center border border-red-500/20">
                             {error}
                         </div>
                     )}
                 </div>
 
                 {ticket && (
-                    <div className="bg-white p-6 rounded-2xl shadow-lg border border-blue-100 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="bg-charcoal-800 p-6 rounded-2xl shadow-lg border border-teal-500/20 animate-in fade-in slide-in-from-bottom-4">
                         <div className="flex justify-between items-start mb-6">
                             <div>
-                                <h2 className="text-xl font-bold text-gray-900">{ticket.license_plate}</h2>
-                                <p className="text-sm text-gray-500">{ticket.vehicle_name}</p>
+                                <h2 className="text-xl font-bold text-white">{ticket.license_plate}</h2>
+                                <p className="text-sm text-gray-400">{ticket.vehicle_name}</p>
                             </div>
                             <div className="text-right">
-                                <div className="text-sm text-gray-500">Current Bill</div>
-                                <div className="text-3xl font-bold text-blue-600">₹{liveBill}</div>
+                                <div className="text-sm text-gray-400">Current Bill</div>
+                                <div className="text-3xl font-bold text-teal-400">₹{liveBill}</div>
                             </div>
                         </div>
 
-                        <div className="space-y-4 text-sm border-t border-gray-100 pt-4">
+                        <div className="space-y-4 text-sm border-t border-charcoal-700 pt-4">
                             <div className="flex justify-between">
-                                <span className="text-gray-500">Parking Spot</span>
-                                <span className="font-semibold">{ticket.parking_spot}</span>
+                                <span className="text-gray-400">Parking Spot</span>
+                                <span className="font-semibold text-white">{ticket.parking_spot}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-500">Entry Time</span>
-                                <span>{new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                <span className="text-gray-400">Entry Time</span>
+                                <span className="text-white">{new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-500">Duration</span>
-                                <span>{((new Date() - new Date(ticket.created_at)) / (1000 * 60 * 60)).toFixed(1)} hrs</span>
+                                <span className="text-gray-400">Duration</span>
+                                <span className="text-white">{((new Date() - new Date(ticket.created_at)) / (1000 * 60 * 60)).toFixed(1)} hrs</span>
                             </div>
 
                             {ticket.is_pass_holder && (
-                                <div className="bg-green-50 text-green-700 p-2 rounded text-center font-medium text-xs">
+                                <div className="bg-teal-500/10 text-teal-400 p-2 rounded text-center font-medium text-xs border border-teal-500/20">
                                     <CheckCircle className="w-3 h-3 inline mr-1" /> Monthly Pass Active
                                 </div>
                             )}
 
                             {liveBill > ticket.price && (
-                                <div className="bg-amber-50 text-amber-700 p-2 rounded text-center font-medium text-xs flex items-center justify-center gap-1">
+                                <div className="bg-amber-500/10 text-amber-400 p-2 rounded text-center font-medium text-xs flex items-center justify-center gap-1 border border-amber-500/20">
                                     <AlertTriangle className="w-3 h-3" /> Overdue Charges Applied
                                 </div>
                             )}
@@ -134,7 +134,7 @@ export default function StatusPage() {
                 )}
 
                 <div className="text-center">
-                    <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">
+                    <Link href="/" className="text-sm text-gray-400 hover:text-teal-400 transition-colors">
                         Officer Login
                     </Link>
                 </div>
