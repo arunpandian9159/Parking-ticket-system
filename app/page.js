@@ -1,19 +1,20 @@
-&apos;use client&apos;
+'use client'
 
-import { useState, useEffect, useRef } from &apos;react&apos;
-import Link from &apos;next/link&apos;
-import { Button } from &apos;@/components/ui/Button&apos;
+import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
 import {
     Car, ShieldCheck, BarChart3, MapPin, Clock, CreditCard,
-    Users, Zap, CheckCircle2, ArrowRight, Star, Quote,
-    Smartphone, Building2, BadgeCheck, Timer, TrendingUp,
+    Users, Zap, CheckCircle2, ArrowRight, Quote,
+    Smartphone, BadgeCheck, Timer, TrendingUp,
     Mail, Phone, Globe, ChevronRight, Sparkles, Shield
-} from &apos;lucide-react&apos;
-import { AnimatedBackground, FadeIn, GradientText, SpotlightCard } from &apos;@/components/ui/ReactBits&apos;
-import LoginModal from &apos;@/components/auth/LoginModal&apos;
+} from 'lucide-react'
+import { FadeIn, GradientText, SpotlightCard } from '@/components/ui/ReactBits'
+import LoginModal from '@/components/auth/LoginModal'
+import Navbar from '@/components/Navbar'
 
 // Animated Counter Component
-function AnimatedCounter({ end, duration = 2000, suffix = &apos;&apos;, prefix = &apos;&apos; }) {
+function AnimatedCounter({ end, duration = 2000, suffix = '', prefix = '' }) {
     const [count, setCount] = useState(0)
     const countRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
@@ -73,7 +74,7 @@ function TestimonialCard({ quote, author, role, company, avatar }) {
         <SpotlightCard className="p-8" spotlightColor="rgba(59, 130, 246, 0.15)">
             <div className="relative z-10">
                 <Quote className="w-10 h-10 text-blue-500/30 mb-4" />
-                <p className="text-gray-300 text-lg leading-relaxed mb-6">&ldquo;{quote}&rdquo;</p>
+                <p className="text-gray-300 text-lg leading-relaxed mb-6">"{quote}"</p>
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
                         {avatar}
@@ -92,7 +93,7 @@ function TestimonialCard({ quote, author, role, company, avatar }) {
 function PricingCard({ title, price, description, features, popular = false, ctaText = "Get Started" }) {
     return (
         <SpotlightCard
-            className={`p-8 relative ${popular ? &apos;border-blue-500/50 ring-1 ring-blue-500/20&apos; : &apos;&apos;}`}
+            className={`p-8 relative ${popular ? 'border-blue-500/50 ring-1 ring-blue-500/20' : ''}`}
             spotlightColor={popular ? "rgba(59, 130, 246, 0.2)" : "rgba(255, 255, 255, 0.1)"}
         >
             {popular && (
@@ -119,8 +120,8 @@ function PricingCard({ title, price, description, features, popular = false, cta
                 </ul>
                 <Button
                     className={`w-full py-3 transition-all duration-300 hover:scale-[1.02] ${popular
-                        ? &apos;bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500&apos;
-                        : &apos;bg-white/10 hover:bg-white/20 border border-white/10&apos;
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500'
+                        : 'bg-white/10 hover:bg-white/20 border border-white/10'
                         }`}
                 >
                     {ctaText}
@@ -155,77 +156,77 @@ export default function LandingPage() {
     const [isLoginOpen, setIsLoginOpen] = useState(false)
 
     const stats = [
-        { value: 50000, suffix: &apos;+&apos;, label: &apos;Tickets Issued&apos;, icon: CreditCard },
-        { value: 99.9, suffix: &apos;%&apos;, label: &apos;Uptime&apos;, icon: Zap },
-        { value: 500, suffix: &apos;+&apos;, label: &apos;Parking Zones&apos;, icon: MapPin },
-        { value: 24, suffix: &apos;/7&apos;, label: &apos;Support&apos;, icon: Users },
+        { value: 50000, suffix: '+', label: 'Tickets Issued', icon: CreditCard },
+        { value: 99.9, suffix: '%', label: 'Uptime', icon: Zap },
+        { value: 500, suffix: '+', label: 'Parking Zones', icon: MapPin },
+        { value: 24, suffix: '/7', label: 'Support', icon: Users },
     ]
 
     const features = [
         {
             icon: Car,
-            title: &apos;Vehicle Tracking&apos;,
-            description: &apos;Track license plates, vehicle types, and parking duration automatically with our intelligent OCR-powered system.&apos;,
-            color: &apos;blue&apos;,
-            gradient: &apos;from-blue-500 to-cyan-400&apos;
+            title: 'Vehicle Tracking',
+            description: 'Track license plates, vehicle types, and parking duration automatically with our intelligent OCR-powered system.',
+            color: 'blue',
+            gradient: 'from-blue-500 to-cyan-400'
         },
         {
             icon: MapPin,
-            title: &apos;Smart Mapping&apos;,
-            description: &apos;Visual parking map to see occupied slots and manage capacity efficiently with real-time updates.&apos;,
-            color: &apos;green&apos;,
-            gradient: &apos;from-green-500 to-emerald-400&apos;
+            title: 'Smart Mapping',
+            description: 'Visual parking map to see occupied slots and manage capacity efficiently with real-time updates.',
+            color: 'green',
+            gradient: 'from-green-500 to-emerald-400'
         },
         {
             icon: BarChart3,
-            title: &apos;Revenue Analytics&apos;,
-            description: &apos;Comprehensive dashboards to monitor daily earnings and operational trends to maximize profit.&apos;,
-            color: &apos;purple&apos;,
-            gradient: &apos;from-purple-500 to-pink-400&apos;
+            title: 'Revenue Analytics',
+            description: 'Comprehensive dashboards to monitor daily earnings and operational trends to maximize profit.',
+            color: 'purple',
+            gradient: 'from-purple-500 to-pink-400'
         },
         {
             icon: Clock,
-            title: &apos;Time-Based Billing&apos;,
-            description: &apos;Automatic calculation of parking fees based on duration with customizable hourly rates.&apos;,
-            color: &apos;orange&apos;,
-            gradient: &apos;from-orange-500 to-amber-400&apos;
+            title: 'Time-Based Billing',
+            description: 'Automatic calculation of parking fees based on duration with customizable hourly rates.',
+            color: 'orange',
+            gradient: 'from-orange-500 to-amber-400'
         },
         {
             icon: Shield,
-            title: &apos;Secure & Reliable&apos;,
-            description: &apos;Enterprise-grade security with encrypted data storage and role-based access control.&apos;,
-            color: &apos;red&apos;,
-            gradient: &apos;from-red-500 to-rose-400&apos;
+            title: 'Secure & Reliable',
+            description: 'Enterprise-grade security with encrypted data storage and role-based access control.',
+            color: 'red',
+            gradient: 'from-red-500 to-rose-400'
         },
         {
             icon: Smartphone,
-            title: &apos;Mobile Ready&apos;,
-            description: &apos;Fully responsive design works perfectly on any device - desktop, tablet, or smartphone.&apos;,
-            color: &apos;indigo&apos;,
-            gradient: &apos;from-indigo-500 to-violet-400&apos;
+            title: 'Mobile Ready',
+            description: 'Fully responsive design works perfectly on any device - desktop, tablet, or smartphone.',
+            color: 'indigo',
+            gradient: 'from-indigo-500 to-violet-400'
         },
     ]
 
     const steps = [
         {
             icon: Car,
-            title: &apos;Vehicle Entry&apos;,
-            description: &apos;Officer scans or enters the vehicle license plate and selects the parking zone.&apos;
+            title: 'Vehicle Entry',
+            description: 'Officer scans or enters the vehicle license plate and selects the parking zone.'
         },
         {
             icon: CreditCard,
-            title: &apos;Ticket Generation&apos;,
-            description: &apos;System automatically generates a digital ticket with entry time and estimated cost.&apos;
+            title: 'Ticket Generation',
+            description: 'System automatically generates a digital ticket with entry time and estimated cost.'
         },
         {
             icon: Timer,
-            title: &apos;Duration Tracking&apos;,
-            description: &apos;Real-time tracking of parking duration with automatic billing calculation.&apos;
+            title: 'Duration Tracking',
+            description: 'Real-time tracking of parking duration with automatic billing calculation.'
         },
         {
             icon: CheckCircle2,
-            title: &apos;Easy Checkout&apos;,
-            description: &apos;Quick checkout process with multiple payment options and instant receipt generation.&apos;
+            title: 'Easy Checkout',
+            description: 'Quick checkout process with multiple payment options and instant receipt generation.'
         },
     ]
 
@@ -298,43 +299,9 @@ export default function LandingPage() {
 
     return (
         <div className="min-h-screen bg-neutral-950 text-white overflow-x-hidden">
-            <AnimatedBackground />
             <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-white/5">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                                <Car className="w-6 h-6 text-white" />
-                            </div>
-                            <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-                                ParkSmart
-                            </span>
-                        </div>
-                        <div className="hidden md:flex items-center gap-8">
-                            <a href="#features" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Features</a>
-                            <a href="#how-it-works" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">How It Works</a>
-                            <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Testimonials</a>
-                            <a href="#pricing" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Pricing</a>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <Link href="/status">
-                                <Button variant="ghost" className="text-gray-400 hover:text-white hover:bg-white/10 text-sm">
-                                    Check Status
-                                </Button>
-                            </Link>
-                            <Button
-                                onClick={() => setIsLoginOpen(true)}
-                                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-sm px-5"
-                            >
-                                Login
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+            <Navbar onLoginClick={() => setIsLoginOpen(true)} />
 
             {/* Hero Section */}
             <section className="relative isolate pt-32 sm:pt-40 lg:pt-48 pb-16 bg-neutral-950">
@@ -389,7 +356,7 @@ export default function LandingPage() {
                             <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
-                                        <span className="text-gray-400 text-sm">Today&apos;s Revenue</span>
+                                        <span className="text-gray-400 text-sm">Today's Revenue</span>
                                         <TrendingUp className="w-5 h-5 text-green-400" />
                                     </div>
                                     <p className="text-3xl font-bold text-white">₹24,500</p>
@@ -409,7 +376,7 @@ export default function LandingPage() {
                                         <CreditCard className="w-5 h-5 text-green-400" />
                                     </div>
                                     <p className="text-3xl font-bold text-white">156</p>
-                                    <p className="text-gray-400 text-sm mt-2">Today&apos;s count</p>
+                                    <p className="text-gray-400 text-sm mt-2">Today's count</p>
                                 </div>
                             </div>
                         </div>
@@ -567,7 +534,7 @@ export default function LandingPage() {
                 <FadeIn>
                     <div className="relative overflow-hidden rounded-3xl">
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600" />
-                        <div className="absolute inset-0 bg-[url(&apos;data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLTItNC00LTRzLTQgMi00IDQgMiA0IDQgNCA0LTIgNC00eiIvPjwvZz48L2c+PC9zdmc+&apos;)] opacity-30" />
+                        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLTItNC00LTRzLTQgMi00IDQgMiA0IDQgNCA0LTIgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
                         <div className="relative px-8 py-16 sm:px-16 sm:py-24 text-center">
                             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                                 Ready to transform your parking operations?

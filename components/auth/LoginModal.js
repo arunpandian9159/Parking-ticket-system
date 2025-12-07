@@ -4,10 +4,182 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { Card } from '@/components/ui/Card'
-import { Lock, User, X } from 'lucide-react'
+import {
+    Lock, Mail, User, X, Eye, EyeOff,
+    Car, Sparkles, ArrowRight, CheckCircle2,
+    AlertCircle, Loader2
+} from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+
+// Password strength checker
+function getPasswordStrength(password) {
+    let strength = 0
+    if (password.length >= 8) strength++
+    if (/[A-Z]/.test(password)) strength++
+    if (/[a-z]/.test(password)) strength++
+    if (/[0-9]/.test(password)) strength++
+    if (/[^A-Za-z0-9]/.test(password)) strength++
+    return strength
+}
+
+function PasswordStrengthBar({ password }) {
+    const strength = getPasswordStrength(password)
+    const levels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong']
+    const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500']
+
+    if (!password) return null
+
+    return (
+        <div className="mt-2">
+            <div className="flex gap-1 h-1.5">
+                {[...Array(5)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: i < strength ? 1 : 0.3 }}
+                        className={`h-full flex-1 rounded-full origin-left transition-all duration-300 ${i < strength ? colors[strength - 1] : 'bg-white/10'
+                            }`}
+                    />
+                ))}
+            </div>
+            <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`text-xs mt-1.5 ${strength <= 1 ? 'text-red-400' :
+                        strength <= 2 ? 'text-orange-400' :
+                            strength <= 3 ? 'text-yellow-400' :
+                                strength === 4 ? 'text-blue-400' : 'text-green-400'
+                    }`}
+            >
+                Password strength: {levels[strength - 1] || 'Too Short'}
+            </motion.p>
+        </div>
+    )
+}
+
+// Floating Input Component
+function FloatingInput({
+    label,
+    type = 'text',
+    value,
+    onChange,
+    icon: Icon,
+    error,
+    showPasswordToggle,
+    ...props
+}) {
+    const [isFocused, setIsFocused] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const isActive = isFocused || value
+
+    return (
+        <div className="relative">
+            <div className={`relative group transition-all duration-300 ${error ? 'animate-shake' : ''}`}>
+                {/* Glow effect on focus */}
+                <div className={`absolute -inset-0.5 rounded-xl transition-all duration-300 ${isFocused
+                        ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur'
+                        : 'bg-transparent'
+                    }`} />
+
+                <div className={`relative flex items-center border rounded-xl transition-all duration-300 ${error
+                        ? 'border-red-500/50 bg-red-500/5'
+                        : isFocused
+                            ? 'border-blue-500/50 bg-white/5'
+                            : 'border-white/10 bg-white/5 hover:border-white/20'
+                    }`}>
+                    {/* Icon */}
+                    <div className={`pl-4 transition-colors duration-300 ${isFocused ? 'text-blue-400' : 'text-gray-500'
+                        }`}>
+                        <Icon className="w-5 h-5" />
+                    </div>
+
+                    {/* Input */}
+                    <input
+                        type={showPasswordToggle && showPassword ? 'text' : type}
+                        value={value}
+                        onChange={onChange}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        className="w-full px-4 py-4 pt-6 bg-transparent text-white placeholder-transparent focus:outline-none text-sm"
+                        placeholder={label}
+                        {...props}
+                    />
+
+                    {/* Floating Label */}
+                    <label className={`absolute left-12 transition-all duration-300 pointer-events-none ${isActive
+                            ? 'top-2 text-xs text-blue-400'
+                            : 'top-1/2 -translate-y-1/2 text-sm text-gray-500'
+                        }`}>
+                        {label}
+                    </label>
+
+                    {/* Password Toggle */}
+                    {showPasswordToggle && (
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="pr-4 text-gray-500 hover:text-gray-300 transition-colors"
+                        >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* Error message */}
+            <AnimatePresence>
+                {error && (
+                    <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: 'auto' }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="text-red-400 text-xs mt-1.5 flex items-center gap-1"
+                    >
+                        <AlertCircle className="w-3 h-3" />
+                        {error}
+                    </motion.p>
+                )}
+            </AnimatePresence>
+        </div>
+    )
+}
+
+// Tab Button Component
+function TabButton({ active, onClick, children }) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            className={`relative flex-1 py-3 text-sm font-medium transition-colors duration-300 ${active ? 'text-white' : 'text-gray-400 hover:text-gray-300'
+                }`}
+        >
+            {children}
+            {active && (
+                <motion.div
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+            )}
+        </button>
+    )
+}
+
+// Social Button Component
+function SocialButton({ icon: Icon, label, onClick, disabled }) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            disabled={disabled}
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-gray-300 hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+            <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <span className="text-sm font-medium">{label}</span>
+        </button>
+    )
+}
 
 export default function LoginModal({ isOpen, onClose }) {
     const router = useRouter()
@@ -15,30 +187,92 @@ export default function LoginModal({ isOpen, onClose }) {
     const [isSignUp, setIsSignUp] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [name, setName] = useState('')
     const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
+    const [fieldErrors, setFieldErrors] = useState({})
 
     // Reset state when modal opens/closes
     useEffect(() => {
         if (!isOpen) {
             setError(null)
+            setSuccess(null)
             setEmail('')
             setPassword('')
+            setConfirmPassword('')
+            setName('')
+            setFieldErrors({})
         }
     }, [isOpen])
 
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = 'unset'
+        }
+        return () => {
+            document.body.style.overflow = 'unset'
+        }
+    }, [isOpen])
+
+    const validateForm = () => {
+        const errors = {}
+
+        if (!email) {
+            errors.email = 'Email is required'
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            errors.email = 'Please enter a valid email'
+        }
+
+        if (!password) {
+            errors.password = 'Password is required'
+        } else if (isSignUp && password.length < 8) {
+            errors.password = 'Password must be at least 8 characters'
+        }
+
+        if (isSignUp) {
+            if (!name.trim()) {
+                errors.name = 'Name is required'
+            }
+            if (password !== confirmPassword) {
+                errors.confirmPassword = 'Passwords do not match'
+            }
+        }
+
+        setFieldErrors(errors)
+        return Object.keys(errors).length === 0
+    }
+
     const handleAuth = async (e) => {
         e.preventDefault()
+
+        if (!validateForm()) return
+
         setLoading(true)
         setError(null)
+        setSuccess(null)
 
         try {
             if (isSignUp) {
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
+                    options: {
+                        data: {
+                            full_name: name,
+                        }
+                    }
                 })
                 if (error) throw error
-                alert('Check your email for the confirmation link!')
+                setSuccess('Account created! Check your email for the confirmation link.')
+                // Switch to login after successful signup
+                setTimeout(() => {
+                    setIsSignUp(false)
+                    setSuccess(null)
+                }, 3000)
             } else {
                 const { error } = await supabase.auth.signInWithPassword({
                     email,
@@ -55,96 +289,317 @@ export default function LoginModal({ isOpen, onClose }) {
         }
     }
 
+    const handleGoogleLogin = async () => {
+        try {
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: `${window.location.origin}/dashboard`
+                }
+            })
+            if (error) throw error
+        } catch (err) {
+            setError(err.message)
+        }
+    }
+
     return (
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop - allows clicking through to nav if we really want, but usually blocks. 
-                        User said "access nav bar". I'll make the backdrop lighter and maybe check if we want it blocking.
-                        To explicitly allow navbar access, we shouldn't cover the navbar (z-index). 
-                        Navbar is z-50. We'll make this z-40.
-                     */}
+                    {/* Backdrop with animated blur */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+                        className="fixed inset-0 bg-black/70 backdrop-blur-md z-40"
                     />
 
+                    {/* Modal Container */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        initial={{ opacity: 0, scale: 0.9, y: 30 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 30 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 30
+                        }}
                         className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md p-4"
                     >
-                        <Card className="w-full relative bg-white/95 backdrop-blur shadow-2xl border-white/20">
-                            <button
-                                onClick={onClose}
-                                className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 transition-colors"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
+                        <div className="relative">
+                            {/* Animated gradient background glow */}
+                            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-3xl blur-xl opacity-50 animate-pulse" />
 
-                            <div className="p-6">
-                                <div className="text-center mb-8">
-                                    <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                                        <Lock className="w-6 h-6 text-blue-600" />
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-gray-900">Staff Login</h2>
-                                    <p className="text-gray-500 mt-2">
-                                        {isSignUp ? 'Create a new account' : 'Sign in to access dashboards'}
-                                    </p>
-                                </div>
+                            {/* Main Card */}
+                            <div className="relative bg-neutral-900/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+                                {/* Decorative gradient orbs */}
+                                <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl" />
+                                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl" />
 
-                                <form onSubmit={handleAuth} className="space-y-6">
-                                    <Input
-                                        label="Email Address"
-                                        type="email"
-                                        placeholder="admin@parking.com"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                        icon={<User className="w-4 h-4" />}
-                                        className="bg-white/50"
-                                    />
+                                {/* Close button */}
+                                <button
+                                    onClick={onClose}
+                                    className="absolute right-4 top-4 z-10 p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-300 group"
+                                >
+                                    <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                                </button>
 
-                                    <Input
-                                        label="Password"
-                                        type="password"
-                                        placeholder="••••••••"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                        className="bg-white/50"
-                                    />
-
-                                    {error && (
-                                        <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
-                                            {error}
-                                        </div>
-                                    )}
-
-                                    <Button
-                                        type="submit"
-                                        className="w-full bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30"
-                                        disabled={loading}
-                                    >
-                                        {loading ? (isSignUp ? 'Creating Account...' : 'Signing In...') : (isSignUp ? 'Create Account' : 'Sign In')}
-                                    </Button>
-
-                                    <div className="text-center mt-4">
-                                        <button
-                                            type="button"
-                                            onClick={() => setIsSignUp(!isSignUp)}
-                                            className="text-sm text-blue-600 hover:text-blue-700 font-medium hover:underline"
+                                <div className="relative p-8">
+                                    {/* Header */}
+                                    <div className="text-center mb-8">
+                                        <motion.div
+                                            initial={{ scale: 0, rotate: -180 }}
+                                            animate={{ scale: 1, rotate: 0 }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 500,
+                                                damping: 25,
+                                                delay: 0.1
+                                            }}
+                                            className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/25"
                                         >
-                                            {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
-                                        </button>
+                                            <Car className="w-8 h-8 text-white" />
+                                        </motion.div>
+                                        <motion.h2
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.2 }}
+                                            className="text-2xl font-bold text-white mb-2"
+                                        >
+                                            Welcome to ParkSmart
+                                        </motion.h2>
+                                        <motion.p
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.3 }}
+                                            className="text-gray-400 text-sm"
+                                        >
+                                            {isSignUp
+                                                ? 'Create your account to get started'
+                                                : 'Sign in to access your dashboard'}
+                                        </motion.p>
                                     </div>
-                                </form>
+
+                                    {/* Tab Switcher */}
+                                    <div className="flex border-b border-white/10 mb-6">
+                                        <TabButton
+                                            active={!isSignUp}
+                                            onClick={() => {
+                                                setIsSignUp(false)
+                                                setFieldErrors({})
+                                                setError(null)
+                                            }}
+                                        >
+                                            Sign In
+                                        </TabButton>
+                                        <TabButton
+                                            active={isSignUp}
+                                            onClick={() => {
+                                                setIsSignUp(true)
+                                                setFieldErrors({})
+                                                setError(null)
+                                            }}
+                                        >
+                                            Sign Up
+                                        </TabButton>
+                                    </div>
+
+                                    {/* Form */}
+                                    <form onSubmit={handleAuth} className="space-y-5">
+                                        <AnimatePresence mode="wait">
+                                            {isSignUp && (
+                                                <motion.div
+                                                    key="name"
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: 'auto' }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <FloatingInput
+                                                        label="Full Name"
+                                                        type="text"
+                                                        value={name}
+                                                        onChange={(e) => {
+                                                            setName(e.target.value)
+                                                            setFieldErrors(prev => ({ ...prev, name: null }))
+                                                        }}
+                                                        icon={User}
+                                                        error={fieldErrors.name}
+                                                        required={isSignUp}
+                                                    />
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+
+                                        <FloatingInput
+                                            label="Email Address"
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value)
+                                                setFieldErrors(prev => ({ ...prev, email: null }))
+                                            }}
+                                            icon={Mail}
+                                            error={fieldErrors.email}
+                                            required
+                                        />
+
+                                        <div>
+                                            <FloatingInput
+                                                label="Password"
+                                                type="password"
+                                                value={password}
+                                                onChange={(e) => {
+                                                    setPassword(e.target.value)
+                                                    setFieldErrors(prev => ({ ...prev, password: null }))
+                                                }}
+                                                icon={Lock}
+                                                error={fieldErrors.password}
+                                                showPasswordToggle
+                                                required
+                                            />
+                                            {isSignUp && <PasswordStrengthBar password={password} />}
+                                        </div>
+
+                                        <AnimatePresence mode="wait">
+                                            {isSignUp && (
+                                                <motion.div
+                                                    key="confirm"
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: 'auto' }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <FloatingInput
+                                                        label="Confirm Password"
+                                                        type="password"
+                                                        value={confirmPassword}
+                                                        onChange={(e) => {
+                                                            setConfirmPassword(e.target.value)
+                                                            setFieldErrors(prev => ({ ...prev, confirmPassword: null }))
+                                                        }}
+                                                        icon={Lock}
+                                                        error={fieldErrors.confirmPassword}
+                                                        showPasswordToggle
+                                                        required={isSignUp}
+                                                    />
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+
+                                        {/* Error/Success Messages */}
+                                        <AnimatePresence>
+                                            {error && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                                    className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3"
+                                                >
+                                                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                                                    <p className="text-red-400 text-sm">{error}</p>
+                                                </motion.div>
+                                            )}
+                                            {success && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                                    className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-start gap-3"
+                                                >
+                                                    <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                                                    <p className="text-green-400 text-sm">{success}</p>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+
+                                        {/* Forgot Password */}
+                                        {!isSignUp && (
+                                            <div className="text-right">
+                                                <button
+                                                    type="button"
+                                                    className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                                >
+                                                    Forgot password?
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {/* Submit Button */}
+                                        <Button
+                                            type="submit"
+                                            disabled={loading}
+                                            className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 group"
+                                        >
+                                            {loading ? (
+                                                <span className="flex items-center justify-center gap-2">
+                                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                                    {isSignUp ? 'Creating Account...' : 'Signing In...'}
+                                                </span>
+                                            ) : (
+                                                <span className="flex items-center justify-center gap-2">
+                                                    {isSignUp ? 'Create Account' : 'Sign In'}
+                                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                                </span>
+                                            )}
+                                        </Button>
+                                    </form>
+
+                                    {/* Divider */}
+                                    <div className="relative my-6">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <div className="w-full border-t border-white/10" />
+                                        </div>
+                                        <div className="relative flex justify-center text-sm">
+                                            <span className="bg-neutral-900 px-4 text-gray-500">
+                                                or continue with
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Social Login */}
+                                    <div className="flex gap-3">
+                                        <SocialButton
+                                            icon={({ className }) => (
+                                                <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                                                </svg>
+                                            )}
+                                            label="Google"
+                                            onClick={handleGoogleLogin}
+                                            disabled={loading}
+                                        />
+                                        <SocialButton
+                                            icon={({ className }) => (
+                                                <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                                </svg>
+                                            )}
+                                            label="GitHub"
+                                            onClick={() => { }}
+                                            disabled={loading}
+                                        />
+                                    </div>
+
+                                    {/* Footer Info */}
+                                    <motion.p
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 0.5 }}
+                                        className="text-center text-xs text-gray-500 mt-6 flex items-center justify-center gap-1"
+                                    >
+                                        <Sparkles className="w-3 h-3" />
+                                        Secure login powered by Supabase
+                                    </motion.p>
+                                </div>
                             </div>
-                        </Card>
+                        </div>
                     </motion.div>
                 </>
             )}

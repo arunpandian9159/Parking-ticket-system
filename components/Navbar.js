@@ -5,8 +5,9 @@ import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Car, Home, Ticket, Search, LogOut, Menu, X } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 
-export default function Navbar() {
+export default function Navbar({ onLoginClick }) {
     const router = useRouter()
     const pathname = usePathname()
     const [user, setUser] = useState(null)
@@ -25,16 +26,116 @@ export default function Navbar() {
         router.push('/')
     }
 
-    // Don't show navbar on landing page (which has its own nav)
-    if (pathname === '/') return null
+    // Landing page navigation items
+    const landingNavItems = [
+        { label: 'Features', href: '#features' },
+        { label: 'How It Works', href: '#how-it-works' },
+        { label: 'Testimonials', href: '#testimonials' },
+        { label: 'Pricing', href: '#pricing' },
+    ]
 
-    const navItems = [
+    // App navigation items (for logged-in users)
+    const appNavItems = [
         { label: 'Home', href: '/', icon: Home },
         { label: 'Dashboard', href: '/dashboard', icon: Ticket },
         { label: 'New Ticket', href: '/tickets/create', icon: Ticket },
         { label: 'Check Status', href: '/status', icon: Search },
     ]
 
+    // Render landing page navigation
+    if (pathname === '/') {
+        return (
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-white/5">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-16">
+                        {/* Logo */}
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                <Car className="w-6 h-6 text-white" />
+                            </div>
+                            <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                                ParkSmart
+                            </span>
+                        </div>
+
+                        {/* Desktop Navigation */}
+                        <div className="hidden md:flex items-center gap-8">
+                            {landingNavItems.map((item) => (
+                                <a
+                                    key={item.href}
+                                    href={item.href}
+                                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
+                                >
+                                    {item.label}
+                                </a>
+                            ))}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex items-center gap-4">
+                            <Link href="/status">
+                                <Button variant="ghost" className="text-gray-400 hover:text-white hover:bg-white/10 text-sm">
+                                    Check Status
+                                </Button>
+                            </Link>
+                            <Button
+                                onClick={onLoginClick}
+                                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-sm px-5"
+                            >
+                                Login
+                            </Button>
+
+                            {/* Mobile Menu Button */}
+                            <button
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                className="md:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                            >
+                                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Mobile Navigation */}
+                    {isMenuOpen && (
+                        <div className="md:hidden py-4 border-t border-white/10">
+                            <div className="flex flex-col gap-1">
+                                {landingNavItems.map((item) => (
+                                    <a
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200"
+                                    >
+                                        {item.label}
+                                    </a>
+                                ))}
+                                <div className="border-t border-white/10 mt-2 pt-2">
+                                    <Link
+                                        href="/status"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200"
+                                    >
+                                        Check Status
+                                    </Link>
+                                    <button
+                                        onClick={() => {
+                                            setIsMenuOpen(false)
+                                            onLoginClick?.()
+                                        }}
+                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white transition-all duration-200"
+                                    >
+                                        Login
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </nav>
+        )
+    }
+
+    // Render app navigation (for other pages)
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-neutral-900/95 backdrop-blur-xl border-b border-white/10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -49,7 +150,7 @@ export default function Navbar() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center gap-1">
-                        {navItems.map((item) => {
+                        {appNavItems.map((item) => {
                             const isActive = pathname === item.href
                             return (
                                 <Link
@@ -93,7 +194,7 @@ export default function Navbar() {
                 {isMenuOpen && (
                     <div className="md:hidden py-4 border-t border-white/10">
                         <div className="flex flex-col gap-1">
-                            {navItems.map((item) => {
+                            {appNavItems.map((item) => {
                                 const isActive = pathname === item.href
                                 return (
                                     <Link
