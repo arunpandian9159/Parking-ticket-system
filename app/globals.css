@@ -2,8 +2,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
@@ -70,9 +70,12 @@
   body * {
     visibility: hidden;
   }
-  #ticket-receipt, #ticket-receipt * {
+
+  #ticket-receipt,
+  #ticket-receipt * {
     visibility: visible;
   }
+
   #ticket-receipt {
     position: fixed;
     left: 0;
@@ -82,8 +85,10 @@
     padding: 20px;
     background: white;
   }
+
   /* Hide Next.js dev tools or other overlays if any */
-  nextjs-portal, #__next-build-watcher {
+  nextjs-portal,
+  #__next-build-watcher {
     display: none !important;
   }
 }

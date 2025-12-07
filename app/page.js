@@ -119,8 +119,8 @@ function PricingCard({ title, price, description, features, popular = false, cta
                 </ul>
                 <Button
                     className={`w-full py-3 transition-all duration-300 hover:scale-[1.02] ${popular
-                            ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500'
-                            : 'bg-white/10 hover:bg-white/20 border border-white/10'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500'
+                        : 'bg-white/10 hover:bg-white/20 border border-white/10'
                         }`}
                 >
                     {ctaText}
@@ -337,7 +337,7 @@ export default function LandingPage() {
             </nav>
 
             {/* Hero Section */}
-            <section className="relative isolate pt-32 sm:pt-40 lg:pt-48 pb-16">
+            <section className="relative isolate pt-32 sm:pt-40 lg:pt-48 pb-16 bg-neutral-950">
                 <FadeIn className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
                     <div className="mx-auto max-w-3xl">
                         <FloatingBadge className="mb-8">Trusted by 500+ Parking Facilities</FloatingBadge>
