@@ -140,7 +140,7 @@ export default function StatusPage() {
                 )}
 
                 <div className="text-center">
-                    <Link href="/login" className="text-sm text-gray-400 hover:text-gray-600">
+                    <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">
                         Officer Login
                     </Link>
                 </div>

@@ -20,11 +20,11 @@ export default function Navbar() {
 
     const handleLogout = async () => {
         await supabase.auth.signOut()
-        router.push('/login')
+        router.push('/')
     }
 
-    // Don't show navbar on login page or landing page (which has its own nav)
-    if (pathname === '/login' || pathname === '/') return null
+    // Don't show navbar on landing page (which has its own nav)
+    if (pathname === '/') return null
 
     const navItems = [
         { label: 'Home', href: '/' },
