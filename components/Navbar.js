@@ -86,8 +86,10 @@ export default function Navbar() {
                             {isOpen && (
                                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2">
                                     <div className="px-4 py-3 border-b border-gray-50">
-                                        <p className="text-sm font-medium text-gray-900">Signed in as</p>
-                                        <p className="text-sm text-gray-500 truncate">{user?.email || 'User'}</p>
+                                        <p className="text-sm font-medium text-gray-900">
+                                            {user?.user_metadata?.full_name || user?.user_metadata?.name || 'User'}
+                                        </p>
+                                        <p className="text-xs text-gray-500 truncate mt-0.5">{user?.email}</p>
                                     </div>
 
                                     <div className="py-1">
