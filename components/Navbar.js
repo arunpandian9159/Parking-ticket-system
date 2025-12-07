@@ -2,13 +2,34 @@
 
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { Car, LogOut, Plus, LayoutDashboard } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Car, LogOut, Plus, LayoutDashboard, User, Settings, ChevronDown } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Button } from './ui/Button'
 
 export default function Navbar() {
-    const router = useRouter() 
+    const router = useRouter()
     const pathname = usePathname()
+    const [isOpen, setIsOpen] = useState(false)
+    const [user, setUser] = useState(null)
+    const dropdownRef = useRef(null)
+
+    useEffect(() => {
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser()
+            setUser(user)
+        }
+        getUser()
+
+        // Close dropdown when clicking outside
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
 
     const handleLogout = async () => {
         await supabase.auth.signOut()
@@ -50,11 +71,44 @@ export default function Navbar() {
                         </Link>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4" ref={dropdownRef}>
+                        <div className="relative">
+                            <button
+                                onClick={() => setIsOpen(!isOpen)}
+                                className="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors border border-transparent hover:border-gray-200"
+                            >
+                                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white shadow-sm">
+                                    <User className="w-4 h-4" />
+                                </div>
+                                <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                            </button>
 
-                        <Button variant="ghost" onClick={handleLogout} className="!p-2">
-                            <LogOut className="w-5 h-5" />
-                        </Button>
+                            {isOpen && (
+                                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2">
+                                    <div className="px-4 py-3 border-b border-gray-50">
+                                        <p className="text-sm font-medium text-gray-900">Signed in as</p>
+                                        <p className="text-sm text-gray-500 truncate">{user?.email || 'User'}</p>
+                                    </div>
+
+                                    <div className="py-1">
+                                        <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                            <Settings className="w-4 h-4 text-gray-400" />
+                                            Settings
+                                        </button>
+                                    </div>
+
+                                    <div className="border-t border-gray-50 py-1">
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                                        >
+                                            <LogOut className="w-4 h-4" />
+                                            Sign out
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
