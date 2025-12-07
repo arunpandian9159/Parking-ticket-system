@@ -18,7 +18,7 @@ export default function MonthlyPassesPage() {
 
     useEffect(() => {
         fetchPasses()
-         
+
     }, [])
 
     const fetchPasses = async () => {
@@ -69,18 +69,18 @@ export default function MonthlyPassesPage() {
         if (!error) fetchPasses()
     }
 
-    if (loading) return <div className="p-8">Loading passes...</div>
+    if (loading) return <div className="p-8 text-muted-foreground">Loading passes...</div>
 
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900">Monthly Passes</h1>
-                <p className="text-gray-500">Manage subscriptions for regular customers.</p>
+                <h1 className="text-3xl font-bold text-foreground">Monthly Passes</h1>
+                <p className="text-muted-foreground">Manage subscriptions for regular customers.</p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                    <UserPlus className="w-5 h-5 text-blue-600" />
+            <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
+                <h2 className="text-lg font-semibold mb-6 flex items-center gap-2 text-foreground">
+                    <UserPlus className="w-5 h-5 text-teal-500" />
                     Issue New Pass
                 </h2>
                 <form onSubmit={handleCreatePass} className="grid md:grid-cols-4 gap-4 items-end">
@@ -107,30 +107,30 @@ export default function MonthlyPassesPage() {
                 </form>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
                 <table className="w-full text-left text-sm">
-                    <thead className="bg-gray-50 border-b border-gray-100">
+                    <thead className="bg-secondary/50 border-b border-border">
                         <tr>
-                            <th className="px-6 py-3 font-semibold text-gray-500">Customer</th>
-                            <th className="px-6 py-3 font-semibold text-gray-500">Vehicle</th>
-                            <th className="px-6 py-3 font-semibold text-gray-500">Valid Until</th>
-                            <th className="px-6 py-3 font-semibold text-gray-500">Status</th>
-                            <th className="px-6 py-3 font-semibold text-gray-500">Action</th>
+                            <th className="px-6 py-3 font-semibold text-muted-foreground">Customer</th>
+                            <th className="px-6 py-3 font-semibold text-muted-foreground">Vehicle</th>
+                            <th className="px-6 py-3 font-semibold text-muted-foreground">Valid Until</th>
+                            <th className="px-6 py-3 font-semibold text-muted-foreground">Status</th>
+                            <th className="px-6 py-3 font-semibold text-muted-foreground">Action</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100">
+                    <tbody className="divide-y divide-border">
                         {passes.map(pass => (
-                            <tr key={pass.id}>
-                                <td className="px-6 py-4">{pass.customer_name}</td>
-                                <td className="px-6 py-4 font-mono font-bold">{pass.vehicle_number}</td>
-                                <td className="px-6 py-4">{new Date(pass.end_date).toLocaleDateString()}</td>
+                            <tr key={pass.id} className="hover:bg-secondary/50 transition-colors">
+                                <td className="px-6 py-4 text-foreground">{pass.customer_name}</td>
+                                <td className="px-6 py-4 font-mono font-bold text-foreground">{pass.vehicle_number}</td>
+                                <td className="px-6 py-4 text-muted-foreground">{new Date(pass.end_date).toLocaleDateString()}</td>
                                 <td className="px-6 py-4">
-                                    <span className="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                                    <span className="px-2 py-1 rounded-full bg-teal-500/10 text-teal-500 text-xs font-bold border border-teal-500/20">
                                         {pass.status}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <button onClick={() => handleDelete(pass.id)} className="text-red-500 hover:text-red-700">
+                                    <button onClick={() => handleDelete(pass.id)} className="text-red-500 hover:text-red-400 transition-colors">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </td>
@@ -138,7 +138,7 @@ export default function MonthlyPassesPage() {
                         ))}
                         {passes.length === 0 && (
                             <tr>
-                                <td colSpan="5" className="px-6 py-8 text-center text-gray-500">No active passes.</td>
+                                <td colSpan="5" className="px-6 py-8 text-center text-muted-foreground">No active passes.</td>
                             </tr>
                         )}
                     </tbody>

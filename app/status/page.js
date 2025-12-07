@@ -58,14 +58,14 @@ export default function StatusPage() {
     }
 
     return (
-        <div className="min-h-screen bg-charcoal-900 flex flex-col items-center justify-center p-4">
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-md space-y-8">
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-white">Check Parking Status</h1>
-                    <p className="text-gray-400 mt-2">Enter your vehicle number to check current bill.</p>
+                    <h1 className="text-3xl font-bold text-foreground">Check Parking Status</h1>
+                    <p className="text-muted-foreground mt-2">Enter your vehicle number to check current bill.</p>
                 </div>
 
-                <div className="bg-charcoal-800 p-6 rounded-2xl shadow-sm border border-charcoal-700">
+                <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
                     <form onSubmit={handleSearch} className="space-y-4">
                         <Input
                             placeholder="Vehicle Number (e.g. MH 12 AB 1234)"
@@ -85,47 +85,47 @@ export default function StatusPage() {
                     </form>
 
                     {error && (
-                        <div className="mt-4 p-3 bg-red-500/10 text-red-400 text-sm rounded-lg text-center border border-red-500/20">
+                        <div className="mt-4 p-3 bg-red-500/10 text-red-500 text-sm rounded-lg text-center border border-red-500/20">
                             {error}
                         </div>
                     )}
                 </div>
 
                 {ticket && (
-                    <div className="bg-charcoal-800 p-6 rounded-2xl shadow-lg border border-teal-500/20 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="bg-card p-6 rounded-2xl shadow-lg border border-teal-500/20 animate-in fade-in slide-in-from-bottom-4">
                         <div className="flex justify-between items-start mb-6">
                             <div>
-                                <h2 className="text-xl font-bold text-white">{ticket.license_plate}</h2>
-                                <p className="text-sm text-gray-400">{ticket.vehicle_name}</p>
+                                <h2 className="text-xl font-bold text-foreground">{ticket.license_plate}</h2>
+                                <p className="text-sm text-muted-foreground">{ticket.vehicle_name}</p>
                             </div>
                             <div className="text-right">
-                                <div className="text-sm text-gray-400">Current Bill</div>
-                                <div className="text-3xl font-bold text-teal-400">₹{liveBill}</div>
+                                <div className="text-sm text-muted-foreground">Current Bill</div>
+                                <div className="text-3xl font-bold text-teal-500">₹{liveBill}</div>
                             </div>
                         </div>
 
-                        <div className="space-y-4 text-sm border-t border-charcoal-700 pt-4">
+                        <div className="space-y-4 text-sm border-t border-border pt-4">
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Parking Spot</span>
-                                <span className="font-semibold text-white">{ticket.parking_spot}</span>
+                                <span className="text-muted-foreground">Parking Spot</span>
+                                <span className="font-semibold text-foreground">{ticket.parking_spot}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Entry Time</span>
-                                <span className="text-white">{new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                <span className="text-muted-foreground">Entry Time</span>
+                                <span className="text-foreground">{new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Duration</span>
-                                <span className="text-white">{((new Date() - new Date(ticket.created_at)) / (1000 * 60 * 60)).toFixed(1)} hrs</span>
+                                <span className="text-muted-foreground">Duration</span>
+                                <span className="text-foreground">{((new Date() - new Date(ticket.created_at)) / (1000 * 60 * 60)).toFixed(1)} hrs</span>
                             </div>
 
                             {ticket.is_pass_holder && (
-                                <div className="bg-teal-500/10 text-teal-400 p-2 rounded text-center font-medium text-xs border border-teal-500/20">
+                                <div className="bg-teal-500/10 text-teal-500 p-2 rounded text-center font-medium text-xs border border-teal-500/20">
                                     <CheckCircle className="w-3 h-3 inline mr-1" /> Monthly Pass Active
                                 </div>
                             )}
 
                             {liveBill > ticket.price && (
-                                <div className="bg-amber-500/10 text-amber-400 p-2 rounded text-center font-medium text-xs flex items-center justify-center gap-1 border border-amber-500/20">
+                                <div className="bg-amber-500/10 text-amber-500 p-2 rounded text-center font-medium text-xs flex items-center justify-center gap-1 border border-amber-500/20">
                                     <AlertTriangle className="w-3 h-3" /> Overdue Charges Applied
                                 </div>
                             )}
@@ -134,7 +134,7 @@ export default function StatusPage() {
                 )}
 
                 <div className="text-center">
-                    <Link href="/" className="text-sm text-gray-400 hover:text-teal-400 transition-colors">
+                    <Link href="/" className="text-sm text-muted-foreground hover:text-teal-500 transition-colors">
                         Officer Login
                     </Link>
                 </div>

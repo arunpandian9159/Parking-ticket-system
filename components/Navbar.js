@@ -5,8 +5,60 @@ import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
-import { Home, Ticket, Search, LogOut, Menu, X } from 'lucide-react'
+import { useTheme } from '@/lib/ThemeContext'
+import { Home, Ticket, Search, LogOut, Menu, X, Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+
+// Theme Toggle Button Component
+function ThemeToggle() {
+    const { theme, toggleTheme } = useTheme()
+    const [isAnimating, setIsAnimating] = useState(false)
+
+    const handleToggle = () => {
+        setIsAnimating(true)
+        toggleTheme()
+        setTimeout(() => setIsAnimating(false), 500)
+    }
+
+    return (
+        <button
+            onClick={handleToggle}
+            className={`
+                relative p-2 rounded-xl transition-all duration-300
+                bg-secondary/50 hover:bg-secondary border border-border
+                hover:border-teal-500/30 hover:shadow-lg hover:shadow-teal-500/10
+                ${isAnimating ? 'animate-theme-switch' : ''}
+            `}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+            <div className="relative w-5 h-5">
+                {/* Sun Icon */}
+                <Sun
+                    className={`
+                        absolute inset-0 w-5 h-5 text-amber-500
+                        transition-all duration-300 ease-in-out
+                        ${theme === 'light'
+                            ? 'opacity-100 rotate-0 scale-100'
+                            : 'opacity-0 -rotate-90 scale-75'
+                        }
+                    `}
+                />
+                {/* Moon Icon */}
+                <Moon
+                    className={`
+                        absolute inset-0 w-5 h-5 text-teal-400
+                        transition-all duration-300 ease-in-out
+                        ${theme === 'dark'
+                            ? 'opacity-100 rotate-0 scale-100'
+                            : 'opacity-0 rotate-90 scale-75'
+                        }
+                    `}
+                />
+            </div>
+        </button>
+    )
+}
 
 export default function Navbar({ onLoginClick }) {
     const router = useRouter()
@@ -46,7 +98,7 @@ export default function Navbar({ onLoginClick }) {
     // Render landing page navigation
     if (pathname === '/') {
         return (
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-charcoal-900/80 backdrop-blur-xl border-b border-charcoal-700/50">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
@@ -69,7 +121,7 @@ export default function Navbar({ onLoginClick }) {
                                 <a
                                     key={item.href}
                                     href={item.href}
-                                    className="text-gray-400 hover:text-teal-400 transition-colors text-sm font-medium"
+                                    className="text-muted-foreground hover:text-teal-500 transition-colors text-sm font-medium"
                                 >
                                     {item.label}
                                 </a>
@@ -77,9 +129,12 @@ export default function Navbar({ onLoginClick }) {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-4">
-                            <Link href="/status">
-                                <Button variant="ghost" className="text-gray-400 hover:text-teal-400 hover:bg-teal-500/10 text-sm">
+                        <div className="flex items-center gap-3">
+                            {/* Theme Toggle */}
+                            <ThemeToggle />
+
+                            <Link href="/status" className="hidden sm:block">
+                                <Button variant="ghost" className="text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 text-sm">
                                     Check Status
                                 </Button>
                             </Link>
@@ -93,7 +148,7 @@ export default function Navbar({ onLoginClick }) {
                             {/* Mobile Menu Button */}
                             <button
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                className="md:hidden p-2 rounded-lg text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-colors"
+                                className="md:hidden p-2 rounded-lg text-foreground hover:text-teal-500 hover:bg-secondary transition-colors"
                             >
                                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                             </button>
@@ -102,23 +157,23 @@ export default function Navbar({ onLoginClick }) {
 
                     {/* Mobile Navigation */}
                     {isMenuOpen && (
-                        <div className="md:hidden py-4 border-t border-charcoal-700">
+                        <div className="md:hidden py-4 border-t border-border">
                             <div className="flex flex-col gap-1">
                                 {landingNavItems.map((item) => (
                                     <a
                                         key={item.href}
                                         href={item.href}
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-all duration-200"
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-foreground hover:text-teal-500 hover:bg-secondary transition-all duration-200"
                                     >
                                         {item.label}
                                     </a>
                                 ))}
-                                <div className="border-t border-charcoal-700 mt-2 pt-2">
+                                <div className="border-t border-border mt-2 pt-2">
                                     <Link
                                         href="/status"
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-all duration-200"
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-foreground hover:text-teal-500 hover:bg-secondary transition-all duration-200"
                                     >
                                         Check Status
                                     </Link>
@@ -142,7 +197,7 @@ export default function Navbar({ onLoginClick }) {
 
     // Render app navigation (for other pages)
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-charcoal-800/95 backdrop-blur-xl border-b border-charcoal-700/50">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -167,7 +222,7 @@ export default function Navbar({ onLoginClick }) {
                                     href={item.href}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                                         ? 'bg-teal-600 text-white'
-                                        : 'text-gray-300 hover:text-teal-400 hover:bg-charcoal-700'
+                                        : 'text-muted-foreground hover:text-teal-500 hover:bg-secondary'
                                         }`}
                                 >
                                     <item.icon className="w-4 h-4" />
@@ -179,10 +234,13 @@ export default function Navbar({ onLoginClick }) {
 
                     {/* User Menu */}
                     <div className="flex items-center gap-3">
+                        {/* Theme Toggle */}
+                        <ThemeToggle />
+
                         {user && (
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-all duration-200"
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-teal-500 hover:bg-secondary transition-all duration-200"
                             >
                                 <LogOut className="w-4 h-4" />
                                 <span className="hidden sm:inline">Logout</span>
@@ -192,7 +250,7 @@ export default function Navbar({ onLoginClick }) {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="md:hidden p-2 rounded-lg text-gray-300 hover:text-teal-400 hover:bg-charcoal-700 transition-colors"
+                            className="md:hidden p-2 rounded-lg text-foreground hover:text-teal-500 hover:bg-secondary transition-colors"
                         >
                             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </button>
@@ -201,7 +259,7 @@ export default function Navbar({ onLoginClick }) {
 
                 {/* Mobile Navigation */}
                 {isMenuOpen && (
-                    <div className="md:hidden py-4 border-t border-charcoal-700">
+                    <div className="md:hidden py-4 border-t border-border">
                         <div className="flex flex-col gap-1">
                             {appNavItems.map((item) => {
                                 const isActive = pathname === item.href
@@ -212,7 +270,7 @@ export default function Navbar({ onLoginClick }) {
                                         onClick={() => setIsMenuOpen(false)}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                                             ? 'bg-teal-600 text-white'
-                                            : 'text-gray-300 hover:text-teal-400 hover:bg-charcoal-700'
+                                            : 'text-foreground hover:text-teal-500 hover:bg-secondary'
                                             }`}
                                     >
                                         <item.icon className="w-5 h-5" />

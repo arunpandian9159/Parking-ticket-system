@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    /* Teal & Dark Gray Theme */
+    /* Default Dark Theme - Teal & Dark Gray */
     --background: 220 13% 10%;
     --foreground: 0 0% 98%;
     --card: 220 13% 13%;
@@ -47,6 +47,41 @@
     --charcoal-700: 220 13% 15%;
     --charcoal-800: 220 13% 13%;
     --charcoal-900: 220 13% 10%;
+  }
+
+  /* Light Theme */
+  [data-theme="light"] {
+    --background: 0 0% 100%;
+    --foreground: 220 13% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 10%;
+    --primary: 175 84% 32%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 13% 96%;
+    --secondary-foreground: 220 13% 20%;
+    --muted: 220 13% 96%;
+    --muted-foreground: 220 13% 40%;
+    --accent: 175 84% 32%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
+    --ring: 175 84% 40%;
+
+    /* Light theme charcoal overrides */
+    --charcoal-50: 220 13% 10%;
+    --charcoal-100: 220 13% 15%;
+    --charcoal-200: 220 13% 20%;
+    --charcoal-300: 220 13% 40%;
+    --charcoal-400: 220 13% 60%;
+    --charcoal-500: 220 13% 70%;
+    --charcoal-600: 220 13% 85%;
+    --charcoal-700: 220 13% 92%;
+    --charcoal-800: 220 13% 96%;
+    --charcoal-900: 0 0% 100%;
   }
 }
 
@@ -187,6 +222,20 @@
   }
 }
 
+@keyframes theme-switch {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(0.9) rotate(180deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
 .animate-shake {
   animation: shake 0.5s ease-in-out;
 }
@@ -208,6 +257,10 @@
   animation: teal-glow 2s ease-in-out infinite;
 }
 
+.animate-theme-switch {
+  animation: theme-switch 0.5s ease-in-out;
+}
+
 /* Teal gradient utility */
 .bg-teal-gradient {
   background: linear-gradient(135deg, #06b6d4 0%, #0f766e 100%);
@@ -226,7 +279,7 @@
 
 /* Focus ring for accessibility - updated for teal */
 .focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-charcoal-900;
+  @apply focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2;
 }
 
 /* Smooth transitions for all interactive elements */
@@ -234,12 +287,17 @@
   @apply transition-all duration-300 ease-out;
 }
 
+/* Theme transition */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Fix browser autofill background for dark theme */
 /* Make autofill background transparent to match input styling */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+:root input:-webkit-autofill,
+:root input:-webkit-autofill:hover,
+:root input:-webkit-autofill:focus,
+:root input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
   -webkit-text-fill-color: #ffffff !important;
   caret-color: #ffffff !important;
@@ -248,45 +306,62 @@ input:-webkit-autofill:active {
   transition-delay: 9999s;
 }
 
+/* Light theme autofill */
+[data-theme="light"] input:-webkit-autofill,
+[data-theme="light"] input:-webkit-autofill:hover,
+[data-theme="light"] input:-webkit-autofill:focus,
+[data-theme="light"] input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  caret-color: #1f2937 !important;
+}
+
 /* Firefox autofill override */
-input:-moz-autofill,
-input:-moz-autofill:hover,
-input:-moz-autofill:focus {
+:root input:-moz-autofill,
+:root input:-moz-autofill:hover,
+:root input:-moz-autofill:focus {
   box-shadow: 0 0 0 1000px transparent inset !important;
   -moz-text-fill-color: #ffffff !important;
   background-color: transparent !important;
 }
 
-/* General input styling for dark theme */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  background-color: transparent !important;
-  color: #ffffff;
-}
-
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="password"]::placeholder {
-  color: rgba(156, 163, 175, 0.5);
+[data-theme="light"] input:-moz-autofill,
+[data-theme="light"] input:-moz-autofill:hover,
+[data-theme="light"] input:-moz-autofill:focus {
+  box-shadow: 0 0 0 1000px white inset !important;
+  -moz-text-fill-color: #1f2937 !important;
 }
 
 /* Custom scrollbar for dark theme */
-::-webkit-scrollbar {
+:root::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
+:root::-webkit-scrollbar-track {
   background: hsl(220 13% 13%);
 }
 
-::-webkit-scrollbar-thumb {
+:root::-webkit-scrollbar-thumb {
   background: hsl(220 13% 25%);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+:root::-webkit-scrollbar-thumb:hover {
+  background: hsl(175 84% 40%);
+}
+
+/* Light theme scrollbar */
+[data-theme="light"]::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+[data-theme="light"]::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+[data-theme="light"]::-webkit-scrollbar-thumb:hover {
   background: hsl(175 84% 40%);
 }
 

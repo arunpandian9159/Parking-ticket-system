@@ -62,8 +62,8 @@ function AnimatedCounter({ end, duration = 2000, suffix = '', prefix = '' }) {
 function FloatingBadge({ children, className = "" }) {
     return (
         <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-teal-500/10 to-cyan-500/10 border border-teal-500/20 backdrop-blur-sm ${className}`}>
-            <Sparkles className="w-4 h-4 text-teal-400" />
-            <span className="text-sm font-medium text-teal-300">{children}</span>
+            <Sparkles className="w-4 h-4 text-teal-500" />
+            <span className="text-sm font-medium text-teal-600 dark:text-teal-300">{children}</span>
         </div>
     )
 }
@@ -74,14 +74,14 @@ function TestimonialCard({ quote, author, role, company, avatar }) {
         <SpotlightCard className="p-8" spotlightColor="rgba(6, 182, 212, 0.15)">
             <div className="relative z-10">
                 <Quote className="w-10 h-10 text-teal-500/30 mb-4" />
-                <p className="text-gray-300 text-lg leading-relaxed mb-6">"{quote}"</p>
+                <p className="text-muted-foreground text-lg leading-relaxed mb-6">"{quote}"</p>
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-lg">
                         {avatar}
                     </div>
                     <div>
-                        <p className="font-semibold text-white">{author}</p>
-                        <p className="text-sm text-gray-400">{role} · {company}</p>
+                        <p className="font-semibold text-foreground">{author}</p>
+                        <p className="text-sm text-muted-foreground">{role} · {company}</p>
                     </div>
                 </div>
             </div>
@@ -104,24 +104,24 @@ function PricingCard({ title, price, description, features, popular = false, cta
                 </div>
             )}
             <div className="relative z-10">
-                <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-                <p className="text-gray-400 text-sm mb-6">{description}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">{title}</h3>
+                <p className="text-muted-foreground text-sm mb-6">{description}</p>
                 <div className="mb-6">
-                    <span className="text-4xl font-bold text-white">{price}</span>
-                    {price !== "Custom" && <span className="text-gray-400 ml-2">/month</span>}
+                    <span className="text-4xl font-bold text-foreground">{price}</span>
+                    {price !== "Custom" && <span className="text-muted-foreground ml-2">/month</span>}
                 </div>
                 <ul className="space-y-4 mb-8">
                     {features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-3">
-                            <CheckCircle2 className="w-5 h-5 text-teal-400 flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-300 text-sm">{feature}</span>
+                            <CheckCircle2 className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" />
+                            <span className="text-muted-foreground text-sm">{feature}</span>
                         </li>
                     ))}
                 </ul>
                 <Button
                     className={`w-full py-3 transition-all duration-300 hover:scale-[1.02] ${popular
                         ? 'bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500'
-                        : 'bg-charcoal-700 hover:bg-charcoal-600 border border-charcoal-600'
+                        : 'bg-secondary hover:bg-secondary/80 border border-border'
                         }`}
                 >
                     {ctaText}
@@ -136,17 +136,17 @@ function StepCard({ number, icon: Icon, title, description }) {
     return (
         <div className="relative group">
             <div className="absolute -inset-px bg-gradient-to-r from-teal-500/20 to-cyan-500/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative bg-charcoal-800/80 border border-charcoal-700 rounded-2xl p-8 h-full">
+            <div className="relative bg-card border border-border rounded-2xl p-8 h-full">
                 <div className="flex items-center gap-4 mb-6">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-xl">
                         {number}
                     </div>
-                    <div className="w-12 h-12 rounded-xl bg-charcoal-700 flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-teal-400" />
+                    <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-teal-500" />
                     </div>
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">{title}</h3>
-                <p className="text-gray-400 leading-relaxed">{description}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{description}</p>
             </div>
         </div>
     )
@@ -298,13 +298,13 @@ export default function LandingPage() {
     ]
 
     return (
-        <div className="min-h-screen bg-charcoal-900 text-white overflow-x-hidden">
+        <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
             <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
             {/* Navigation */}
             <Navbar onLoginClick={() => setIsLoginOpen(true)} />
 
             {/* Hero Section */}
-            <section className="relative isolate pt-32 sm:pt-40 lg:pt-48 pb-16 bg-charcoal-900">
+            <section className="relative isolate pt-32 sm:pt-40 lg:pt-48 pb-16 bg-background">
                 <FadeIn className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
                     <div className="mx-auto max-w-3xl">
                         <FloatingBadge className="mb-8">Trusted by 500+ Parking Facilities</FloatingBadge>
@@ -315,9 +315,9 @@ export default function LandingPage() {
                         >
                             Smart Parking Management
                         </GradientText>
-                        <p className="mt-6 text-xl leading-8 text-gray-300 max-w-2xl mx-auto">
+                        <p className="mt-6 text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
                             Transform your parking operations with AI-powered ticketing, real-time analytics,
-                            and seamless vehicle tracking. Increase revenue by up to <span className="text-teal-400 font-semibold">40%</span>.
+                            and seamless vehicle tracking. Increase revenue by up to <span className="text-teal-500 font-semibold">40%</span>.
                         </p>
                         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Button
@@ -330,13 +330,13 @@ export default function LandingPage() {
                             <Link href="/status">
                                 <Button
                                     variant="outline"
-                                    className="text-white border-teal-500/30 hover:bg-teal-500/10 hover:border-teal-400/50 px-8 py-6 text-lg transition-all duration-300 hover:scale-105"
+                                    className="text-foreground border-teal-500/30 hover:bg-teal-500/10 hover:border-teal-400/50 px-8 py-6 text-lg transition-all duration-300 hover:scale-105"
                                 >
                                     Check Vehicle Status
                                 </Button>
                             </Link>
                         </div>
-                        <p className="mt-4 text-sm text-gray-500">
+                        <p className="mt-4 text-sm text-muted-foreground">
                             No credit card required · 14-day free trial · Cancel anytime
                         </p>
                     </div>
@@ -346,37 +346,37 @@ export default function LandingPage() {
                 <FadeIn delay={0.3} className="mx-auto max-w-6xl px-6 lg:px-8 mt-20">
                     <div className="relative">
                         <div className="absolute -inset-4 bg-gradient-to-r from-teal-500/20 via-cyan-500/20 to-teal-500/20 rounded-3xl blur-3xl" />
-                        <div className="relative rounded-2xl border border-charcoal-700 bg-charcoal-800/80 backdrop-blur-xl overflow-hidden shadow-2xl">
-                            <div className="flex items-center gap-2 px-4 py-3 border-b border-charcoal-700 bg-charcoal-800/50">
+                        <div className="relative rounded-2xl border border-border bg-card backdrop-blur-xl overflow-hidden shadow-2xl">
+                            <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary/50">
                                 <div className="w-3 h-3 rounded-full bg-red-500" />
                                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                                 <div className="w-3 h-3 rounded-full bg-green-500" />
-                                <span className="ml-4 text-xs text-gray-500">dashboard.parksmart.io</span>
+                                <span className="ml-4 text-xs text-muted-foreground">dashboard.parksmart.io</span>
                             </div>
                             <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="bg-gradient-to-br from-teal-500/10 to-teal-500/5 border border-teal-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
-                                        <span className="text-gray-400 text-sm">Today's Revenue</span>
-                                        <TrendingUp className="w-5 h-5 text-teal-400" />
+                                        <span className="text-muted-foreground text-sm">Today's Revenue</span>
+                                        <TrendingUp className="w-5 h-5 text-teal-500" />
                                     </div>
-                                    <p className="text-3xl font-bold text-white">₹24,500</p>
-                                    <p className="text-teal-400 text-sm mt-2">+12% from yesterday</p>
+                                    <p className="text-3xl font-bold text-foreground">₹24,500</p>
+                                    <p className="text-teal-500 text-sm mt-2">+12% from yesterday</p>
                                 </div>
                                 <div className="bg-gradient-to-br from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
-                                        <span className="text-gray-400 text-sm">Active Vehicles</span>
-                                        <Car className="w-5 h-5 text-cyan-400" />
+                                        <span className="text-muted-foreground text-sm">Active Vehicles</span>
+                                        <Car className="w-5 h-5 text-cyan-500" />
                                     </div>
-                                    <p className="text-3xl font-bold text-white">42</p>
-                                    <p className="text-gray-400 text-sm mt-2">8 slots available</p>
+                                    <p className="text-3xl font-bold text-foreground">42</p>
+                                    <p className="text-muted-foreground text-sm mt-2">8 slots available</p>
                                 </div>
                                 <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
-                                        <span className="text-gray-400 text-sm">Tickets Issued</span>
-                                        <CreditCard className="w-5 h-5 text-emerald-400" />
+                                        <span className="text-muted-foreground text-sm">Tickets Issued</span>
+                                        <CreditCard className="w-5 h-5 text-emerald-500" />
                                     </div>
-                                    <p className="text-3xl font-bold text-white">156</p>
-                                    <p className="text-gray-400 text-sm mt-2">Today's count</p>
+                                    <p className="text-3xl font-bold text-foreground">156</p>
+                                    <p className="text-muted-foreground text-sm mt-2">Today's count</p>
                                 </div>
                             </div>
                         </div>
@@ -385,19 +385,19 @@ export default function LandingPage() {
             </section>
 
             {/* Stats Section */}
-            <section className="py-16 border-y border-charcoal-700/50 bg-gradient-to-b from-charcoal-900 to-charcoal-800/50">
+            <section className="py-16 border-y border-border bg-gradient-to-b from-background to-secondary/30">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                         {stats.map((stat, index) => (
                             <FadeIn key={index} delay={index * 0.1}>
                                 <div className="text-center group">
-                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border border-charcoal-700 mb-4 group-hover:scale-110 transition-transform duration-300">
-                                        <stat.icon className="w-7 h-7 text-teal-400" />
+                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border border-border mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <stat.icon className="w-7 h-7 text-teal-500" />
                                     </div>
-                                    <p className="text-4xl sm:text-5xl font-bold text-white mb-2">
+                                    <p className="text-4xl sm:text-5xl font-bold text-foreground mb-2">
                                         <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </p>
-                                    <p className="text-gray-400 text-sm">{stat.label}</p>
+                                    <p className="text-muted-foreground text-sm">{stat.label}</p>
                                 </div>
                             </FadeIn>
                         ))}
@@ -408,13 +408,13 @@ export default function LandingPage() {
             {/* Features Grid */}
             <section id="features" className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
                 <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-teal-500/10 text-teal-400 rounded-full mb-4">
+                    <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-teal-500/10 text-teal-500 rounded-full mb-4">
                         Features
                     </span>
-                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-5xl mb-6">
+                    <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">
                         Everything you need to manage parking
                     </h2>
-                    <p className="text-lg text-gray-400">
+                    <p className="text-lg text-muted-foreground">
                         Powerful tools designed to streamline operations, increase revenue, and delight your customers.
                     </p>
                 </FadeIn>
@@ -427,11 +427,11 @@ export default function LandingPage() {
                                         <div className={`rounded-xl bg-gradient-to-br ${feature.gradient} p-3 mb-6 group-hover:scale-110 transition-transform duration-300`}>
                                             <feature.icon className="h-6 w-6 text-white" aria-hidden="true" />
                                         </div>
-                                        <h3 className="text-xl font-semibold leading-7 text-white mb-3">{feature.title}</h3>
-                                        <p className="flex-auto text-base leading-7 text-gray-400">
+                                        <h3 className="text-xl font-semibold leading-7 text-foreground mb-3">{feature.title}</h3>
+                                        <p className="flex-auto text-base leading-7 text-muted-foreground">
                                             {feature.description}
                                         </p>
-                                        <div className="mt-6 flex items-center text-teal-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div className="mt-6 flex items-center text-teal-500 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                             Learn more <ChevronRight className="w-4 h-4 ml-1" />
                                         </div>
                                     </div>
@@ -443,16 +443,16 @@ export default function LandingPage() {
             </section>
 
             {/* How It Works */}
-            <section id="how-it-works" className="py-24 sm:py-32 bg-gradient-to-b from-charcoal-900 to-charcoal-800/30">
+            <section id="how-it-works" className="py-24 sm:py-32 bg-gradient-to-b from-background to-secondary/30">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 rounded-full mb-4">
+                        <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-500/10 text-cyan-500 rounded-full mb-4">
                             How It Works
                         </span>
-                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-5xl mb-6">
+                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">
                             Simple, efficient, and powerful
                         </h2>
-                        <p className="text-lg text-gray-400">
+                        <p className="text-lg text-muted-foreground">
                             Get your parking operations running smoothly in four simple steps.
                         </p>
                     </FadeIn>
@@ -474,13 +474,13 @@ export default function LandingPage() {
             {/* Testimonials */}
             <section id="testimonials" className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
                 <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 rounded-full mb-4">
+                    <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-emerald-500/10 text-emerald-500 rounded-full mb-4">
                         Testimonials
                     </span>
-                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-5xl mb-6">
+                    <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">
                         Loved by parking operators everywhere
                     </h2>
-                    <p className="text-lg text-gray-400">
+                    <p className="text-lg text-muted-foreground">
                         See what our customers have to say about their experience with ParkSmart.
                     </p>
                 </FadeIn>
@@ -492,10 +492,10 @@ export default function LandingPage() {
                     ))}
                 </div>
                 <FadeIn delay={0.4} className="mt-12 text-center">
-                    <div className="inline-flex items-center gap-2 text-gray-400">
+                    <div className="inline-flex items-center gap-2 text-muted-foreground">
                         <div className="flex -space-x-2">
                             {[...Array(5)].map((_, i) => (
-                                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 border-2 border-charcoal-900 flex items-center justify-center text-xs text-white font-medium">
+                                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 border-2 border-background flex items-center justify-center text-xs text-white font-medium">
                                     {String.fromCharCode(65 + i)}
                                 </div>
                             ))}
@@ -506,16 +506,16 @@ export default function LandingPage() {
             </section>
 
             {/* Pricing */}
-            <section id="pricing" className="py-24 sm:py-32 bg-gradient-to-b from-charcoal-900 to-charcoal-800/30">
+            <section id="pricing" className="py-24 sm:py-32 bg-gradient-to-b from-background to-secondary/30">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-400 rounded-full mb-4">
+                        <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-500 rounded-full mb-4">
                             Pricing
                         </span>
-                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-5xl mb-6">
+                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">
                             Plans that scale with your business
                         </h2>
-                        <p className="text-lg text-gray-400">
+                        <p className="text-lg text-muted-foreground">
                             Choose the perfect plan for your parking facility. All plans include a 14-day free trial.
                         </p>
                     </FadeIn>
@@ -563,7 +563,7 @@ export default function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className="border-t border-charcoal-700/50 bg-charcoal-900">
+            <footer className="border-t border-border bg-background">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                         <div className="col-span-2 md:col-span-1">
@@ -573,59 +573,59 @@ export default function LandingPage() {
                                 </div>
                                 <span className="text-xl font-bold bg-gradient-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">ParkSmart</span>
                             </div>
-                            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                                 Modern parking management solution for the digital age. Streamline operations and maximize revenue.
                             </p>
                             <div className="flex items-center gap-4">
-                                <a href="#" className="w-10 h-10 rounded-lg bg-charcoal-700 hover:bg-charcoal-600 flex items-center justify-center transition-colors">
-                                    <Globe className="w-5 h-5 text-gray-400" />
+                                <a href="#" className="w-10 h-10 rounded-lg bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors">
+                                    <Globe className="w-5 h-5 text-muted-foreground" />
                                 </a>
-                                <a href="#" className="w-10 h-10 rounded-lg bg-charcoal-700 hover:bg-charcoal-600 flex items-center justify-center transition-colors">
-                                    <Mail className="w-5 h-5 text-gray-400" />
+                                <a href="#" className="w-10 h-10 rounded-lg bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors">
+                                    <Mail className="w-5 h-5 text-muted-foreground" />
                                 </a>
-                                <a href="#" className="w-10 h-10 rounded-lg bg-charcoal-700 hover:bg-charcoal-600 flex items-center justify-center transition-colors">
-                                    <Phone className="w-5 h-5 text-gray-400" />
+                                <a href="#" className="w-10 h-10 rounded-lg bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors">
+                                    <Phone className="w-5 h-5 text-muted-foreground" />
                                 </a>
                             </div>
                         </div>
                         <div>
-                            <h4 className="text-white font-semibold mb-4">Product</h4>
+                            <h4 className="text-foreground font-semibold mb-4">Product</h4>
                             <ul className="space-y-3">
-                                <li><a href="#features" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Features</a></li>
-                                <li><a href="#pricing" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Pricing</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">API Docs</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Changelog</a></li>
+                                <li><a href="#features" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Features</a></li>
+                                <li><a href="#pricing" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Pricing</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">API Docs</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Changelog</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-white font-semibold mb-4">Company</h4>
+                            <h4 className="text-foreground font-semibold mb-4">Company</h4>
                             <ul className="space-y-3">
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">About Us</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Careers</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Blog</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Contact</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">About Us</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Careers</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Blog</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Contact</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-white font-semibold mb-4">Legal</h4>
+                            <h4 className="text-foreground font-semibold mb-4">Legal</h4>
                             <ul className="space-y-3">
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Privacy Policy</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Terms of Service</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Cookie Policy</a></li>
-                                <li><a href="#" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">Security</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Privacy Policy</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Terms of Service</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Cookie Policy</a></li>
+                                <li><a href="#" className="text-muted-foreground hover:text-teal-500 text-sm transition-colors">Security</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div className="pt-8 border-t border-charcoal-700/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-gray-500 text-sm">
+                    <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p className="text-muted-foreground text-sm">
                             © {new Date().getFullYear()} ParkSmart. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
-                            <span className="flex items-center gap-2 text-sm text-gray-500">
+                            <span className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <BadgeCheck className="w-4 h-4 text-teal-500" />
                                 SSL Secured
                             </span>
-                            <span className="flex items-center gap-2 text-sm text-gray-500">
+                            <span className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <ShieldCheck className="w-4 h-4 text-teal-500" />
                                 GDPR Compliant
                             </span>

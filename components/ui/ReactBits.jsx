@@ -44,7 +44,7 @@ export function GradientText({ children, className = "", colors = ["#06b6d4", "#
                     }}
                 >
                     <div
-                        className="absolute inset-0 bg-charcoal-900 rounded-[1.25rem] z-[-1]"
+                        className="absolute inset-0 bg-background rounded-[1.25rem] z-[-1]"
                         style={{
                             width: "calc(100% - 2px)",
                             height: "calc(100% - 2px)",
@@ -69,7 +69,7 @@ export function GradientText({ children, className = "", colors = ["#06b6d4", "#
 }
 
 
-// Spotlight Card - Updated with Teal spotlight
+// Spotlight Card - Updated with theme-aware colors
 export function SpotlightCard({ children, className = "", spotlightColor = "rgba(6, 182, 212, 0.15)" }) {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -83,7 +83,7 @@ export function SpotlightCard({ children, className = "", spotlightColor = "rgba
     return (
         <div
             className={cn(
-                "group relative border border-charcoal-700 bg-charcoal-800 overflow-hidden rounded-xl",
+                "group relative border border-border bg-card overflow-hidden rounded-xl",
                 className
             )}
             onMouseMove={handleMouseMove}

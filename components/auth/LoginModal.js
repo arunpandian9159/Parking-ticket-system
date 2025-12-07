@@ -37,7 +37,7 @@ function PasswordStrengthBar({ password }) {
                         key={i}
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: i < strength ? 1 : 0.3 }}
-                        className={`h-full flex-1 rounded-full origin-left transition-all duration-300 ${i < strength ? colors[strength - 1] : 'bg-charcoal-600'
+                        className={`h-full flex-1 rounded-full origin-left transition-all duration-300 ${i < strength ? colors[strength - 1] : 'bg-secondary'
                             }`}
                     />
                 ))}
@@ -45,10 +45,10 @@ function PasswordStrengthBar({ password }) {
             <motion.p
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`text-xs mt-1.5 ${strength <= 1 ? 'text-red-400' :
-                    strength <= 2 ? 'text-orange-400' :
-                        strength <= 3 ? 'text-yellow-400' :
-                            strength === 4 ? 'text-teal-400' : 'text-green-400'
+                className={`text-xs mt-1.5 ${strength <= 1 ? 'text-red-500' :
+                    strength <= 2 ? 'text-orange-500' :
+                        strength <= 3 ? 'text-yellow-500' :
+                            strength === 4 ? 'text-teal-500' : 'text-green-500'
                     }`}
             >
                 Password strength: {levels[strength - 1] || 'Too Short'}
@@ -84,11 +84,11 @@ function FloatingInput({
                 <div className={`relative flex items-center border rounded-xl transition-all duration-300 ${error
                     ? 'border-red-500/50 bg-red-500/5'
                     : isFocused
-                        ? 'border-teal-500/50 bg-charcoal-700/50'
-                        : 'border-charcoal-600 bg-charcoal-700/30 hover:border-charcoal-500'
+                        ? 'border-teal-500/50 bg-secondary/50'
+                        : 'border-border bg-secondary/30 hover:border-muted-foreground'
                     }`}>
                     {/* Icon */}
-                    <div className={`pl-4 transition-colors duration-300 ${isFocused ? 'text-teal-400' : 'text-gray-500'
+                    <div className={`pl-4 transition-colors duration-300 ${isFocused ? 'text-teal-500' : 'text-muted-foreground'
                         }`}>
                         <Icon className="w-5 h-5" />
                     </div>
@@ -100,14 +100,14 @@ function FloatingInput({
                         onChange={onChange}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
-                        className="w-full px-4 py-4 pt-6 bg-transparent text-white focus:outline-none text-sm"
+                        className="w-full px-4 py-4 pt-6 bg-transparent text-foreground focus:outline-none text-sm"
                         {...props}
                     />
 
                     {/* Floating Label */}
                     <label className={`absolute left-12 transition-all duration-300 pointer-events-none ${isActive
-                        ? 'top-2 text-xs text-teal-400'
-                        : 'top-1/2 -translate-y-1/2 text-sm text-gray-500'
+                        ? 'top-2 text-xs text-teal-500'
+                        : 'top-1/2 -translate-y-1/2 text-sm text-muted-foreground'
                         }`}>
                         {label}
                     </label>
@@ -117,7 +117,7 @@ function FloatingInput({
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="pr-4 text-gray-500 hover:text-gray-300 transition-colors"
+                            className="pr-4 text-muted-foreground hover:text-foreground transition-colors"
                         >
                             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
@@ -132,7 +132,7 @@ function FloatingInput({
                         initial={{ opacity: 0, y: -5, height: 0 }}
                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                         exit={{ opacity: 0, y: -5, height: 0 }}
-                        className="text-red-400 text-xs mt-1.5 flex items-center gap-1"
+                        className="text-red-500 text-xs mt-1.5 flex items-center gap-1"
                     >
                         <AlertCircle className="w-3 h-3" />
                         {error}
@@ -149,7 +149,7 @@ function TabButton({ active, onClick, children }) {
         <button
             type="button"
             onClick={onClick}
-            className={`relative flex-1 py-3 text-sm font-medium transition-colors duration-300 ${active ? 'text-white' : 'text-gray-400 hover:text-gray-300'
+            className={`relative flex-1 py-3 text-sm font-medium transition-colors duration-300 ${active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
         >
             {children}
@@ -172,7 +172,7 @@ function SocialButton({ icon: Icon, label, onClick, disabled }) {
             type="button"
             onClick={onClick}
             disabled={disabled}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-charcoal-600 bg-charcoal-700/30 hover:bg-charcoal-700 hover:border-charcoal-500 transition-all duration-300 text-gray-300 hover:text-white group disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-border bg-secondary/30 hover:bg-secondary hover:border-muted-foreground transition-all duration-300 text-muted-foreground hover:text-foreground group disabled:opacity-50 disabled:cursor-not-allowed"
         >
             <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
             <span className="text-sm font-medium">{label}</span>
@@ -333,7 +333,7 @@ export default function LoginModal({ isOpen, onClose }) {
                             <div className="absolute -inset-1 bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-600 rounded-3xl blur-xl opacity-50 animate-pulse" />
 
                             {/* Main Card */}
-                            <div className="relative bg-charcoal-800/95 backdrop-blur-xl rounded-2xl border border-charcoal-700 shadow-2xl overflow-hidden">
+                            <div className="relative bg-card backdrop-blur-xl rounded-2xl border border-border shadow-2xl overflow-hidden">
                                 {/* Decorative gradient orbs */}
                                 <div className="absolute -top-24 -right-24 w-48 h-48 bg-teal-500/20 rounded-full blur-3xl" />
                                 <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl" />
@@ -341,7 +341,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                 {/* Close button */}
                                 <button
                                     onClick={onClose}
-                                    className="absolute right-4 top-4 z-10 p-2 rounded-xl text-gray-400 hover:text-white hover:bg-charcoal-700 transition-all duration-300 group"
+                                    className="absolute right-4 top-4 z-10 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-300 group"
                                 >
                                     <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                                 </button>
@@ -366,7 +366,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.2 }}
-                                            className="text-2xl font-bold text-white mb-2"
+                                            className="text-2xl font-bold text-foreground mb-2"
                                         >
                                             Welcome to ParkSmart
                                         </motion.h2>
@@ -374,7 +374,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.3 }}
-                                            className="text-gray-400 text-sm"
+                                            className="text-muted-foreground text-sm"
                                         >
                                             {isSignUp
                                                 ? 'Create your account to get started'
@@ -383,7 +383,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                     </div>
 
                                     {/* Tab Switcher */}
-                                    <div className="flex border-b border-charcoal-700 mb-6">
+                                    <div className="flex border-b border-border mb-6">
                                         <TabButton
                                             active={!isSignUp}
                                             onClick={() => {
@@ -498,8 +498,8 @@ export default function LoginModal({ isOpen, onClose }) {
                                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                                                     className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3"
                                                 >
-                                                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                                                    <p className="text-red-400 text-sm">{error}</p>
+                                                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                                    <p className="text-red-500 text-sm">{error}</p>
                                                 </motion.div>
                                             )}
                                             {success && (
@@ -509,8 +509,8 @@ export default function LoginModal({ isOpen, onClose }) {
                                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                                                     className="p-4 bg-teal-500/10 border border-teal-500/20 rounded-xl flex items-start gap-3"
                                                 >
-                                                    <CheckCircle2 className="w-5 h-5 text-teal-400 flex-shrink-0 mt-0.5" />
-                                                    <p className="text-teal-400 text-sm">{success}</p>
+                                                    <CheckCircle2 className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" />
+                                                    <p className="text-teal-500 text-sm">{success}</p>
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
@@ -520,7 +520,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                             <div className="text-right">
                                                 <button
                                                     type="button"
-                                                    className="text-sm text-teal-400 hover:text-teal-300 transition-colors"
+                                                    className="text-sm text-teal-500 hover:text-teal-400 transition-colors"
                                                 >
                                                     Forgot password?
                                                 </button>
@@ -550,10 +550,10 @@ export default function LoginModal({ isOpen, onClose }) {
                                     {/* Divider */}
                                     <div className="relative my-6">
                                         <div className="absolute inset-0 flex items-center">
-                                            <div className="w-full border-t border-charcoal-700" />
+                                            <div className="w-full border-t border-border" />
                                         </div>
                                         <div className="relative flex justify-center text-sm">
-                                            <span className="bg-charcoal-800 px-4 text-gray-500">
+                                            <span className="bg-card px-4 text-muted-foreground">
                                                 or continue with
                                             </span>
                                         </div>
@@ -591,7 +591,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ delay: 0.5 }}
-                                        className="text-center text-xs text-gray-500 mt-6 flex items-center justify-center gap-1"
+                                        className="text-center text-xs text-muted-foreground mt-6 flex items-center justify-center gap-1"
                                     >
                                         <Sparkles className="w-3 h-3" />
                                         Secure login powered by Supabase

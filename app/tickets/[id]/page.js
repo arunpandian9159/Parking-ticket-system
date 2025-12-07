@@ -95,7 +95,7 @@ export default function TicketDetailsPage() {
         }
     }
 
-    if (loading) return <div className="p-8 text-center text-gray-400">Loading ticket...</div>
+    if (loading) return <div className="p-8 text-center text-muted-foreground">Loading ticket...</div>
     if (!ticket) return null
 
     return (
@@ -108,8 +108,8 @@ export default function TicketDetailsPage() {
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-white">Ticket Details</h1>
-                        <p className="text-sm text-gray-400">ID: {ticket.id}</p>
+                        <h1 className="text-2xl font-bold text-foreground">Ticket Details</h1>
+                        <p className="text-sm text-muted-foreground">ID: {ticket.id}</p>
                     </div>
                 </div>
                 <div className="flex gap-2">
@@ -131,24 +131,24 @@ export default function TicketDetailsPage() {
                 <div className="flex justify-between items-start">
                     <div className={`
                         inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                        ${ticket.status === 'Paid' ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'}
+                        ${ticket.status === 'Paid' ? 'bg-teal-500/10 text-teal-500 border border-teal-500/20' : 'bg-cyan-500/10 text-cyan-500 border border-cyan-500/20'}
                     `}>
                         {ticket.status === 'Paid' ? <CheckCircle className="w-4 h-4 mr-2" /> : <Clock className="w-4 h-4 mr-2" />}
                         {ticket.status}
                     </div>
                     <div className="text-right">
-                        <div className="text-3xl font-bold text-white">₹{ticket.price}</div>
-                        <div className="text-sm text-gray-400">{ticket.hours} hours</div>
+                        <div className="text-3xl font-bold text-foreground">₹{ticket.price}</div>
+                        <div className="text-sm text-muted-foreground">{ticket.hours} hours</div>
                     </div>
                 </div>
 
                 {/* Fine/Overdue Alert */}
                 {fine > 0 && ticket.status === 'Active' && (
                     <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3">
-                        <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5" />
+                        <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
                         <div>
-                            <h4 className="font-bold text-red-400">Ticket Overdue!</h4>
-                            <p className="text-sm text-red-400/80">
+                            <h4 className="font-bold text-red-500">Ticket Overdue!</h4>
+                            <p className="text-sm text-red-500/80">
                                 Vehicle exceeded time by <strong>{overdueHours} hours</strong>.
                                 <br />
                                 Additional Fine: <strong>₹{fine}</strong>
@@ -159,41 +159,41 @@ export default function TicketDetailsPage() {
 
                 <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                        <h3 className="font-semibold text-white border-b border-charcoal-700 pb-2">Vehicle</h3>
+                        <h3 className="font-semibold text-foreground border-b border-border pb-2">Vehicle</h3>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Plate:</span>
-                                <span className="font-mono font-bold text-white">{ticket.license_plate}</span>
+                                <span className="text-muted-foreground">Plate:</span>
+                                <span className="font-mono font-bold text-foreground">{ticket.license_plate}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Type:</span>
-                                <span className="text-white">{ticket.vehicle_type || 'N/A'}</span>
+                                <span className="text-muted-foreground">Type:</span>
+                                <span className="text-foreground">{ticket.vehicle_type || 'N/A'}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Details:</span>
-                                <span className="text-white">{ticket.vehicle_name} - {ticket.vehicle_color}</span>
+                                <span className="text-muted-foreground">Details:</span>
+                                <span className="text-foreground">{ticket.vehicle_name} - {ticket.vehicle_color}</span>
                             </div>
                         </div>
                     </div>
 
                     <div className="space-y-4">
-                        <h3 className="font-semibold text-white border-b border-charcoal-700 pb-2">Parking</h3>
+                        <h3 className="font-semibold text-foreground border-b border-border pb-2">Parking</h3>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Spot:</span>
-                                <span className="font-bold text-white">{ticket.parking_spot}</span>
+                                <span className="text-muted-foreground">Spot:</span>
+                                <span className="font-bold text-foreground">{ticket.parking_spot}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Entry:</span>
-                                <span className="text-white">{new Date(ticket.created_at).toLocaleString()}</span>
+                                <span className="text-muted-foreground">Entry:</span>
+                                <span className="text-foreground">{new Date(ticket.created_at).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Customer:</span>
-                                <span className="text-white">{ticket.customer_name}</span>
+                                <span className="text-muted-foreground">Customer:</span>
+                                <span className="text-foreground">{ticket.customer_name}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-400">Phone:</span>
-                                <span className="text-white">{ticket.customer_phone}</span>
+                                <span className="text-muted-foreground">Phone:</span>
+                                <span className="text-foreground">{ticket.customer_phone}</span>
                             </div>
                         </div>
                     </div>
