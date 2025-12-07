@@ -18,6 +18,7 @@ export default function MonthlyPassesPage() {
 
     useEffect(() => {
         fetchPasses()
+         
     }, [])
 
     const fetchPasses = async () => {

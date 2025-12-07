@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import { Car, Home, Ticket, Search, User, LogOut, Menu, X } from 'lucide-react'
+import { Car, Home, Ticket, Search, LogOut, Menu, X } from 'lucide-react'
 
 export default function Navbar() {
     const router = useRouter()
@@ -56,8 +56,8 @@ export default function Navbar() {
                                     key={item.href}
                                     href={item.href}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                                            ? 'bg-blue-600 text-white'
-                                            : 'text-gray-300 hover:text-white hover:bg-white/10'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'text-gray-300 hover:text-white hover:bg-white/10'
                                         }`}
                                 >
                                     <item.icon className="w-4 h-4" />
@@ -101,8 +101,8 @@ export default function Navbar() {
                                         href={item.href}
                                         onClick={() => setIsMenuOpen(false)}
                                         className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                                                ? 'bg-blue-600 text-white'
-                                                : 'text-gray-300 hover:text-white hover:bg-white/10'
+                                            ? 'bg-blue-600 text-white'
+                                            : 'text-gray-300 hover:text-white hover:bg-white/10'
                                             }`}
                                     >
                                         <item.icon className="w-5 h-5" />

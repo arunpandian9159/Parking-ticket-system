@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { Search, Clock, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Search, AlertTriangle, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 
 export default function StatusPage() {
@@ -34,7 +34,7 @@ export default function StatusPage() {
                 setTicket(data)
                 calculateLiveBill(data)
             }
-        } catch (err) {
+        } catch {
             setError('No active ticket found for this vehicle.')
         } finally {
             setLoading(false)
@@ -45,16 +45,10 @@ export default function StatusPage() {
         const entryTime = new Date(ticketData.created_at)
         const now = new Date()
         const diffHours = (now - entryTime) / (1000 * 60 * 60)
-
-        let bill = 0
-        const basePrice = Number(ticketData.price) // This is the logic for "pre-calculated" price? 
-        // Actually, in our create logic: price = hours * rate.
-        // If they stay longer, they pay fine.
-        // So current bill is base price + fine.
-
+        const basePrice = Number(ticketData.price)
         const allowedHours = Number(ticketData.hours)
-        let fine = 0
 
+        let fine = 0
         if (diffHours > allowedHours) {
             const extra = diffHours - allowedHours
             fine = 50 + (Math.ceil(extra) * 20)
@@ -64,11 +58,11 @@ export default function StatusPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+        <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-4">
             <div className="w-full max-w-md space-y-8">
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-gray-900">Check Parking Status</h1>
-                    <p className="text-gray-500 mt-2">Enter your vehicle number to check current bill.</p>
+                    <h1 className="text-3xl font-bold text-white">Check Parking Status</h1>
+                    <p className="text-gray-400 mt-2">Enter your vehicle number to check current bill.</p>
                 </div>
 
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">

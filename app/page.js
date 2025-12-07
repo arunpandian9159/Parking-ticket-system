@@ -1,19 +1,19 @@
-'use client'
+&apos;use client&apos;
 
-import { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/Button'
+import { useState, useEffect, useRef } from &apos;react&apos;
+import Link from &apos;next/link&apos;
+import { Button } from &apos;@/components/ui/Button&apos;
 import {
     Car, ShieldCheck, BarChart3, MapPin, Clock, CreditCard,
     Users, Zap, CheckCircle2, ArrowRight, Star, Quote,
     Smartphone, Building2, BadgeCheck, Timer, TrendingUp,
     Mail, Phone, Globe, ChevronRight, Sparkles, Shield
-} from 'lucide-react'
-import { AnimatedBackground, FadeIn, GradientText, SpotlightCard } from '@/components/ui/ReactBits'
-import LoginModal from '@/components/auth/LoginModal'
+} from &apos;lucide-react&apos;
+import { AnimatedBackground, FadeIn, GradientText, SpotlightCard } from &apos;@/components/ui/ReactBits&apos;
+import LoginModal from &apos;@/components/auth/LoginModal&apos;
 
 // Animated Counter Component
-function AnimatedCounter({ end, duration = 2000, suffix = '', prefix = '' }) {
+function AnimatedCounter({ end, duration = 2000, suffix = &apos;&apos;, prefix = &apos;&apos; }) {
     const [count, setCount] = useState(0)
     const countRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
@@ -92,7 +92,7 @@ function TestimonialCard({ quote, author, role, company, avatar }) {
 function PricingCard({ title, price, description, features, popular = false, ctaText = "Get Started" }) {
     return (
         <SpotlightCard
-            className={`p-8 relative ${popular ? 'border-blue-500/50 ring-1 ring-blue-500/20' : ''}`}
+            className={`p-8 relative ${popular ? &apos;border-blue-500/50 ring-1 ring-blue-500/20&apos; : &apos;&apos;}`}
             spotlightColor={popular ? "rgba(59, 130, 246, 0.2)" : "rgba(255, 255, 255, 0.1)"}
         >
             {popular && (
@@ -119,8 +119,8 @@ function PricingCard({ title, price, description, features, popular = false, cta
                 </ul>
                 <Button
                     className={`w-full py-3 transition-all duration-300 hover:scale-[1.02] ${popular
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500'
-                        : 'bg-white/10 hover:bg-white/20 border border-white/10'
+                        ? &apos;bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500&apos;
+                        : &apos;bg-white/10 hover:bg-white/20 border border-white/10&apos;
                         }`}
                 >
                     {ctaText}
@@ -155,77 +155,77 @@ export default function LandingPage() {
     const [isLoginOpen, setIsLoginOpen] = useState(false)
 
     const stats = [
-        { value: 50000, suffix: '+', label: 'Tickets Issued', icon: CreditCard },
-        { value: 99.9, suffix: '%', label: 'Uptime', icon: Zap },
-        { value: 500, suffix: '+', label: 'Parking Zones', icon: MapPin },
-        { value: 24, suffix: '/7', label: 'Support', icon: Users },
+        { value: 50000, suffix: &apos;+&apos;, label: &apos;Tickets Issued&apos;, icon: CreditCard },
+        { value: 99.9, suffix: &apos;%&apos;, label: &apos;Uptime&apos;, icon: Zap },
+        { value: 500, suffix: &apos;+&apos;, label: &apos;Parking Zones&apos;, icon: MapPin },
+        { value: 24, suffix: &apos;/7&apos;, label: &apos;Support&apos;, icon: Users },
     ]
 
     const features = [
         {
             icon: Car,
-            title: 'Vehicle Tracking',
-            description: 'Track license plates, vehicle types, and parking duration automatically with our intelligent OCR-powered system.',
-            color: 'blue',
-            gradient: 'from-blue-500 to-cyan-400'
+            title: &apos;Vehicle Tracking&apos;,
+            description: &apos;Track license plates, vehicle types, and parking duration automatically with our intelligent OCR-powered system.&apos;,
+            color: &apos;blue&apos;,
+            gradient: &apos;from-blue-500 to-cyan-400&apos;
         },
         {
             icon: MapPin,
-            title: 'Smart Mapping',
-            description: 'Visual parking map to see occupied slots and manage capacity efficiently with real-time updates.',
-            color: 'green',
-            gradient: 'from-green-500 to-emerald-400'
+            title: &apos;Smart Mapping&apos;,
+            description: &apos;Visual parking map to see occupied slots and manage capacity efficiently with real-time updates.&apos;,
+            color: &apos;green&apos;,
+            gradient: &apos;from-green-500 to-emerald-400&apos;
         },
         {
             icon: BarChart3,
-            title: 'Revenue Analytics',
-            description: 'Comprehensive dashboards to monitor daily earnings and operational trends to maximize profit.',
-            color: 'purple',
-            gradient: 'from-purple-500 to-pink-400'
+            title: &apos;Revenue Analytics&apos;,
+            description: &apos;Comprehensive dashboards to monitor daily earnings and operational trends to maximize profit.&apos;,
+            color: &apos;purple&apos;,
+            gradient: &apos;from-purple-500 to-pink-400&apos;
         },
         {
             icon: Clock,
-            title: 'Time-Based Billing',
-            description: 'Automatic calculation of parking fees based on duration with customizable hourly rates.',
-            color: 'orange',
-            gradient: 'from-orange-500 to-amber-400'
+            title: &apos;Time-Based Billing&apos;,
+            description: &apos;Automatic calculation of parking fees based on duration with customizable hourly rates.&apos;,
+            color: &apos;orange&apos;,
+            gradient: &apos;from-orange-500 to-amber-400&apos;
         },
         {
             icon: Shield,
-            title: 'Secure & Reliable',
-            description: 'Enterprise-grade security with encrypted data storage and role-based access control.',
-            color: 'red',
-            gradient: 'from-red-500 to-rose-400'
+            title: &apos;Secure & Reliable&apos;,
+            description: &apos;Enterprise-grade security with encrypted data storage and role-based access control.&apos;,
+            color: &apos;red&apos;,
+            gradient: &apos;from-red-500 to-rose-400&apos;
         },
         {
             icon: Smartphone,
-            title: 'Mobile Ready',
-            description: 'Fully responsive design works perfectly on any device - desktop, tablet, or smartphone.',
-            color: 'indigo',
-            gradient: 'from-indigo-500 to-violet-400'
+            title: &apos;Mobile Ready&apos;,
+            description: &apos;Fully responsive design works perfectly on any device - desktop, tablet, or smartphone.&apos;,
+            color: &apos;indigo&apos;,
+            gradient: &apos;from-indigo-500 to-violet-400&apos;
         },
     ]
 
     const steps = [
         {
             icon: Car,
-            title: 'Vehicle Entry',
-            description: 'Officer scans or enters the vehicle license plate and selects the parking zone.'
+            title: &apos;Vehicle Entry&apos;,
+            description: &apos;Officer scans or enters the vehicle license plate and selects the parking zone.&apos;
         },
         {
             icon: CreditCard,
-            title: 'Ticket Generation',
-            description: 'System automatically generates a digital ticket with entry time and estimated cost.'
+            title: &apos;Ticket Generation&apos;,
+            description: &apos;System automatically generates a digital ticket with entry time and estimated cost.&apos;
         },
         {
             icon: Timer,
-            title: 'Duration Tracking',
-            description: 'Real-time tracking of parking duration with automatic billing calculation.'
+            title: &apos;Duration Tracking&apos;,
+            description: &apos;Real-time tracking of parking duration with automatic billing calculation.&apos;
         },
         {
             icon: CheckCircle2,
-            title: 'Easy Checkout',
-            description: 'Quick checkout process with multiple payment options and instant receipt generation.'
+            title: &apos;Easy Checkout&apos;,
+            description: &apos;Quick checkout process with multiple payment options and instant receipt generation.&apos;
         },
     ]
 
@@ -389,7 +389,7 @@ export default function LandingPage() {
                             <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
-                                        <span className="text-gray-400 text-sm">Today's Revenue</span>
+                                        <span className="text-gray-400 text-sm">Today&apos;s Revenue</span>
                                         <TrendingUp className="w-5 h-5 text-green-400" />
                                     </div>
                                     <p className="text-3xl font-bold text-white">₹24,500</p>
@@ -409,7 +409,7 @@ export default function LandingPage() {
                                         <CreditCard className="w-5 h-5 text-green-400" />
                                     </div>
                                     <p className="text-3xl font-bold text-white">156</p>
-                                    <p className="text-gray-400 text-sm mt-2">Today's count</p>
+                                    <p className="text-gray-400 text-sm mt-2">Today&apos;s count</p>
                                 </div>
                             </div>
                         </div>
@@ -567,7 +567,7 @@ export default function LandingPage() {
                 <FadeIn>
                     <div className="relative overflow-hidden rounded-3xl">
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600" />
-                        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLTItNC00LTRzLTQgMi00IDQgMiA0IDQgNCA0LTIgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
+                        <div className="absolute inset-0 bg-[url(&apos;data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLTItNC00LTRzLTQgMi00IDQgMiA0IDQgNCA0LTIgNC00eiIvPjwvZz48L2c+PC9zdmc+&apos;)] opacity-30" />
                         <div className="relative px-8 py-16 sm:px-16 sm:py-24 text-center">
                             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                                 Ready to transform your parking operations?
@@ -651,7 +651,7 @@ export default function LandingPage() {
                     </div>
                     <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-gray-500 text-sm">
-                            © 2024 ParkSmart. All rights reserved.
+                            © {new Date().getFullYear()} ParkSmart. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
                             <span className="flex items-center gap-2 text-sm text-gray-500">

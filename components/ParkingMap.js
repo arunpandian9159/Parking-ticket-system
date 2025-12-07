@@ -10,6 +10,7 @@ export default function ParkingMap({ onSelectSlot, selectedSlot, vehicleType }) 
 
     useEffect(() => {
         fetchSlots()
+         
     }, [])
 
     const fetchSlots = async () => {

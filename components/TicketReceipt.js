@@ -1,3 +1,5 @@
+'use client'
+
 export default function TicketReceipt({ ticket }) {
     if (!ticket) return null
 

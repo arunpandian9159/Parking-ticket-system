@@ -13,6 +13,7 @@ export default function ParkingRates() {
 
     useEffect(() => {
         fetchRates()
+         
     }, [])
 
     const fetchRates = async () => {

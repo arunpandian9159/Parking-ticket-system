@@ -36,6 +36,7 @@ export default function CreateTicketPage() {
             if (data) setRates(data)
         }
         fetchRates()
+         
     }, [])
 
     // Check for monthly pass when license plate changes

@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useRef, useState, useEffect } from 'react'
-import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion'
+import React from 'react'
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 

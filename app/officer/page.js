@@ -24,6 +24,7 @@ export default function Dashboard() {
             }
         }
         checkUser()
+         
     }, [router])
 
     const fetchTickets = async () => {
