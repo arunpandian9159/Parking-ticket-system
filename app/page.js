@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import {
     Car, ShieldCheck, BarChart3, MapPin, Clock, CreditCard,
@@ -61,7 +62,7 @@ function AnimatedCounter({ end, duration = 2000, suffix = '', prefix = '' }) {
 // Floating Badge Component
 function FloatingBadge({ children, className = "" }) {
     return (
-        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-teal-500/10 to-cyan-500/10 border border-teal-500/20 backdrop-blur-sm ${className}`}>
+        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-teal-500/10 to-cyan-500/10 border border-teal-500/20 backdrop-blur-sm ${className}`}>
             <Sparkles className="w-4 h-4 text-teal-500" />
             <span className="text-sm font-medium text-teal-600 dark:text-teal-300">{children}</span>
         </div>
@@ -76,7 +77,7 @@ function TestimonialCard({ quote, author, role, company, avatar }) {
                 <Quote className="w-10 h-10 text-teal-500/30 mb-4" />
                 <p className="text-muted-foreground text-lg leading-relaxed mb-6">"{quote}"</p>
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-lg">
                         {avatar}
                     </div>
                     <div>
@@ -97,9 +98,9 @@ function PricingCard({ title, price, description, features, popular = false, cta
             spotlightColor={popular ? "rgba(6, 182, 212, 0.2)" : "rgba(255, 255, 255, 0.1)"}
         >
             {popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <span className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-teal-500 to-cyan-600 rounded-full text-white">
-                        Most Popular
+                <div className="absolute -top-4 right-1/9 translate-x-1/2 z-20">
+                    <span className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-linear-to-r from-teal-500 to-cyan-600 rounded-full text-white">
+                        Popular
                     </span>
                 </div>
             )}
@@ -113,14 +114,14 @@ function PricingCard({ title, price, description, features, popular = false, cta
                 <ul className="space-y-4 mb-8">
                     {features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-3">
-                            <CheckCircle2 className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
                             <span className="text-muted-foreground text-sm">{feature}</span>
                         </li>
                     ))}
                 </ul>
                 <Button
                     className={`w-full py-3 transition-all duration-300 hover:scale-[1.02] ${popular
-                        ? 'bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500'
+                        ? 'bg-linear-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500'
                         : 'bg-secondary hover:bg-secondary/80 border border-border'
                         }`}
                 >
@@ -135,10 +136,10 @@ function PricingCard({ title, price, description, features, popular = false, cta
 function StepCard({ number, icon: Icon, title, description }) {
     return (
         <div className="relative group">
-            <div className="absolute -inset-px bg-gradient-to-r from-teal-500/20 to-cyan-500/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute -inset-px bg-linear-to-r from-teal-500/20 to-cyan-500/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="relative bg-card border border-border rounded-2xl p-8 h-full">
                 <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-xl">
+                    <div className="w-12 h-12 rounded-xl bg-linear-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-xl">
                         {number}
                     </div>
                     <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
@@ -257,7 +258,7 @@ export default function LandingPage() {
     const pricingPlans = [
         {
             title: "Starter",
-            price: "₹2,999",
+            price: "₹999",
             description: "Perfect for small parking lots",
             features: [
                 "Up to 50 parking slots",
@@ -269,15 +270,14 @@ export default function LandingPage() {
         },
         {
             title: "Professional",
-            price: "₹7,999",
+            price: "₹2,999",
             description: "Ideal for growing businesses",
             features: [
-                "Up to 200 parking slots",
+                "Up to 300 parking slots",
                 "10 officer accounts",
                 "Advanced analytics & reports",
                 "Priority email & phone support",
                 "Custom branding",
-                "API access"
             ],
             popular: true
         },
@@ -288,7 +288,6 @@ export default function LandingPage() {
             features: [
                 "Unlimited parking slots",
                 "Unlimited officer accounts",
-                "White-label solution",
                 "24/7 dedicated support",
                 "Custom integrations",
                 "On-premise deployment option"
@@ -304,7 +303,7 @@ export default function LandingPage() {
             <Navbar onLoginClick={() => setIsLoginOpen(true)} />
 
             {/* Hero Section */}
-            <section className="relative isolate pt-32 sm:pt-40 lg:pt-48 pb-16 bg-background">
+            <section className="relative isolate pt-8 pb-16 bg-background">
                 <FadeIn className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
                     <div className="mx-auto max-w-3xl">
                         <FloatingBadge className="mb-8">Trusted by 500+ Parking Facilities</FloatingBadge>
@@ -322,7 +321,7 @@ export default function LandingPage() {
                         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Button
                                 onClick={() => setIsLoginOpen(true)}
-                                className="bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 px-8 py-6 text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-teal-500/25 cursor-pointer group"
+                                className="bg-linear-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 px-8 py-6 text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-teal-500/25 cursor-pointer group"
                             >
                                 Get Started Free
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -345,7 +344,7 @@ export default function LandingPage() {
                 {/* Dashboard Preview */}
                 <FadeIn delay={0.3} className="mx-auto max-w-6xl px-6 lg:px-8 mt-20">
                     <div className="relative">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-teal-500/20 via-cyan-500/20 to-teal-500/20 rounded-3xl blur-3xl" />
+                        <div className="absolute -inset-4 bg-linear-to-r from-teal-500/20 via-cyan-500/20 to-teal-500/20 rounded-3xl blur-3xl" />
                         <div className="relative rounded-2xl border border-border bg-card backdrop-blur-xl overflow-hidden shadow-2xl">
                             <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary/50">
                                 <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -354,7 +353,7 @@ export default function LandingPage() {
                                 <span className="ml-4 text-xs text-muted-foreground">dashboard.parksmart.io</span>
                             </div>
                             <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="bg-gradient-to-br from-teal-500/10 to-teal-500/5 border border-teal-500/20 rounded-xl p-6">
+                                <div className="bg-linear-to-br from-teal-500/10 to-teal-500/5 border border-teal-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
                                         <span className="text-muted-foreground text-sm">Today's Revenue</span>
                                         <TrendingUp className="w-5 h-5 text-teal-500" />
@@ -362,7 +361,7 @@ export default function LandingPage() {
                                     <p className="text-3xl font-bold text-foreground">₹24,500</p>
                                     <p className="text-teal-500 text-sm mt-2">+12% from yesterday</p>
                                 </div>
-                                <div className="bg-gradient-to-br from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl p-6">
+                                <div className="bg-linear-to-br from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
                                         <span className="text-muted-foreground text-sm">Active Vehicles</span>
                                         <Car className="w-5 h-5 text-cyan-500" />
@@ -370,7 +369,7 @@ export default function LandingPage() {
                                     <p className="text-3xl font-bold text-foreground">42</p>
                                     <p className="text-muted-foreground text-sm mt-2">8 slots available</p>
                                 </div>
-                                <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-xl p-6">
+                                <div className="bg-linear-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
                                         <span className="text-muted-foreground text-sm">Tickets Issued</span>
                                         <CreditCard className="w-5 h-5 text-emerald-500" />
@@ -385,13 +384,13 @@ export default function LandingPage() {
             </section>
 
             {/* Stats Section */}
-            <section className="py-16 border-y border-border bg-gradient-to-b from-background to-secondary/30">
+            <section className="py-16 border-y border-border bg-linear-to-b from-background to-secondary/30">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                         {stats.map((stat, index) => (
                             <FadeIn key={index} delay={index * 0.1}>
                                 <div className="text-center group">
-                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border border-border mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-border mb-4 group-hover:scale-110 transition-transform duration-300">
                                         <stat.icon className="w-7 h-7 text-teal-500" />
                                     </div>
                                     <p className="text-4xl sm:text-5xl font-bold text-foreground mb-2">
@@ -406,7 +405,7 @@ export default function LandingPage() {
             </section>
 
             {/* Features Grid */}
-            <section id="features" className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
+            <section id="features" className="mx-auto max-w-7xl px-6 lg:px-8 py-10">
                 <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
                     <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-teal-500/10 text-teal-500 rounded-full mb-4">
                         Features
@@ -424,7 +423,7 @@ export default function LandingPage() {
                             <FadeIn key={index} delay={index * 0.1}>
                                 <SpotlightCard className="p-8 h-full group" spotlightColor="rgba(6, 182, 212, 0.15)">
                                     <div className="flex flex-col items-start h-full relative z-10">
-                                        <div className={`rounded-xl bg-gradient-to-br ${feature.gradient} p-3 mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                                        <div className={`rounded-xl bg-linear-to-br ${feature.gradient} p-3 mb-6 group-hover:scale-110 transition-transform duration-300`}>
                                             <feature.icon className="h-6 w-6 text-white" aria-hidden="true" />
                                         </div>
                                         <h3 className="text-xl font-semibold leading-7 text-foreground mb-3">{feature.title}</h3>
@@ -443,7 +442,7 @@ export default function LandingPage() {
             </section>
 
             {/* How It Works */}
-            <section id="how-it-works" className="py-24 sm:py-32 bg-gradient-to-b from-background to-secondary/30">
+            <section id="how-it-works" className="py-8 bg-linear-to-b from-background to-secondary/30">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
                         <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-500/10 text-cyan-500 rounded-full mb-4">
@@ -495,7 +494,7 @@ export default function LandingPage() {
                     <div className="inline-flex items-center gap-2 text-muted-foreground">
                         <div className="flex -space-x-2">
                             {[...Array(5)].map((_, i) => (
-                                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 border-2 border-background flex items-center justify-center text-xs text-white font-medium">
+                                <div key={i} className="w-8 h-8 rounded-full bg-linear-to-br from-teal-500 to-cyan-600 border-2 border-background flex items-center justify-center text-xs text-white font-medium">
                                     {String.fromCharCode(65 + i)}
                                 </div>
                             ))}
@@ -506,7 +505,7 @@ export default function LandingPage() {
             </section>
 
             {/* Pricing */}
-            <section id="pricing" className="py-24 sm:py-32 bg-gradient-to-b from-background to-secondary/30">
+            <section id="pricing" className="py-24 sm:py-32 bg-linear-to-b from-background to-secondary/30">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
                         <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-500 rounded-full mb-4">
@@ -533,7 +532,7 @@ export default function LandingPage() {
             <section className="mx-auto max-w-7xl px-6 lg:px-8 py-24">
                 <FadeIn>
                     <div className="relative overflow-hidden rounded-3xl">
-                        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-cyan-600" />
+                        <div className="absolute inset-0 bg-linear-to-r from-teal-600 to-cyan-600" />
                         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLTItNC00LTRzLTQgMi00IDQgMiA0IDQgNCA0LTIgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
                         <div className="relative px-8 py-16 sm:px-16 sm:py-24 text-center">
                             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
@@ -568,10 +567,14 @@ export default function LandingPage() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                         <div className="col-span-2 md:col-span-1">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
-                                    <Car className="w-6 h-6 text-white" />
-                                </div>
-                                <span className="text-xl font-bold bg-gradient-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">ParkSmart</span>
+                                <Image
+                                    src="/logo2.png"
+                                    alt="ParkSmart Logo"
+                                    width={40}
+                                    height={40}
+                                    className="rounded-xl"
+                                />
+                                <span className="text-xl font-bold bg-linear-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">ParkSmart</span>
                             </div>
                             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                                 Modern parking management solution for the digital age. Streamline operations and maximize revenue.

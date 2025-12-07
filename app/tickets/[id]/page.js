@@ -53,7 +53,7 @@ export default function TicketDetailsPage() {
             setTicket(data)
         } catch (error) {
             console.error('Error fetching ticket:', error)
-            router.push('/')
+            router.push('/officer')
         } finally {
             setLoading(false)
         }
@@ -89,7 +89,7 @@ export default function TicketDetailsPage() {
                 .eq('slot_number', ticket.parking_spot)
 
             alert('Ticket marked as Paid!')
-            router.push('/')
+            router.push('/officer')
         } catch (error) {
             alert('Error updating ticket: ' + error.message)
         }
@@ -103,7 +103,7 @@ export default function TicketDetailsPage() {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <Link href="/officer">
-                        <Button variant="ghost" className="!p-2">
+                        <Button variant="ghost" className="p-2">
                             <ArrowLeft className="w-5 h-5" />
                         </Button>
                     </Link>

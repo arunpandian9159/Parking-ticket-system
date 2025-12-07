@@ -104,14 +104,14 @@ export default function Navbar({ onLoginClick }) {
                         {/* Logo */}
                         <div className="flex items-center gap-3">
                             <Image
-                                src="/logo1.png"
-                                alt="ParkSmart Logo"
-                                width={50}
-                                height={50}
+                                src="/logo2.png"
+                                alt="PARTIM Logo"
+                                width={40}
+                                height={40}
                                 className="rounded-full"
                             />
-                            <span className="text-xl font-bold bg-gradient-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent">
-                                ParkSmart
+                            <span className="text-xl font-bold bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent">
+                                PARTIM
                             </span>
                         </div>
 
@@ -140,7 +140,7 @@ export default function Navbar({ onLoginClick }) {
                             </Link>
                             <Button
                                 onClick={onLoginClick}
-                                className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-sm px-5"
+                                className="bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-sm px-5"
                             >
                                 Login
                             </Button>
@@ -182,7 +182,7 @@ export default function Navbar({ onLoginClick }) {
                                             setIsMenuOpen(false)
                                             onLoginClick?.()
                                         }}
-                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-gradient-to-r from-teal-500 to-teal-600 text-white transition-all duration-200"
+                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-linear-to-r from-teal-500 to-teal-600 text-white transition-all duration-200"
                                     >
                                         Login
                                     </button>
@@ -203,13 +203,13 @@ export default function Navbar({ onLoginClick }) {
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-3">
                         <Image
-                            src="/logo1.png"
-                            alt="ParkSmart Logo"
-                            width={50}
-                            height={50}
+                            src="/logo2.png"
+                            alt="PARTIM Logo"
+                            width={40}
+                            height={40}
                             className="rounded-lg"
                         />
-                        <span className="text-lg font-bold bg-gradient-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent hidden sm:block">ParkSmart</span>
+                        <span className="text-lg font-bold bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent hidden sm:block">PARTIM</span>
                     </Link>
 
                     {/* Desktop Navigation */}
