@@ -308,14 +308,14 @@ export default function LandingPage() {
                     <div className="mx-auto max-w-3xl">
                         <FloatingBadge className="mb-8">Trusted by 500+ Parking Facilities</FloatingBadge>
                         <GradientText
-                            className="text-5xl font-bold tracking-tight sm:text-7xl lg:text-8xl mb-8 py-2 px-4"
+                            className="text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl mb-8 py-2 px-4"
                             colors={["#06b6d4", "#14b8a6", "#0f766e", "#06b6d4"]}
                             animationSpeed={4}
                         >
-                            Smart Parking Management
+                            Parking Ticket Management
                         </GradientText>
                         <p className="mt-6 text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
-                            Transform your parking operations with AI-powered ticketing, real-time analytics,
+                            Transform your parking operations with real-time analytics,
                             and seamless vehicle tracking. Increase revenue by up to <span className="text-teal-500 font-semibold">40%</span>.
                         </p>
                         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -480,7 +480,7 @@ export default function LandingPage() {
                         Loved by parking operators everywhere
                     </h2>
                     <p className="text-lg text-muted-foreground">
-                        See what our customers have to say about their experience with ParkSmart.
+                        See what our customers have to say about their experience with PARKINGTICKET.
                     </p>
                 </FadeIn>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -499,7 +499,7 @@ export default function LandingPage() {
                                 </div>
                             ))}
                         </div>
-                        <span className="ml-3">Join 500+ parking facilities already using ParkSmart</span>
+                        <span className="ml-3">Join 500+ parking facilities already using PARKINGTICKET</span>
                     </div>
                 </FadeIn>
             </section>
@@ -539,7 +539,7 @@ export default function LandingPage() {
                                 Ready to transform your parking operations?
                             </h2>
                             <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-                                Join hundreds of parking facilities that have already modernized their operations with ParkSmart.
+                                Join hundreds of parking facilities that have already modernized their operations with PARKINGTICKET.
                             </p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                 <Button
@@ -569,12 +569,12 @@ export default function LandingPage() {
                             <div className="flex items-center gap-3 mb-6">
                                 <Image
                                     src="/logo2.png"
-                                    alt="ParkSmart Logo"
+                                    alt="PARKINGTICKET Logo"
                                     width={40}
                                     height={40}
                                     className="rounded-xl"
                                 />
-                                <span className="text-xl font-bold bg-linear-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">ParkSmart</span>
+                                <span className="text-xl font-bold bg-linear-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">PARKINGTICKET</span>
                             </div>
                             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                                 Modern parking management solution for the digital age. Streamline operations and maximize revenue.
@@ -621,7 +621,7 @@ export default function LandingPage() {
                     </div>
                     <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-muted-foreground text-sm">
-                            © {new Date().getFullYear()} ParkSmart. All rights reserved.
+                            © {new Date().getFullYear()} PARKINGTICKET. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
                             <span className="flex items-center gap-2 text-sm text-muted-foreground">

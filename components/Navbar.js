@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { useTheme } from '@/lib/ThemeContext'
-import { Home, Ticket, Search, LogOut, Menu, X, Sun, Moon } from 'lucide-react'
+import { Home, Ticket, Search, LogOut, Menu, X, Sun, Moon, CreditCard } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
 // Theme Toggle Button Component
@@ -89,8 +89,9 @@ export default function Navbar({ onLoginClick }) {
 
     // App navigation items (for logged-in users)
     const appNavItems = [
-        { label: 'Home', href: '/', icon: Home },
-        { label: 'Dashboard', href: '/dashboard', icon: Ticket },
+        { label: 'Dashboard', href: '/dashboard', icon: Home },
+        { label: 'Tickets', href: '/officer', icon: Ticket },
+        { label: 'Passes', href: '/passes', icon: CreditCard },
         { label: 'New Ticket', href: '/tickets/create', icon: Ticket },
         { label: 'Check Status', href: '/status', icon: Search },
     ]
@@ -105,13 +106,13 @@ export default function Navbar({ onLoginClick }) {
                         <div className="flex items-center gap-3">
                             <Image
                                 src="/logo2.png"
-                                alt="PARTIM Logo"
+                                alt="PARKINGTICKET Logo"
                                 width={40}
                                 height={40}
                                 className="rounded-full"
                             />
                             <span className="text-xl font-bold bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent">
-                                PARTIM
+                                PARKINGTICKET
                             </span>
                         </div>
 
@@ -200,16 +201,16 @@ export default function Navbar({ onLoginClick }) {
         <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3">
+                    {/* Logo - Links to dashboard when logged in */}
+                    <Link href="/dashboard" className="flex items-center gap-3">
                         <Image
                             src="/logo2.png"
-                            alt="PARTIM Logo"
+                            alt="PARKINGTICKET Logo"
                             width={40}
                             height={40}
                             className="rounded-lg"
                         />
-                        <span className="text-lg font-bold bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent hidden sm:block">PARTIM</span>
+                        <span className="text-lg font-bold bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent hidden sm:block">PARKINGTICKET</span>
                     </Link>
 
                     {/* Desktop Navigation */}

@@ -363,10 +363,10 @@ export default function LoginModal({ isOpen, onClose }) {
                                         >
                                             <Image
                                                 src="/logo2.png"
-                                                alt="PARTIM Logo"
-                                                width={64}
-                                                height={64}
-                                                className="w-full h-full object-cover"
+                                                alt="PARKINGTICKET Logo"
+                                                width={70}
+                                                height={70}
+                                                className="rounded-4xl"
                                             />
                                         </motion.div>
                                         <motion.h2
@@ -375,7 +375,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                             transition={{ delay: 0.2 }}
                                             className="text-2xl font-bold text-foreground mb-2"
                                         >
-                                            Welcome to PARTIM
+                                            Welcome to PARKINGTICKET
                                         </motion.h2>
                                         <motion.p
                                             initial={{ opacity: 0, y: 10 }}
