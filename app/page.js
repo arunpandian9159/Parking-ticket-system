@@ -1,153 +1,88 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
-import { Plus, Search, MapPin } from 'lucide-react'
-import { Input } from '@/components/ui/Input'
+import { Car, ShieldCheck, BarChart3, MapPin } from 'lucide-react'
+import { AnimatedBackground, FadeIn, GradientText, SpotlightCard } from '@/components/ui/ReactBits'
 
-export default function Dashboard() {
-    const router = useRouter()
-    const [tickets, setTickets] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [search, setSearch] = useState('')
-
-    useEffect(() => {
-        const checkUser = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (!session) {
-                router.push('/login')
-            } else {
-                fetchTickets()
-            }
-        }
-        checkUser()
-    }, [router])
-
-    const fetchTickets = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('tickets')
-                .select('*')
-                .order('created_at', { ascending: false })
-
-            if (error) throw error
-            setTickets(data || [])
-        } catch (error) {
-            console.error('Error fetching tickets:', error)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const filteredTickets = tickets.filter(t =>
-        t.license_plate.toLowerCase().includes(search.toLowerCase()) ||
-        t.customer_name.toLowerCase().includes(search.toLowerCase())
-    )
-
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-[50vh]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>
-        )
-    }
-
+export default function LandingPage() {
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-                    <p className="text-gray-500">Manage and view issued tickets</p>
-                </div>
-                <Link href="/tickets/create">
-                    <Button className="w-full sm:w-auto">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Issue New Ticket
-                    </Button>
-                </Link>
+        <div className="min-h-screen bg-neutral-950 text-white overflow-x-hidden">
+            <AnimatedBackground />
+
+            {/* Hero Section */}
+            <div className="relative isolate pt-24 sm:pt-32 lg:pt-40">
+                <FadeIn className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+                    <div className="mx-auto max-w-2xl">
+                        <GradientText className="text-4xl font-bold tracking-tight sm:text-7xl mb-6 py-2 px-4">
+                            Smart Parking Management
+                        </GradientText>
+                        <p className="mt-6 text-lg leading-8 text-gray-300">
+                            Streamline your parking operations with our advanced digital ticketing system.
+                            Manage rates, track vehicles, and analyze revenue in real-time.
+                        </p>
+                        <div className="mt-10 flex items-center justify-center gap-x-6">
+                            <Link href="/login">
+                                <Button className="bg-blue-600 hover:bg-blue-500 px-8 py-6 text-lg transition-transform hover:scale-105">
+                                    Admin / Officer Login
+                                </Button>
+                            </Link>
+                            <Link href="/status">
+                                <Button variant="outline" className="text-white border-white/20 hover:bg-white/10 px-8 py-6 text-lg transition-transform hover:scale-105">
+                                    Check Vehicle Status
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                </FadeIn>
             </div>
 
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                    placeholder="Search by license plate or name..."
-                    className="pl-10"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-            </div>
+            {/* Features Grid */}
+            <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
+                <FadeIn delay={0.2} className="mx-auto max-w-2xl lg:text-center mb-16">
+                    <h2 className="text-base font-semibold leading-7 text-blue-400 uppercase tracking-wide">Faster Operations</h2>
+                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                        Everything you need to manage parking
+                    </p>
+                </FadeIn>
+                <div className="mx-auto max-w-2xl lg:max-w-none">
+                    <div className="grid max-w-xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
+                        <SpotlightCard className="p-8">
+                            <div className="flex flex-col items-start h-full relative z-10">
+                                <div className="rounded-lg bg-blue-900/20 p-3 ring-1 ring-blue-500/20 mb-6">
+                                    <Car className="h-6 w-6 text-blue-400" aria-hidden="true" />
+                                </div>
+                                <h3 className="text-xl font-semibold leading-7 text-white">Vehicle Tracking</h3>
+                                <p className="mt-4 flex-auto text-base leading-7 text-gray-400">
+                                    Track license plates, vehicle types, and parking duration automatically with our intelligent system.
+                                </p>
+                            </div>
+                        </SpotlightCard>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="bg-gray-50 border-b border-gray-100 text-xs uppercase font-semibold text-gray-500">
-                                <th className="px-6 py-4">License Plate</th>
-                                <th className="px-6 py-4">Vehicle</th>
-                                <th className="px-6 py-4">Spot</th>
-                                <th className="px-6 py-4">Date</th>
-                                <th className="px-6 py-4">Customer</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4 text-right">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {filteredTickets.length === 0 ? (
-                                <tr>
-                                    <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
-                                        No tickets found.
-                                    </td>
-                                </tr>
-                            ) : (
-                                filteredTickets.map((ticket) => (
-                                    <tr
-                                        key={ticket.id}
-                                        className="hover:bg-gray-50/50 transition-colors group cursor-pointer"
-                                        onClick={() => router.push(`/tickets/${ticket.id}`)}
-                                    >
-                                        <td className="px-6 py-4">
-                                            <div className="font-bold text-gray-900">{ticket.license_plate}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-600">{ticket.vehicle_name || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                                                <MapPin className="w-4 h-4 text-gray-400" />
-                                                {ticket.parking_spot}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-600">
-                                                {new Date(ticket.created_at).toLocaleDateString()}
-                                                <span className="text-gray-400 ml-1 text-xs">
-                                                    {new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-900">{ticket.customer_name}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${ticket.status === 'Paid'
-                                                ? 'bg-green-50 text-green-700'
-                                                : 'bg-amber-50 text-amber-700'
-                                                }`}>
-                                                {ticket.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="font-bold text-gray-900">₹{ticket.price}</div>
-                                            <div className="text-xs text-gray-500">{ticket.hours} hours</div>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                        <SpotlightCard className="p-8">
+                            <div className="flex flex-col items-start h-full relative z-10">
+                                <div className="rounded-lg bg-green-900/20 p-3 ring-1 ring-green-500/20 mb-6">
+                                    <MapPin className="h-6 w-6 text-green-400" aria-hidden="true" />
+                                </div>
+                                <h3 className="text-xl font-semibold leading-7 text-white">Smart Mapping</h3>
+                                <p className="mt-4 flex-auto text-base leading-7 text-gray-400">
+                                    Visual parking map to see occupied slots and manage capacity efficiently in real-time.
+                                </p>
+                            </div>
+                        </SpotlightCard>
+
+                        <SpotlightCard className="p-8">
+                            <div className="flex flex-col items-start h-full relative z-10">
+                                <div className="rounded-lg bg-purple-900/20 p-3 ring-1 ring-purple-500/20 mb-6">
+                                    <BarChart3 className="h-6 w-6 text-purple-400" aria-hidden="true" />
+                                </div>
+                                <h3 className="text-xl font-semibold leading-7 text-white">Revenue Analytics</h3>
+                                <p className="mt-4 flex-auto text-base leading-7 text-gray-400">
+                                    Comprehensive dashboards to monitor daily earnings and operational trends to maximize profit.
+                                </p>
+                            </div>
+                        </SpotlightCard>
+                    </div>
                 </div>
             </div>
         </div>

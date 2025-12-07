@@ -35,7 +35,7 @@ export default function LoginPage() {
                     password,
                 })
                 if (error) throw error
-                router.push('/') // Redirect to dashboard
+                router.push('/dashboard') // Redirect to dashboard choice
             }
         } catch (err) {
             setError(err.message)
@@ -51,9 +51,9 @@ export default function LoginPage() {
                     <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                         <Lock className="w-6 h-6 text-blue-600" />
                     </div>
-                    <h1 className="text-2xl font-bold text-gray-900">Officer Access</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">Staff Login</h1>
                     <p className="text-gray-500 mt-2">
-                        {isSignUp ? 'Create a new officer account' : 'Sign in to manage parking tickets'}
+                        {isSignUp ? 'Create a new account' : 'Sign in to access specific dashboards'}
                     </p>
                 </div>
 
@@ -61,7 +61,7 @@ export default function LoginPage() {
                     <Input
                         label="Email Address"
                         type="email"
-                        placeholder="officer@example.com"
+                        placeholder="admin@parking.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required

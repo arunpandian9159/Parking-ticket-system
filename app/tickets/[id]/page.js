@@ -101,7 +101,7 @@ export default function TicketDetailsPage() {
         <div className="max-w-2xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Link href="/">
+                    <Link href="/officer">
                         <Button variant="ghost" className="!p-2">
                             <ArrowLeft className="w-5 h-5" />
                         </Button>

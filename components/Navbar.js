@@ -54,8 +54,8 @@ export default function Navbar() {
 
                     <div className="hidden md:flex items-center gap-6">
                         <Link
-                            href="/"
-                            className={`flex items-center gap-2 text-sm font-medium transition-colors ${pathname === '/' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'
+                            href="/dashboard"
+                            className={`flex items-center gap-2 text-sm font-medium transition-colors ${pathname === '/dashboard' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'
                                 }`}
                         >
                             <LayoutDashboard className="w-4 h-4" />
