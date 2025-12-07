@@ -65,3 +65,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #ticket-receipt, #ticket-receipt * {
+    visibility: visible;
+  }
+  #ticket-receipt {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    padding: 20px;
+    background: white;
+  }
+  /* Hide Next.js dev tools or other overlays if any */
+  nextjs-portal, #__next-build-watcher {
+    display: none !important;
+  }
+}

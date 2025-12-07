@@ -106,7 +106,7 @@ export default function Dashboard() {
                                     <tr
                                         key={ticket.id}
                                         className="hover:bg-gray-50/50 transition-colors group cursor-pointer"
-                                        onClick={() => console.log('View ticket', ticket.id)} // Placeholder for detail view if needed later
+                                        onClick={() => router.push(`/tickets/${ticket.id}`)}
                                     >
                                         <td className="px-6 py-4">
                                             <div className="font-bold text-gray-900">{ticket.license_plate}</div>
