@@ -281,54 +281,54 @@ export default function ChoiceDashboard() {
     const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'
 
     return (
-        <div className="min-h-screen bg-background pb-12">
+        <div className="min-h-screen bg-background pb-8 sm:pb-12">
             {/* Background decoration */}
             <div className="fixed inset-0 -z-10 overflow-hidden">
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full bg-teal-500/5 blur-[120px]" />
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-cyan-500/5 blur-[120px]" />
+                <div className="absolute top-0 right-0 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] rounded-full bg-teal-500/5 blur-[120px]" />
+                <div className="absolute bottom-0 left-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full bg-cyan-500/5 blur-[120px]" />
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8">
                 {/* Welcome Section */}
-                <FadeIn className="mb-10">
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <FadeIn className="mb-6 sm:mb-10">
+                    <div className="flex flex-col gap-4 sm:gap-6">
                         <div>
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20">
-                                    <Sparkles className="w-4 h-4 text-teal-500" />
+                            <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20">
+                                    <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-teal-500" />
                                     <span className="text-xs font-medium text-teal-500">Dashboard</span>
                                 </div>
                             </div>
-                            <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-1 sm:mb-2">
                                 {getGreeting()}, <span className="bg-linear-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">{userName}</span>!
                             </h1>
-                            <p className="text-muted-foreground flex items-center gap-2">
-                                <Calendar className="w-4 h-4" />
-                                {formattedDate}
+                            <p className="text-muted-foreground flex items-center gap-2 text-sm sm:text-base">
+                                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                <span className="truncate">{formattedDate}</span>
                             </p>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                             <Button
                                 variant="outline"
-                                className="border-border hover:border-teal-500/30 hover:bg-teal-500/10"
+                                className="flex-1 sm:flex-none border-border hover:border-teal-500/30 hover:bg-teal-500/10 text-sm"
                             >
-                                <Bell className="w-4 h-4 mr-2" />
-                                Notifications
+                                <Bell className="w-4 h-4 sm:mr-2" />
+                                <span className="hidden sm:inline">Notifications</span>
                             </Button>
                             <Button
                                 variant="outline"
-                                className="border-border hover:border-cyan-500/30 hover:bg-cyan-500/10"
+                                className="flex-1 sm:flex-none border-border hover:border-cyan-500/30 hover:bg-cyan-500/10 text-sm"
                             >
-                                <Settings className="w-4 h-4 mr-2" />
-                                Settings
+                                <Settings className="w-4 h-4 sm:mr-2" />
+                                <span className="hidden sm:inline">Settings</span>
                             </Button>
                         </div>
                     </div>
                 </FadeIn>
 
                 {/* Quick Stats */}
-                <FadeIn delay={0.1} className="mb-10">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <FadeIn delay={0.1} className="mb-6 sm:mb-10">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         {stats.map((stat, index) => (
                             <QuickStatCard key={index} {...stat} />
                         ))}
@@ -336,14 +336,14 @@ export default function ChoiceDashboard() {
                 </FadeIn>
 
                 {/* Main Content Grid */}
-                <div className="grid lg:grid-cols-3 gap-8">
+                <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
                     {/* Role Selection Cards */}
                     <FadeIn delay={0.2} className="lg:col-span-2">
-                        <div className="mb-6">
-                            <h2 className="text-xl font-semibold text-foreground mb-1">Select Your Workspace</h2>
-                            <p className="text-sm text-muted-foreground">Choose a portal based on your role and tasks</p>
+                        <div className="mb-4 sm:mb-6">
+                            <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-1">Select Your Workspace</h2>
+                            <p className="text-xs sm:text-sm text-muted-foreground">Choose a portal based on your role and tasks</p>
                         </div>
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                             <RoleCard
                                 href="/officer"
                                 icon={UserCog}

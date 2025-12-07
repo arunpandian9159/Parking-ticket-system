@@ -414,7 +414,7 @@ export default function OfficerTicketsPage() {
     }
 
     return (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-6 sm:space-y-8 animate-fadeIn">
             {/* Ticket View Modal */}
             <TicketModal
                 ticket={selectedTicket}
@@ -425,22 +425,25 @@ export default function OfficerTicketsPage() {
             />
 
             {/* Header */}
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <div>
-                    <h1 className="text-4xl font-bold text-foreground flex items-center gap-3">
-                        <div className="p-3 bg-linear-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg shadow-teal-500/20">
-                            <Ticket className="w-7 h-7 text-white" />
-                        </div>
-                        Tickets Management
-                    </h1>
-                    <p className="text-muted-foreground mt-2 text-lg">Monitor and manage all parking tickets</p>
+            <div className="flex flex-col gap-4 sm:gap-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 className="text-2xl sm:text-4xl font-bold text-foreground flex items-center gap-2 sm:gap-3">
+                            <div className="p-2 sm:p-3 bg-linear-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg shadow-teal-500/20">
+                                <Ticket className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
+                            </div>
+                            <span className="hidden sm:inline">Tickets Management</span>
+                            <span className="sm:hidden">Tickets</span>
+                        </h1>
+                        <p className="text-muted-foreground mt-1 sm:mt-2 text-sm sm:text-lg">Monitor and manage parking tickets</p>
+                    </div>
+                    <Link href="/tickets/create" className="w-full sm:w-auto">
+                        <Button className="w-full sm:w-auto bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 shadow-lg shadow-teal-500/20 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base">
+                            <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                            Issue New Ticket
+                        </Button>
+                    </Link>
                 </div>
-                <Link href="/tickets/create">
-                    <Button className="bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 shadow-lg shadow-teal-500/20 px-6 py-3 text-base">
-                        <Plus className="w-5 h-5 mr-2" />
-                        Issue New Ticket
-                    </Button>
-                </Link>
             </div>
 
             {/* Stats Cards */}
@@ -507,32 +510,9 @@ export default function OfficerTicketsPage() {
             </div>
 
             {/* Filters Section */}
-            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-                {/* Status Tabs */}
-                <div className="flex flex-wrap gap-2 p-1 bg-secondary/50 rounded-xl border border-border">
-                    {statusTabs.map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setStatusFilter(tab.id)}
-                            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${statusFilter === tab.id
-                                ? 'bg-teal-500 text-white shadow-lg shadow-teal-500/20'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
-                                }`}
-                        >
-                            <tab.icon className="w-4 h-4" />
-                            {tab.label}
-                            <span className={`ml-1 px-2 py-0.5 rounded-full text-xs ${statusFilter === tab.id
-                                ? 'bg-white/20 text-white'
-                                : 'bg-secondary text-muted-foreground'
-                                }`}>
-                                {tab.count}
-                            </span>
-                        </button>
-                    ))}
-                </div>
-
-                {/* Search */}
-                <div className="relative w-full lg:w-80">
+            <div className="flex flex-col gap-4">
+                {/* Search - Mobile first */}
+                <div className="relative w-full lg:hidden">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                         placeholder="Search by plate or name..."
@@ -541,139 +521,259 @@ export default function OfficerTicketsPage() {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-            </div>
 
-            {/* Tickets Table */}
-            <div className="bg-card rounded-2xl shadow-xl border border-border overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="bg-linear-to-r from-secondary/80 to-secondary/50 border-b border-border">
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">License Plate</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Vehicle</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Spot</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Date & Time</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Customer</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Status</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider text-right">Amount</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border">
-                            {filteredTickets.length === 0 ? (
-                                <tr>
-                                    <td colSpan="8" className="px-6 py-16 text-center">
-                                        <div className="flex flex-col items-center gap-4">
-                                            <div className="p-4 bg-secondary/50 rounded-full">
-                                                <Ticket className="w-8 h-8 text-muted-foreground" />
-                                            </div>
-                                            <div>
-                                                <p className="text-lg font-medium text-foreground">No tickets found</p>
-                                                <p className="text-muted-foreground">Try adjusting your search or filters</p>
-                                            </div>
-                                            <Link href="/tickets/create">
-                                                <Button className="mt-2">
-                                                    <Plus className="w-4 h-4 mr-2" />
-                                                    Issue First Ticket
-                                                </Button>
-                                            </Link>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : (
-                                filteredTickets.map((ticket) => (
-                                    <tr
-                                        key={ticket.id}
-                                        className="group hover:bg-secondary/30 transition-all duration-200"
-                                    >
-                                        <td className="px-6 py-5">
-                                            <div className="flex items-center gap-3">
-                                                <div className="p-2 bg-teal-500/10 rounded-lg group-hover:bg-teal-500/20 transition-colors">
-                                                    <Car className="w-4 h-4 text-teal-500" />
-                                                </div>
-                                                <span className="font-bold text-foreground text-base tracking-wider">{ticket.license_plate}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            <div className="text-sm text-muted-foreground">{ticket.vehicle_name || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            <div className="flex items-center gap-2">
-                                                <MapPin className="w-4 h-4 text-teal-500" />
-                                                <span className="text-sm font-medium text-foreground">{ticket.parking_spot}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            <div className="text-sm text-foreground font-medium">
-                                                {new Date(ticket.created_at).toLocaleDateString()}
-                                            </div>
-                                            <div className="text-xs text-muted-foreground mt-0.5">
-                                                {new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            <div className="text-sm font-medium text-foreground">{ticket.customer_name}</div>
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${ticket.status === 'Paid'
-                                                ? 'bg-green-500/10 text-green-500 border border-green-500/20'
-                                                : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
-                                                }`}>
-                                                {ticket.status === 'Paid' ? (
-                                                    <CheckCircle className="w-3 h-3" />
-                                                ) : (
-                                                    <Clock className="w-3 h-3" />
-                                                )}
-                                                {ticket.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-5 text-right">
-                                            <div className="font-bold text-lg text-foreground">₹{ticket.price}</div>
-                                            <div className="text-xs text-muted-foreground">{ticket.hours} hrs</div>
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            <div className="flex items-center justify-center gap-2">
-                                                <button
-                                                    className="p-2.5 rounded-lg text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 transition-all duration-200"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        handleViewTicket(ticket)
-                                                    }}
-                                                    title="View Details"
-                                                >
-                                                    <Eye className="w-5 h-5" />
-                                                </button>
-                                                {ticket.status !== 'Paid' && (
-                                                    <button
-                                                        className="p-2.5 rounded-lg text-muted-foreground hover:text-green-500 hover:bg-green-500/10 transition-all duration-200"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            handleMarkPaid(ticket, 0, 0)
-                                                        }}
-                                                        title="Mark as Paid"
-                                                    >
-                                                        <CheckCircle className="w-5 h-5" />
-                                                    </button>
-                                                )}
-                                                <button
-                                                    className="p-2.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        handleDeleteTicket(ticket.id)
-                                                    }}
-                                                    title="Delete Ticket"
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                    {/* Status Tabs */}
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 p-1 bg-secondary/50 rounded-xl border border-border w-full lg:w-auto overflow-x-auto">
+                        {statusTabs.map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setStatusFilter(tab.id)}
+                                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${statusFilter === tab.id
+                                    ? 'bg-teal-500 text-white shadow-lg shadow-teal-500/20'
+                                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
+                                    }`}
+                            >
+                                <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                <span className="hidden sm:inline">{tab.label}</span>
+                                <span className="sm:hidden">{tab.id === 'all' ? 'All' : tab.label.split(' ')[0]}</span>
+                                <span className={`ml-0.5 sm:ml-1 px-1.5 sm:px-2 py-0.5 rounded-full text-xs ${statusFilter === tab.id
+                                    ? 'bg-white/20 text-white'
+                                    : 'bg-secondary text-muted-foreground'
+                                    }`}>
+                                    {tab.count}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Search - Desktop */}
+                    <div className="relative w-80 hidden lg:block">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                            placeholder="Search by plate or name..."
+                            className="pl-11 pr-4 py-3 bg-secondary/50 border-border focus:border-teal-500/50 rounded-xl"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
                 </div>
             </div>
+
+            {/* Tickets - Desktop Table / Mobile Cards */}
+            {filteredTickets.length === 0 ? (
+                <div className="bg-card rounded-2xl shadow-xl border border-border p-8 sm:p-16 text-center">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="p-4 bg-secondary/50 rounded-full">
+                            <Ticket className="w-8 h-8 text-muted-foreground" />
+                        </div>
+                        <div>
+                            <p className="text-lg font-medium text-foreground">No tickets found</p>
+                            <p className="text-muted-foreground">Try adjusting your search or filters</p>
+                        </div>
+                        <Link href="/tickets/create">
+                            <Button className="mt-2">
+                                <Plus className="w-4 h-4 mr-2" />
+                                Issue First Ticket
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            ) : (
+                <>
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block bg-card rounded-2xl shadow-xl border border-border overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left">
+                                <thead>
+                                    <tr className="bg-linear-to-r from-secondary/80 to-secondary/50 border-b border-border">
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">License Plate</th>
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Vehicle</th>
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Spot</th>
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Date & Time</th>
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Customer</th>
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Status</th>
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider text-right">Amount</th>
+                                        <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-border">
+                                    {filteredTickets.map((ticket) => (
+                                        <tr
+                                            key={ticket.id}
+                                            className="group hover:bg-secondary/30 transition-all duration-200"
+                                        >
+                                            <td className="px-6 py-5">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-teal-500/10 rounded-lg group-hover:bg-teal-500/20 transition-colors">
+                                                        <Car className="w-4 h-4 text-teal-500" />
+                                                    </div>
+                                                    <span className="font-bold text-foreground text-base tracking-wider">{ticket.license_plate}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-5">
+                                                <div className="text-sm text-muted-foreground">{ticket.vehicle_name || '-'}</div>
+                                            </td>
+                                            <td className="px-6 py-5">
+                                                <div className="flex items-center gap-2">
+                                                    <MapPin className="w-4 h-4 text-teal-500" />
+                                                    <span className="text-sm font-medium text-foreground">{ticket.parking_spot}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-5">
+                                                <div className="text-sm text-foreground font-medium">
+                                                    {new Date(ticket.created_at).toLocaleDateString()}
+                                                </div>
+                                                <div className="text-xs text-muted-foreground mt-0.5">
+                                                    {new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-5">
+                                                <div className="text-sm font-medium text-foreground">{ticket.customer_name}</div>
+                                            </td>
+                                            <td className="px-6 py-5">
+                                                <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${ticket.status === 'Paid'
+                                                    ? 'bg-green-500/10 text-green-500 border border-green-500/20'
+                                                    : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
+                                                    }`}>
+                                                    {ticket.status === 'Paid' ? (
+                                                        <CheckCircle className="w-3 h-3" />
+                                                    ) : (
+                                                        <Clock className="w-3 h-3" />
+                                                    )}
+                                                    {ticket.status}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-5 text-right">
+                                                <div className="font-bold text-lg text-foreground">₹{ticket.price}</div>
+                                                <div className="text-xs text-muted-foreground">{ticket.hours} hrs</div>
+                                            </td>
+                                            <td className="px-6 py-5">
+                                                <div className="flex items-center justify-center gap-2">
+                                                    <button
+                                                        className="p-2.5 rounded-lg text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 transition-all duration-200"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            handleViewTicket(ticket)
+                                                        }}
+                                                        title="View Details"
+                                                    >
+                                                        <Eye className="w-5 h-5" />
+                                                    </button>
+                                                    {ticket.status !== 'Paid' && (
+                                                        <button
+                                                            className="p-2.5 rounded-lg text-muted-foreground hover:text-green-500 hover:bg-green-500/10 transition-all duration-200"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                handleMarkPaid(ticket, 0, 0)
+                                                            }}
+                                                            title="Mark as Paid"
+                                                        >
+                                                            <CheckCircle className="w-5 h-5" />
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        className="p-2.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            handleDeleteTicket(ticket.id)
+                                                        }}
+                                                        title="Delete Ticket"
+                                                    >
+                                                        <Trash2 className="w-5 h-5" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                        {filteredTickets.map((ticket) => (
+                            <div
+                                key={ticket.id}
+                                className="bg-card rounded-2xl border border-border p-4 space-y-4"
+                            >
+                                {/* Header */}
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-teal-500/10 rounded-lg">
+                                            <Car className="w-4 h-4 text-teal-500" />
+                                        </div>
+                                        <div>
+                                            <span className="font-bold text-foreground tracking-wider">{ticket.license_plate}</span>
+                                            <div className="text-xs text-muted-foreground">{ticket.vehicle_name || ticket.vehicle_type}</div>
+                                        </div>
+                                    </div>
+                                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${ticket.status === 'Paid'
+                                        ? 'bg-green-500/10 text-green-500 border border-green-500/20'
+                                        : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
+                                        }`}>
+                                        {ticket.status === 'Paid' ? <CheckCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                                        {ticket.status}
+                                    </span>
+                                </div>
+
+                                {/* Details Grid */}
+                                <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <div className="bg-secondary/50 rounded-lg p-3">
+                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Customer</div>
+                                        <div className="font-medium text-foreground truncate">{ticket.customer_name}</div>
+                                    </div>
+                                    <div className="bg-secondary/50 rounded-lg p-3">
+                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Spot</div>
+                                        <div className="font-medium text-foreground flex items-center gap-1">
+                                            <MapPin className="w-3 h-3 text-teal-500" />
+                                            {ticket.parking_spot}
+                                        </div>
+                                    </div>
+                                    <div className="bg-secondary/50 rounded-lg p-3">
+                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Date</div>
+                                        <div className="font-medium text-foreground">
+                                            {new Date(ticket.created_at).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                    <div className="bg-secondary/50 rounded-lg p-3">
+                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Amount</div>
+                                        <div className="font-bold text-foreground">₹{ticket.price}</div>
+                                    </div>
+                                </div>
+
+                                {/* Actions */}
+                                <div className="flex gap-2 pt-2 border-t border-border">
+                                    <button
+                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 border border-border transition-all"
+                                        onClick={() => handleViewTicket(ticket)}
+                                    >
+                                        <Eye className="w-4 h-4" />
+                                        View
+                                    </button>
+                                    {ticket.status !== 'Paid' && (
+                                        <button
+                                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-green-500 hover:bg-green-500/10 border border-border transition-all"
+                                            onClick={() => handleMarkPaid(ticket, 0, 0)}
+                                        >
+                                            <CheckCircle className="w-4 h-4" />
+                                            Paid
+                                        </button>
+                                    )}
+                                    <button
+                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-red-500 hover:bg-red-500/10 border border-border transition-all"
+                                        onClick={() => handleDeleteTicket(ticket.id)}
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
 
             {/* Footer Info */}
             {filteredTickets.length > 0 && (

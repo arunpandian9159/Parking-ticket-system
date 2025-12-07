@@ -141,21 +141,22 @@ export default function CreateTicketPage() {
     return (
         <div className="max-w-6xl mx-auto space-y-8 animate-fadeIn">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-3 sm:gap-4">
+                <div className="flex items-center gap-3 sm:gap-4">
                     <Link href="/officer">
-                        <Button variant="ghost" className="p-2.5 rounded-xl hover:bg-teal-500/10">
-                            <ArrowLeft className="w-5 h-5" />
+                        <Button variant="ghost" className="p-2 sm:p-2.5 rounded-xl hover:bg-teal-500/10">
+                            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
-                            <div className="p-2.5 bg-linear-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg shadow-teal-500/20">
-                                <CreditCard className="w-6 h-6 text-white" />
+                        <h1 className="text-xl sm:text-3xl font-bold text-foreground flex items-center gap-2 sm:gap-3">
+                            <div className="p-2 sm:p-2.5 bg-linear-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg shadow-teal-500/20">
+                                <CreditCard className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
                             </div>
-                            Issue New Ticket
+                            <span className="hidden sm:inline">Issue New Ticket</span>
+                            <span className="sm:hidden">New Ticket</span>
                         </h1>
-                        <p className="text-muted-foreground mt-1">Create a new parking ticket for a customer</p>
+                        <p className="text-muted-foreground mt-0.5 sm:mt-1 text-xs sm:text-base">Create a new parking ticket</p>
                     </div>
                 </div>
             </div>
@@ -164,44 +165,44 @@ export default function CreateTicketPage() {
 
             {/* Pass Holder Alert */}
             {passHolder && (
-                <div className="bg-teal-500/10 border border-teal-500/30 rounded-2xl p-4 flex items-center gap-4 animate-slideIn">
-                    <div className="p-3 bg-teal-500/20 rounded-xl">
-                        <Sparkles className="w-6 h-6 text-teal-500" />
+                <div className="bg-teal-500/10 border border-teal-500/30 rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 animate-slideIn">
+                    <div className="p-2 sm:p-3 bg-teal-500/20 rounded-xl">
+                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-teal-500" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-teal-500">Monthly Pass Holder Detected!</h3>
-                        <p className="text-sm text-teal-500/80">
+                        <h3 className="font-bold text-teal-500 text-sm sm:text-base">Monthly Pass Holder Detected!</h3>
+                        <p className="text-xs sm:text-sm text-teal-500/80">
                             {passHolder.customer_name} has an active pass until {new Date(passHolder.end_date).toLocaleDateString()}.
                             No parking fee will be charged.
                         </p>
                     </div>
-                    <div className="text-right">
-                        <div className="text-2xl font-bold text-teal-500">₹0</div>
+                    <div className="text-left sm:text-right">
+                        <div className="text-xl sm:text-2xl font-bold text-teal-500">₹0</div>
                         <div className="text-xs text-teal-500/70">Pass Applied</div>
                     </div>
                 </div>
             )}
 
-            <div className="grid lg:grid-cols-3 gap-6">
+            <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Main Form */}
-                <div className="lg:col-span-2">
-                    <Card className="p-8 shadow-xl">
-                        <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="lg:col-span-2 order-2 lg:order-1">
+                    <Card className="p-4 sm:p-8 shadow-xl">
+                        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                             {/* Customer Section */}
-                            <div className="space-y-5">
-                                <div className="flex items-center gap-3 pb-2 border-b border-border">
-                                    <div className="p-2 bg-teal-500/10 rounded-lg">
-                                        <User className="w-5 h-5 text-teal-500" />
+                            <div className="space-y-4 sm:space-y-5">
+                                <div className="flex items-center gap-2 sm:gap-3 pb-2 border-b border-border">
+                                    <div className="p-1.5 sm:p-2 bg-teal-500/10 rounded-lg">
+                                        <User className="w-4 h-4 sm:w-5 sm:h-5 text-teal-500" />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-foreground">Customer Information</h3>
-                                        <p className="text-xs text-muted-foreground">Enter the customer's details</p>
+                                        <h3 className="font-bold text-foreground text-sm sm:text-base">Customer Information</h3>
+                                        <p className="text-xs text-muted-foreground hidden sm:block">Enter the customer's details</p>
                                     </div>
                                 </div>
-                                <div className="grid md:grid-cols-2 gap-5">
+                                <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                                            <User className="w-4 h-4 text-muted-foreground" />
+                                        <label className="text-xs sm:text-sm font-medium text-foreground flex items-center gap-2">
+                                            <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
                                             Full Name
                                         </label>
                                         <Input
@@ -210,12 +211,12 @@ export default function CreateTicketPage() {
                                             onChange={handleChange}
                                             required
                                             placeholder="John Doe"
-                                            className="h-12 bg-secondary/50"
+                                            className="h-11 sm:h-12 bg-secondary/50"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-foreground flex items-center gap-2">
-                                            <Phone className="w-4 h-4 text-muted-foreground" />
+                                        <label className="text-xs sm:text-sm font-medium text-foreground flex items-center gap-2">
+                                            <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
                                             Phone Number
                                         </label>
                                         <Input
@@ -224,7 +225,7 @@ export default function CreateTicketPage() {
                                             onChange={handleChange}
                                             required
                                             placeholder="+91 98765 43210"
-                                            className="h-12 bg-secondary/50"
+                                            className="h-11 sm:h-12 bg-secondary/50"
                                         />
                                     </div>
                                 </div>
@@ -377,7 +378,7 @@ export default function CreateTicketPage() {
                 </div>
 
                 {/* Sidebar */}
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6 order-1 lg:order-2">
                     {/* Price Summary Card */}
                     <Card className="p-6 sticky top-6 shadow-xl overflow-hidden">
                         <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 via-transparent to-cyan-500/5" />

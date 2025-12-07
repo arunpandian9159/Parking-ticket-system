@@ -58,23 +58,23 @@ export default function StatusPage() {
     }
 
     return (
-        <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-            <div className="w-full max-w-md space-y-8">
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
+            <div className="w-full max-w-md space-y-6 sm:space-y-8">
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-foreground">Check Parking Status</h1>
-                    <p className="text-muted-foreground mt-2">Enter your vehicle number to check current bill.</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Check Parking Status</h1>
+                    <p className="text-muted-foreground mt-2 text-sm sm:text-base">Enter your vehicle number to check current bill.</p>
                 </div>
 
-                <div className="bg-card p-6 rounded-2xl shadow-sm border border-border">
-                    <form onSubmit={handleSearch} className="space-y-4">
+                <div className="bg-card p-4 sm:p-6 rounded-2xl shadow-sm border border-border">
+                    <form onSubmit={handleSearch} className="space-y-3 sm:space-y-4">
                         <Input
                             placeholder="Vehicle Number (e.g. MH 12 AB 1234)"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="text-center uppercase text-lg tracking-widest"
+                            className="text-center uppercase text-base sm:text-lg tracking-widest"
                             required
                         />
-                        <Button type="submit" className="w-full" disabled={loading}>
+                        <Button type="submit" className="w-full h-11 sm:h-12" disabled={loading}>
                             {loading ? 'Searching...' : (
                                 <>
                                     <Search className="w-4 h-4 mr-2" />
@@ -85,22 +85,22 @@ export default function StatusPage() {
                     </form>
 
                     {error && (
-                        <div className="mt-4 p-3 bg-red-500/10 text-red-500 text-sm rounded-lg text-center border border-red-500/20">
+                        <div className="mt-4 p-3 bg-red-500/10 text-red-500 text-xs sm:text-sm rounded-lg text-center border border-red-500/20">
                             {error}
                         </div>
                     )}
                 </div>
 
                 {ticket && (
-                    <div className="bg-card p-6 rounded-2xl shadow-lg border border-teal-500/20 animate-in fade-in slide-in-from-bottom-4">
-                        <div className="flex justify-between items-start mb-6">
+                    <div className="bg-card p-4 sm:p-6 rounded-2xl shadow-lg border border-teal-500/20 animate-in fade-in slide-in-from-bottom-4">
+                        <div className="flex justify-between items-start mb-4 sm:mb-6">
                             <div>
-                                <h2 className="text-xl font-bold text-foreground">{ticket.license_plate}</h2>
-                                <p className="text-sm text-muted-foreground">{ticket.vehicle_name}</p>
+                                <h2 className="text-lg sm:text-xl font-bold text-foreground">{ticket.license_plate}</h2>
+                                <p className="text-xs sm:text-sm text-muted-foreground">{ticket.vehicle_name}</p>
                             </div>
                             <div className="text-right">
-                                <div className="text-sm text-muted-foreground">Current Bill</div>
-                                <div className="text-3xl font-bold text-teal-500">₹{liveBill}</div>
+                                <div className="text-xs sm:text-sm text-muted-foreground">Current Bill</div>
+                                <div className="text-2xl sm:text-3xl font-bold text-teal-500">₹{liveBill}</div>
                             </div>
                         </div>
 

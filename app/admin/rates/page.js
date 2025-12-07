@@ -87,19 +87,19 @@ export default function ParkingRates() {
     if (loading) return <div className="p-8 text-muted-foreground">Loading rates...</div>
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-foreground">Parking Rates Configuration</h1>
-                <p className="text-muted-foreground">Set hourly rates for different vehicle types.</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Parking Rates Configuration</h1>
+                <p className="text-muted-foreground text-sm sm:text-base">Set hourly rates for different vehicle types.</p>
             </div>
 
-            <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-                <h2 className="text-lg font-semibold mb-4 text-foreground">Current Rates</h2>
-                <div className="grid gap-4">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-4 sm:p-6">
+                <h2 className="text-base sm:text-lg font-semibold mb-4 text-foreground">Current Rates</h2>
+                <div className="grid gap-3 sm:gap-4">
                     {rates.map((rate) => (
-                        <div key={rate.id} className="flex items-center gap-4 p-4 bg-secondary/50 rounded-lg">
-                            <div className="w-1/3">
-                                <span className="font-medium text-foreground">{rate.vehicle_type}</span>
+                        <div key={rate.id} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary/50 rounded-lg">
+                            <div className="sm:w-1/3">
+                                <span className="font-medium text-foreground text-sm sm:text-base">{rate.vehicle_type}</span>
                             </div>
                             <div className="flex-1 flex items-center gap-2">
                                 <span className="text-muted-foreground">₹</span>
@@ -107,17 +107,18 @@ export default function ParkingRates() {
                                     type="number"
                                     defaultValue={rate.hourly_rate}
                                     onBlur={(e) => handleUpdateRate(rate.id, e.target.value)}
-                                    className="w-24"
+                                    className="w-20 sm:w-24"
                                 />
-                                <span className="text-muted-foreground">/ hour</span>
+                                <span className="text-muted-foreground text-sm">/ hour</span>
                             </div>
                             <Button
                                 variant="destructive"
                                 size="sm"
                                 onClick={() => handleDeleteRate(rate.id)}
-                                className="bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20 shadow-none"
+                                className="bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20 shadow-none w-full sm:w-auto"
                             >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-4 h-4 sm:mr-2" />
+                                <span className="sm:hidden">Delete</span>
                             </Button>
                         </div>
                     ))}
@@ -128,9 +129,9 @@ export default function ParkingRates() {
                 </div>
             </div>
 
-            <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-                <h2 className="text-lg font-semibold mb-4 text-foreground">Add New Vehicle Type</h2>
-                <div className="flex gap-4 items-end">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-4 sm:p-6">
+                <h2 className="text-base sm:text-lg font-semibold mb-4 text-foreground">Add New Vehicle Type</h2>
+                <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
                     <div className="flex-1 space-y-2">
                         <label className="text-sm font-medium text-foreground">Vehicle Type</label>
                         <Input
@@ -139,7 +140,7 @@ export default function ParkingRates() {
                             onChange={(e) => setNewRate({ ...newRate, vehicle_type: e.target.value })}
                         />
                     </div>
-                    <div className="w-32 space-y-2">
+                    <div className="w-full sm:w-32 space-y-2">
                         <label className="text-sm font-medium text-foreground">Rate (₹/hr)</label>
                         <Input
                             type="number"
@@ -148,7 +149,7 @@ export default function ParkingRates() {
                             onChange={(e) => setNewRate({ ...newRate, hourly_rate: e.target.value })}
                         />
                     </div>
-                    <Button onClick={handleAddRate}>
+                    <Button onClick={handleAddRate} className="w-full sm:w-auto">
                         <Plus className="w-4 h-4 mr-2" />
                         Add
                     </Button>

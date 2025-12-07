@@ -306,53 +306,53 @@ export default function LandingPage() {
             <section className="relative isolate pt-8 pb-16 bg-background">
                 <FadeIn className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
                     <div className="mx-auto max-w-3xl">
-                        <FloatingBadge className="mb-8">Trusted by 500+ Parking Facilities</FloatingBadge>
+                        <FloatingBadge className="mb-6 sm:mb-8">Trusted by 500+ Parking Facilities</FloatingBadge>
                         <GradientText
-                            className="text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl mb-8 py-2 px-4"
+                            className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight mb-6 sm:mb-8 py-2 px-4"
                             colors={["#06b6d4", "#14b8a6", "#0f766e", "#06b6d4"]}
                             animationSpeed={4}
                         >
                             Parking Ticket Management
                         </GradientText>
-                        <p className="mt-6 text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
+                        <p className="mt-4 sm:mt-6 text-base sm:text-xl leading-7 sm:leading-8 text-muted-foreground max-w-2xl mx-auto px-2">
                             Transform your parking operations with real-time analytics,
                             and seamless vehicle tracking. Increase revenue by up to <span className="text-teal-500 font-semibold">40%</span>.
                         </p>
-                        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:px-0">
                             <Button
                                 onClick={() => setIsLoginOpen(true)}
-                                className="bg-linear-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 px-8 py-6 text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-teal-500/25 cursor-pointer group"
+                                className="w-full sm:w-auto bg-linear-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-teal-500/25 cursor-pointer group"
                             >
                                 Get Started Free
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Button>
-                            <Link href="/status">
+                            <Link href="/status" className="w-full sm:w-auto">
                                 <Button
                                     variant="outline"
-                                    className="text-foreground border-teal-500/30 hover:bg-teal-500/10 hover:border-teal-400/50 px-8 py-6 text-lg transition-all duration-300 hover:scale-105"
+                                    className="w-full sm:w-auto text-foreground border-teal-500/30 hover:bg-teal-500/10 hover:border-teal-400/50 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg transition-all duration-300 hover:scale-105"
                                 >
                                     Check Vehicle Status
                                 </Button>
                             </Link>
                         </div>
-                        <p className="mt-4 text-sm text-muted-foreground">
+                        <p className="mt-4 text-xs sm:text-sm text-muted-foreground">
                             No credit card required · 14-day free trial · Cancel anytime
                         </p>
                     </div>
                 </FadeIn>
 
                 {/* Dashboard Preview */}
-                <FadeIn delay={0.3} className="mx-auto max-w-6xl px-6 lg:px-8 mt-20">
+                <FadeIn delay={0.3} className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 mt-12 sm:mt-20">
                     <div className="relative">
                         <div className="absolute -inset-4 bg-linear-to-r from-teal-500/20 via-cyan-500/20 to-teal-500/20 rounded-3xl blur-3xl" />
-                        <div className="relative rounded-2xl border border-border bg-card backdrop-blur-xl overflow-hidden shadow-2xl">
-                            <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary/50">
-                                <div className="w-3 h-3 rounded-full bg-red-500" />
-                                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                                <div className="w-3 h-3 rounded-full bg-green-500" />
-                                <span className="ml-4 text-xs text-muted-foreground">dashboard.parksmart.io</span>
+                        <div className="relative rounded-xl sm:rounded-2xl border border-border bg-card backdrop-blur-xl overflow-hidden shadow-2xl">
+                            <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 border-b border-border bg-secondary/50">
+                                <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-500" />
+                                <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500" />
+                                <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500" />
+                                <span className="ml-2 sm:ml-4 text-xs text-muted-foreground hidden sm:inline">dashboard.parksmart.io</span>
                             </div>
-                            <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="p-4 sm:p-8 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
                                 <div className="bg-linear-to-br from-teal-500/10 to-teal-500/5 border border-teal-500/20 rounded-xl p-6">
                                     <div className="flex items-center justify-between mb-4">
                                         <span className="text-muted-foreground text-sm">Today's Revenue</span>
@@ -384,19 +384,19 @@ export default function LandingPage() {
             </section>
 
             {/* Stats Section */}
-            <section className="py-16 border-y border-border bg-linear-to-b from-background to-secondary/30">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <section className="py-10 sm:py-16 border-y border-border bg-linear-to-b from-background to-secondary/30">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
                         {stats.map((stat, index) => (
                             <FadeIn key={index} delay={index * 0.1}>
                                 <div className="text-center group">
-                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-border mb-4 group-hover:scale-110 transition-transform duration-300">
-                                        <stat.icon className="w-7 h-7 text-teal-500" />
+                                    <div className="inline-flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-linear-to-br from-teal-500/20 to-cyan-500/20 border border-border mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <stat.icon className="w-5 h-5 sm:w-7 sm:h-7 text-teal-500" />
                                     </div>
-                                    <p className="text-4xl sm:text-5xl font-bold text-foreground mb-2">
+                                    <p className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-1 sm:mb-2">
                                         <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </p>
-                                    <p className="text-muted-foreground text-sm">{stat.label}</p>
+                                    <p className="text-muted-foreground text-xs sm:text-sm">{stat.label}</p>
                                 </div>
                             </FadeIn>
                         ))}
@@ -405,15 +405,15 @@ export default function LandingPage() {
             </section>
 
             {/* Features Grid */}
-            <section id="features" className="mx-auto max-w-7xl px-6 lg:px-8 py-10">
-                <FadeIn className="mx-auto max-w-2xl lg:text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider bg-teal-500/10 text-teal-500 rounded-full mb-4">
+            <section id="features" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+                <FadeIn className="mx-auto max-w-2xl lg:text-center mb-10 sm:mb-16">
+                    <span className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 text-xs font-semibold uppercase tracking-wider bg-teal-500/10 text-teal-500 rounded-full mb-3 sm:mb-4">
                         Features
                     </span>
-                    <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">
+                    <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold tracking-tight text-foreground mb-4 sm:mb-6">
                         Everything you need to manage parking
                     </h2>
-                    <p className="text-lg text-muted-foreground">
+                    <p className="text-base sm:text-lg text-muted-foreground">
                         Powerful tools designed to streamline operations, increase revenue, and delight your customers.
                     </p>
                 </FadeIn>
