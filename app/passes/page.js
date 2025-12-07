@@ -17,8 +17,206 @@ import {
     XCircle,
     Clock,
     AlertTriangle,
-    Sparkles
+    Sparkles,
+    Plus,
+    X,
+    Edit2,
+    Trash2,
+    UserPlus
 } from 'lucide-react'
+
+// Create/Edit Pass Modal Component
+function PassModal({ isOpen, onClose, onSave, editPass = null }) {
+    const [formData, setFormData] = useState({
+        customer_name: '',
+        vehicle_number: '',
+        phone_number: '',
+        months: 1
+    })
+    const [saving, setSaving] = useState(false)
+
+    useEffect(() => {
+        if (editPass) {
+            setFormData({
+                customer_name: editPass.customer_name || '',
+                vehicle_number: editPass.vehicle_number || '',
+                phone_number: editPass.phone_number || '',
+                months: 1
+            })
+        } else {
+            setFormData({
+                customer_name: '',
+                vehicle_number: '',
+                phone_number: '',
+                months: 1
+            })
+        }
+    }, [editPass, isOpen])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setSaving(true)
+
+        try {
+            if (editPass) {
+                // Update existing pass
+                const { error } = await supabase
+                    .from('monthly_passes')
+                    .update({
+                        customer_name: formData.customer_name,
+                        vehicle_number: formData.vehicle_number.toUpperCase(),
+                        phone_number: formData.phone_number
+                    })
+                    .eq('id', editPass.id)
+
+                if (error) throw error
+            } else {
+                // Create new pass
+                const startDate = new Date()
+                const endDate = new Date()
+                endDate.setMonth(endDate.getMonth() + Number(formData.months))
+
+                const { error } = await supabase.from('monthly_passes').insert([{
+                    customer_name: formData.customer_name,
+                    vehicle_number: formData.vehicle_number.toUpperCase(),
+                    phone_number: formData.phone_number,
+                    start_date: startDate.toISOString(),
+                    end_date: endDate.toISOString(),
+                    status: 'Active'
+                }])
+
+                if (error) throw error
+            }
+
+            onSave()
+            onClose()
+        } catch (error) {
+            alert('Error saving pass: ' + error.message)
+        } finally {
+            setSaving(false)
+        }
+    }
+
+    if (!isOpen) return null
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+            {/* Backdrop */}
+            <div
+                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                onClick={onClose}
+            />
+
+            {/* Modal */}
+            <div className="relative bg-card border border-border rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden animate-modalIn">
+                {/* Header */}
+                <div className="relative p-6 bg-linear-to-br from-purple-500/10 via-purple-500/5 to-transparent border-b border-border">
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 right-4 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-purple-500/20 rounded-xl">
+                            <UserPlus className="w-6 h-6 text-purple-500" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold text-foreground">
+                                {editPass ? 'Edit Pass' : 'Create New Pass'}
+                            </h2>
+                            <p className="text-sm text-muted-foreground">
+                                {editPass ? 'Update pass details' : 'Issue a new monthly parking pass'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                            <User className="w-4 h-4 text-purple-500" />
+                            Customer Name
+                        </label>
+                        <Input
+                            placeholder="John Doe"
+                            value={formData.customer_name}
+                            onChange={e => setFormData({ ...formData, customer_name: e.target.value })}
+                            required
+                            className="bg-secondary/50"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                            <Car className="w-4 h-4 text-purple-500" />
+                            Vehicle Number
+                        </label>
+                        <Input
+                            placeholder="MH 12 AB 1234"
+                            value={formData.vehicle_number}
+                            onChange={e => setFormData({ ...formData, vehicle_number: e.target.value })}
+                            required
+                            className="uppercase bg-secondary/50"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                            <Phone className="w-4 h-4 text-purple-500" />
+                            Phone Number
+                        </label>
+                        <Input
+                            placeholder="+91 98765 43210"
+                            value={formData.phone_number}
+                            onChange={e => setFormData({ ...formData, phone_number: e.target.value })}
+                            required
+                            className="bg-secondary/50"
+                        />
+                    </div>
+
+                    {!editPass && (
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                                <Calendar className="w-4 h-4 text-purple-500" />
+                                Duration (Months)
+                            </label>
+                            <select
+                                value={formData.months}
+                                onChange={e => setFormData({ ...formData, months: Number(e.target.value) })}
+                                className="w-full h-11 px-4 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-purple-500/50 bg-secondary/50 text-foreground"
+                            >
+                                <option value={1}>1 Month</option>
+                                <option value={3}>3 Months</option>
+                                <option value={6}>6 Months</option>
+                                <option value={12}>12 Months</option>
+                            </select>
+                        </div>
+                    )}
+
+                    <div className="flex gap-3 pt-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={onClose}
+                            className="flex-1"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            type="submit"
+                            disabled={saving}
+                            className="flex-1 bg-linear-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500"
+                        >
+                            {saving ? 'Saving...' : (editPass ? 'Update Pass' : 'Create Pass')}
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
+}
 
 export default function PassesPage() {
     const router = useRouter()
@@ -26,6 +224,8 @@ export default function PassesPage() {
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
+    const [showModal, setShowModal] = useState(false)
+    const [editingPass, setEditingPass] = useState(null)
 
     useEffect(() => {
         const checkUser = async () => {
@@ -70,6 +270,32 @@ export default function PassesPage() {
         } finally {
             setLoading(false)
         }
+    }
+
+    const handleDeletePass = async (id) => {
+        if (!confirm('Are you sure you want to revoke this pass?')) return
+
+        try {
+            const { error } = await supabase
+                .from('monthly_passes')
+                .delete()
+                .eq('id', id)
+
+            if (error) throw error
+            fetchPasses()
+        } catch (error) {
+            alert('Error deleting pass: ' + error.message)
+        }
+    }
+
+    const handleEditPass = (pass) => {
+        setEditingPass(pass)
+        setShowModal(true)
+    }
+
+    const handleCreatePass = () => {
+        setEditingPass(null)
+        setShowModal(true)
     }
 
     const filteredPasses = passes.filter(pass => {
@@ -131,8 +357,8 @@ export default function PassesPage() {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="relative">
-                    <div className="w-16 h-16 border-4 border-teal-500/20 rounded-full"></div>
-                    <div className="absolute top-0 left-0 w-16 h-16 border-4 border-teal-500 rounded-full animate-spin border-t-transparent"></div>
+                    <div className="w-16 h-16 border-4 border-purple-500/20 rounded-full"></div>
+                    <div className="absolute top-0 left-0 w-16 h-16 border-4 border-purple-500 rounded-full animate-spin border-t-transparent"></div>
                 </div>
             </div>
         )
@@ -140,6 +366,17 @@ export default function PassesPage() {
 
     return (
         <div className="space-y-8 animate-fadeIn">
+            {/* Create/Edit Pass Modal */}
+            <PassModal
+                isOpen={showModal}
+                onClose={() => {
+                    setShowModal(false)
+                    setEditingPass(null)
+                }}
+                onSave={fetchPasses}
+                editPass={editingPass}
+            />
+
             {/* Header */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
@@ -149,8 +386,15 @@ export default function PassesPage() {
                         </div>
                         Monthly Passes
                     </h1>
-                    <p className="text-muted-foreground mt-2 text-lg">View and verify customer parking passes</p>
+                    <p className="text-muted-foreground mt-2 text-lg">Manage and verify customer parking passes</p>
                 </div>
+                <Button
+                    onClick={handleCreatePass}
+                    className="bg-linear-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 shadow-lg shadow-purple-500/20 px-6 py-3 text-base"
+                >
+                    <Plus className="w-5 h-5 mr-2" />
+                    Create Pass
+                </Button>
             </div>
 
             {/* Stats Cards */}
@@ -264,6 +508,10 @@ export default function PassesPage() {
                             <p className="text-lg font-medium text-foreground">No passes found</p>
                             <p className="text-muted-foreground">Try adjusting your search or filters</p>
                         </div>
+                        <Button onClick={handleCreatePass} className="mt-4">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Create First Pass
+                        </Button>
                     </div>
                 </div>
             ) : (
@@ -275,7 +523,7 @@ export default function PassesPage() {
                         >
                             {/* Card Header with Gradient */}
                             <div className="relative p-6 bg-linear-to-br from-purple-500/10 via-purple-500/5 to-transparent border-b border-border">
-                                <div className="absolute top-4 right-4">
+                                <div className="absolute top-4 right-4 flex items-center gap-2">
                                     <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border ${getStatusStyles(pass.computedStatus)}`}>
                                         {getStatusIcon(pass.computedStatus)}
                                         {pass.computedStatus}
@@ -355,6 +603,24 @@ export default function PassesPage() {
                                         </>
                                     )}
                                 </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex gap-2 pt-2">
+                                    <button
+                                        onClick={() => handleEditPass(pass)}
+                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-purple-500/30 transition-all"
+                                    >
+                                        <Edit2 className="w-4 h-4" />
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeletePass(pass.id)}
+                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:text-red-500 hover:bg-red-500/10 hover:border-red-500/30 transition-all"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                        Revoke
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -379,6 +645,13 @@ export default function PassesPage() {
                 }
                 .animate-fadeIn {
                     animation: fadeIn 0.3s ease-out forwards;
+                }
+                @keyframes modalIn {
+                    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+                    to { opacity: 1; transform: scale(1) translateY(0); }
+                }
+                .animate-modalIn {
+                    animation: modalIn 0.2s ease-out forwards;
                 }
             `}</style>
         </div>

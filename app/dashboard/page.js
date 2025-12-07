@@ -5,8 +5,8 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { FadeIn, SpotlightCard } from '@/components/ui/ReactBits'
 import {
-    UserCog, Shield, ArrowRight, Car, CreditCard, TrendingUp,
-    Clock, Activity, ChevronRight, Sparkles, Zap, Calendar,
+    UserCog, Shield, ArrowRight, Car, CreditCard,
+    Activity, ChevronRight, Sparkles, Zap, Calendar,
     Users, BarChart3, Ticket, ParkingCircle, Bell, Settings
 } from 'lucide-react'
 import { useEffect, useState, useRef } from 'react'
@@ -384,7 +384,7 @@ export default function ChoiceDashboard() {
                             <div className="space-y-3">
                                 <QuickAction icon={Ticket} label="Issue New Ticket" href="/officer" color="teal" />
                                 <QuickAction icon={BarChart3} label="View Analytics" href="/admin/analytics" color="cyan" />
-                                <QuickAction icon={Users} label="Manage Passes" href="/admin/passes" color="teal" />
+                                <QuickAction icon={Users} label="Manage Passes" href="/passes" color="teal" />
                             </div>
                         </Card>
 

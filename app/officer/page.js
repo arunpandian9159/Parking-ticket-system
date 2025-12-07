@@ -5,8 +5,233 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
-import { Plus, Search, MapPin, Ticket, Clock, CheckCircle, AlertCircle, Filter, Eye, Calendar, Car } from 'lucide-react'
+import { Plus, Search, MapPin, Ticket, Clock, CheckCircle, AlertCircle, Filter, Eye, Calendar, Car, X, Printer, Trash2, Edit2, CreditCard, Phone, User, AlertTriangle } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
+
+// Ticket View Modal Component
+function TicketModal({ ticket, isOpen, onClose, onMarkPaid, onDelete }) {
+    const [fine, setFine] = useState(0)
+    const [overdueHours, setOverdueHours] = useState(0)
+
+    useEffect(() => {
+        if (ticket && ticket.status === 'Active') {
+            const entryTime = new Date(ticket.created_at)
+            const exitTime = new Date()
+            const diffMs = exitTime - entryTime
+            const diffHours = diffMs / (1000 * 60 * 60)
+
+            const allowedHours = Number(ticket.hours)
+            if (diffHours > allowedHours) {
+                const extra = diffHours - allowedHours
+                setOverdueHours(extra.toFixed(1))
+                // Fine policy: ₹50 penalty + ₹20 for every extra hour
+                const calculatedFine = 50 + (Math.ceil(extra) * 20)
+                setFine(calculatedFine)
+            } else {
+                setFine(0)
+                setOverdueHours(0)
+            }
+        } else {
+            setFine(0)
+            setOverdueHours(0)
+        }
+    }, [ticket])
+
+    const handlePrint = () => {
+        window.print()
+    }
+
+    if (!isOpen || !ticket) return null
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <div
+                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                onClick={onClose}
+            />
+
+            {/* Modal */}
+            <div className="relative bg-card border border-border rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden animate-modalIn max-h-[90vh] overflow-y-auto">
+                {/* Header */}
+                <div className="relative p-6 bg-linear-to-br from-teal-500/10 via-teal-500/5 to-transparent border-b border-border">
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 right-4 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-center justify-between pr-12">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-teal-500/20 rounded-xl">
+                                <Ticket className="w-6 h-6 text-teal-500" />
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-foreground">Ticket Details</h2>
+                                <p className="text-sm text-muted-foreground">ID: {ticket.id.slice(0, 8)}...</p>
+                            </div>
+                        </div>
+
+                        <div className={`
+                            inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium
+                            ${ticket.status === 'Paid'
+                                ? 'bg-green-500/10 text-green-500 border border-green-500/20'
+                                : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'}
+                        `}>
+                            {ticket.status === 'Paid' ? <CheckCircle className="w-4 h-4 mr-2" /> : <Clock className="w-4 h-4 mr-2" />}
+                            {ticket.status}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 space-y-6">
+                    {/* Fine/Overdue Alert */}
+                    {fine > 0 && ticket.status === 'Active' && (
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3">
+                            <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
+                            <div>
+                                <h4 className="font-bold text-red-500">Ticket Overdue!</h4>
+                                <p className="text-sm text-red-500/80">
+                                    Vehicle exceeded time by <strong>{overdueHours} hours</strong>.
+                                    <br />
+                                    Additional Fine: <strong>₹{fine}</strong>
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Price Banner */}
+                    <div className="bg-linear-to-br from-teal-500/10 to-cyan-500/10 rounded-xl p-4 flex items-center justify-between border border-teal-500/20">
+                        <div>
+                            <div className="text-sm text-muted-foreground">Total Amount</div>
+                            <div className="text-3xl font-bold text-teal-500">₹{ticket.price + (ticket.status === 'Active' ? fine : 0)}</div>
+                        </div>
+                        <div className="text-right">
+                            <div className="text-sm text-muted-foreground">Duration</div>
+                            <div className="text-xl font-bold text-foreground">{ticket.hours} hrs</div>
+                        </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {/* Customer Info */}
+                        <div className="space-y-4">
+                            <h3 className="font-semibold text-foreground border-b border-border pb-2 flex items-center gap-2">
+                                <User className="w-4 h-4 text-teal-500" />
+                                Customer Details
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg">
+                                    <User className="w-4 h-4 text-muted-foreground" />
+                                    <div>
+                                        <div className="text-xs text-muted-foreground">Name</div>
+                                        <div className="font-medium text-foreground">{ticket.customer_name}</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg">
+                                    <Phone className="w-4 h-4 text-muted-foreground" />
+                                    <div>
+                                        <div className="text-xs text-muted-foreground">Phone</div>
+                                        <div className="font-medium text-foreground">{ticket.customer_phone}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Vehicle Info */}
+                        <div className="space-y-4">
+                            <h3 className="font-semibold text-foreground border-b border-border pb-2 flex items-center gap-2">
+                                <Car className="w-4 h-4 text-teal-500" />
+                                Vehicle Details
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg">
+                                    <CreditCard className="w-4 h-4 text-muted-foreground" />
+                                    <div>
+                                        <div className="text-xs text-muted-foreground">License Plate</div>
+                                        <div className="font-mono font-bold text-foreground tracking-wider">{ticket.license_plate}</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg">
+                                    <Car className="w-4 h-4 text-muted-foreground" />
+                                    <div>
+                                        <div className="text-xs text-muted-foreground">Vehicle</div>
+                                        <div className="font-medium text-foreground">
+                                            {ticket.vehicle_name || ticket.vehicle_type || 'N/A'}
+                                            {ticket.vehicle_color && ` - ${ticket.vehicle_color}`}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Parking Info */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3 p-4 bg-secondary/50 rounded-xl border border-border">
+                            <div className="p-2 bg-teal-500/10 rounded-lg">
+                                <MapPin className="w-5 h-5 text-teal-500" />
+                            </div>
+                            <div>
+                                <div className="text-xs text-muted-foreground uppercase tracking-wider">Parking Spot</div>
+                                <div className="text-lg font-bold text-foreground">{ticket.parking_spot}</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 bg-secondary/50 rounded-xl border border-border">
+                            <div className="p-2 bg-cyan-500/10 rounded-lg">
+                                <Calendar className="w-5 h-5 text-cyan-500" />
+                            </div>
+                            <div>
+                                <div className="text-xs text-muted-foreground uppercase tracking-wider">Entry Time</div>
+                                <div className="text-sm font-bold text-foreground">
+                                    {new Date(ticket.created_at).toLocaleString('en-IN', {
+                                        day: 'numeric',
+                                        month: 'short',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer Actions */}
+                <div className="p-6 bg-secondary/30 border-t border-border flex flex-wrap gap-3">
+                    <Button
+                        variant="outline"
+                        onClick={handlePrint}
+                        className="flex-1 min-w-[120px]"
+                    >
+                        <Printer className="w-4 h-4 mr-2" />
+                        Print
+                    </Button>
+
+                    <Button
+                        variant="outline"
+                        onClick={() => onDelete(ticket.id)}
+                        className="flex-1 min-w-[120px] border-red-500/30 text-red-500 hover:bg-red-500/10"
+                    >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                    </Button>
+
+                    {ticket.status !== 'Paid' && (
+                        <Button
+                            onClick={() => onMarkPaid(ticket, fine, overdueHours)}
+                            className="flex-1 min-w-[120px] bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500"
+                        >
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Mark Paid {fine > 0 && `(₹${ticket.price + fine})`}
+                        </Button>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}
 
 export default function OfficerTicketsPage() {
     const router = useRouter()
@@ -14,6 +239,8 @@ export default function OfficerTicketsPage() {
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
+    const [selectedTicket, setSelectedTicket] = useState(null)
+    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         const checkUser = async () => {
@@ -44,6 +271,111 @@ export default function OfficerTicketsPage() {
         }
     }
 
+    const handleViewTicket = (ticket) => {
+        setSelectedTicket(ticket)
+        setShowModal(true)
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false)
+        setSelectedTicket(null)
+    }
+
+    const handleMarkPaid = async (ticket, fine, overdueHours) => {
+        const confirmMsg = fine > 0
+            ? `Ticket is OVERDUE by ${overdueHours} hrs.\nTotal Fine: ₹${fine}.\n\nMark as PAID (Total: ₹${ticket.price + fine})?`
+            : 'Mark this ticket as PAID?'
+
+        if (!confirm(confirmMsg)) return
+
+        try {
+            const { error } = await supabase
+                .from('tickets')
+                .update({
+                    status: 'Paid',
+                    actual_exit_time: new Date().toISOString(),
+                    fine_amount: fine
+                })
+                .eq('id', ticket.id)
+
+            if (error) throw error
+
+            // Free up the slot
+            await supabase
+                .from('parking_slots')
+                .update({ is_occupied: false })
+                .eq('slot_number', ticket.parking_spot)
+
+            handleCloseModal()
+            fetchTickets()
+        } catch (error) {
+            alert('Error updating ticket: ' + error.message)
+        }
+    }
+
+    const handleDeleteTicket = async (ticketId) => {
+        console.log('Delete initiated for ticket:', ticketId)
+
+        if (!confirm('Are you sure you want to delete this ticket? This action cannot be undone.')) {
+            console.log('User cancelled delete')
+            return
+        }
+
+        try {
+            // Get the ticket first to free up the slot
+            const ticket = tickets.find(t => t.id === ticketId)
+            console.log('Found ticket:', ticket)
+
+            if (!ticket) {
+                alert('Ticket not found in local state')
+                return
+            }
+
+            console.log('Attempting to delete from Supabase...')
+            const { data, error, status, statusText } = await supabase
+                .from('tickets')
+                .delete()
+                .eq('id', ticketId)
+                .select()
+
+            console.log('Delete response:', { data, error, status, statusText })
+
+            if (error) {
+                console.error('Supabase delete error:', error)
+                throw error
+            }
+
+            // Check if anything was actually deleted
+            if (!data || data.length === 0) {
+                console.warn('No rows were deleted - might be RLS policy issue')
+                alert('Could not delete ticket. This might be due to permission settings. Please check Supabase RLS policies.')
+                return
+            }
+
+            console.log('Ticket deleted successfully:', data)
+
+            // Free up the slot if ticket was active
+            if (ticket && ticket.status !== 'Paid') {
+                console.log('Freeing up parking slot:', ticket.parking_spot)
+                const { error: slotError } = await supabase
+                    .from('parking_slots')
+                    .update({ is_occupied: false })
+                    .eq('slot_number', ticket.parking_spot)
+
+                if (slotError) {
+                    console.error('Error freeing slot:', slotError)
+                }
+            }
+
+            handleCloseModal()
+            fetchTickets()
+            console.log('Delete completed successfully')
+        } catch (error) {
+            console.error('Delete error:', error)
+            alert('Error deleting ticket: ' + (error.message || JSON.stringify(error)))
+        }
+    }
+
     const filteredTickets = tickets.filter(t => {
         const matchesSearch = t.license_plate.toLowerCase().includes(search.toLowerCase()) ||
             t.customer_name.toLowerCase().includes(search.toLowerCase())
@@ -54,7 +386,7 @@ export default function OfficerTicketsPage() {
     // Calculate stats
     const stats = {
         total: tickets.length,
-        pending: tickets.filter(t => t.status === 'Pending').length,
+        pending: tickets.filter(t => t.status === 'Pending' || t.status === 'Active').length,
         paid: tickets.filter(t => t.status === 'Paid').length,
         todayRevenue: tickets
             .filter(t => {
@@ -66,7 +398,7 @@ export default function OfficerTicketsPage() {
 
     const statusTabs = [
         { id: 'all', label: 'All Tickets', count: stats.total, icon: Ticket },
-        { id: 'pending', label: 'Pending', count: stats.pending, icon: Clock },
+        { id: 'active', label: 'Active', count: stats.pending, icon: Clock },
         { id: 'paid', label: 'Paid', count: stats.paid, icon: CheckCircle },
     ]
 
@@ -83,6 +415,15 @@ export default function OfficerTicketsPage() {
 
     return (
         <div className="space-y-8 animate-fadeIn">
+            {/* Ticket View Modal */}
+            <TicketModal
+                ticket={selectedTicket}
+                isOpen={showModal}
+                onClose={handleCloseModal}
+                onMarkPaid={handleMarkPaid}
+                onDelete={handleDeleteTicket}
+            />
+
             {/* Header */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
@@ -127,7 +468,7 @@ export default function OfficerTicketsPage() {
                             <div className="p-2 bg-amber-500/10 rounded-xl">
                                 <Clock className="w-5 h-5 text-amber-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Pending</span>
+                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Active</span>
                         </div>
                         <div className="text-3xl font-bold text-foreground">{stats.pending}</div>
                         <div className="text-sm text-muted-foreground mt-1">Awaiting Payment</div>
@@ -215,7 +556,7 @@ export default function OfficerTicketsPage() {
                                 <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Customer</th>
                                 <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider">Status</th>
                                 <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider text-right">Amount</th>
-                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider text-center">Action</th>
+                                <th className="px-6 py-5 text-xs uppercase font-bold text-muted-foreground tracking-wider text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -230,6 +571,12 @@ export default function OfficerTicketsPage() {
                                                 <p className="text-lg font-medium text-foreground">No tickets found</p>
                                                 <p className="text-muted-foreground">Try adjusting your search or filters</p>
                                             </div>
+                                            <Link href="/tickets/create">
+                                                <Button className="mt-2">
+                                                    <Plus className="w-4 h-4 mr-2" />
+                                                    Issue First Ticket
+                                                </Button>
+                                            </Link>
                                         </div>
                                     </td>
                                 </tr>
@@ -237,8 +584,7 @@ export default function OfficerTicketsPage() {
                                 filteredTickets.map((ticket) => (
                                     <tr
                                         key={ticket.id}
-                                        className="group hover:bg-secondary/30 transition-all duration-200 cursor-pointer"
-                                        onClick={() => router.push(`/tickets/${ticket.id}`)}
+                                        className="group hover:bg-secondary/30 transition-all duration-200"
                                     >
                                         <td className="px-6 py-5">
                                             <div className="flex items-center gap-3">
@@ -285,16 +631,41 @@ export default function OfficerTicketsPage() {
                                             <div className="font-bold text-lg text-foreground">₹{ticket.price}</div>
                                             <div className="text-xs text-muted-foreground">{ticket.hours} hrs</div>
                                         </td>
-                                        <td className="px-6 py-5 text-center">
-                                            <button
-                                                className="p-2.5 rounded-lg text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 transition-all duration-200"
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    router.push(`/tickets/${ticket.id}`)
-                                                }}
-                                            >
-                                                <Eye className="w-5 h-5" />
-                                            </button>
+                                        <td className="px-6 py-5">
+                                            <div className="flex items-center justify-center gap-2">
+                                                <button
+                                                    className="p-2.5 rounded-lg text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 transition-all duration-200"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        handleViewTicket(ticket)
+                                                    }}
+                                                    title="View Details"
+                                                >
+                                                    <Eye className="w-5 h-5" />
+                                                </button>
+                                                {ticket.status !== 'Paid' && (
+                                                    <button
+                                                        className="p-2.5 rounded-lg text-muted-foreground hover:text-green-500 hover:bg-green-500/10 transition-all duration-200"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            handleMarkPaid(ticket, 0, 0)
+                                                        }}
+                                                        title="Mark as Paid"
+                                                    >
+                                                        <CheckCircle className="w-5 h-5" />
+                                                    </button>
+                                                )}
+                                                <button
+                                                    className="p-2.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        handleDeleteTicket(ticket.id)
+                                                    }}
+                                                    title="Delete Ticket"
+                                                >
+                                                    <Trash2 className="w-5 h-5" />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
@@ -308,7 +679,7 @@ export default function OfficerTicketsPage() {
             {filteredTickets.length > 0 && (
                 <div className="flex justify-between items-center text-sm text-muted-foreground">
                     <span>Showing {filteredTickets.length} of {tickets.length} tickets</span>
-                    <span>Click on a row to view ticket details</span>
+                    <span>Click the eye icon to view ticket details</span>
                 </div>
             )}
 
@@ -319,6 +690,13 @@ export default function OfficerTicketsPage() {
                 }
                 .animate-fadeIn {
                     animation: fadeIn 0.3s ease-out forwards;
+                }
+                @keyframes modalIn {
+                    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+                    to { opacity: 1; transform: scale(1) translateY(0); }
+                }
+                .animate-modalIn {
+                    animation: modalIn 0.2s ease-out forwards;
                 }
             `}</style>
         </div>
