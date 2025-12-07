@@ -156,32 +156,33 @@
 }
 
 /* Fix browser autofill background for dark theme */
+/* Make autofill background transparent to match input styling */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px rgb(23, 23, 23) inset !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
   -webkit-text-fill-color: #ffffff !important;
   caret-color: #ffffff !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-/* Override for any input with autofill in dark backgrounds */
-input:-webkit-autofill {
   background-color: transparent !important;
+  transition: background-color 9999s ease-out;
+  transition-delay: 9999s;
 }
 
 /* Firefox autofill override */
-input:-moz-autofill {
-  background-color: rgb(23, 23, 23) !important;
-  color: #ffffff !important;
+input:-moz-autofill,
+input:-moz-autofill:hover,
+input:-moz-autofill:focus {
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -moz-text-fill-color: #ffffff !important;
+  background-color: transparent !important;
 }
 
 /* General input styling for dark theme */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-  background-color: transparent;
+  background-color: transparent !important;
   color: #ffffff;
 }
 

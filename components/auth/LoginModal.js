@@ -46,9 +46,9 @@ function PasswordStrengthBar({ password }) {
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
                 className={`text-xs mt-1.5 ${strength <= 1 ? 'text-red-400' :
-                        strength <= 2 ? 'text-orange-400' :
-                            strength <= 3 ? 'text-yellow-400' :
-                                strength === 4 ? 'text-blue-400' : 'text-green-400'
+                    strength <= 2 ? 'text-orange-400' :
+                        strength <= 3 ? 'text-yellow-400' :
+                            strength === 4 ? 'text-blue-400' : 'text-green-400'
                     }`}
             >
                 Password strength: {levels[strength - 1] || 'Too Short'}
@@ -77,15 +77,15 @@ function FloatingInput({
             <div className={`relative group transition-all duration-300 ${error ? 'animate-shake' : ''}`}>
                 {/* Glow effect on focus */}
                 <div className={`absolute -inset-0.5 rounded-xl transition-all duration-300 ${isFocused
-                        ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur'
-                        : 'bg-transparent'
+                    ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur'
+                    : 'bg-transparent'
                     }`} />
 
                 <div className={`relative flex items-center border rounded-xl transition-all duration-300 ${error
-                        ? 'border-red-500/50 bg-red-500/5'
-                        : isFocused
-                            ? 'border-blue-500/50 bg-white/5'
-                            : 'border-white/10 bg-white/5 hover:border-white/20'
+                    ? 'border-red-500/50 bg-red-500/5'
+                    : isFocused
+                        ? 'border-blue-500/50 bg-white/5'
+                        : 'border-white/10 bg-white/5 hover:border-white/20'
                     }`}>
                     {/* Icon */}
                     <div className={`pl-4 transition-colors duration-300 ${isFocused ? 'text-blue-400' : 'text-gray-500'
@@ -100,15 +100,14 @@ function FloatingInput({
                         onChange={onChange}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
-                        className="w-full px-4 py-4 pt-6 bg-transparent text-white placeholder-transparent focus:outline-none text-sm"
-                        placeholder={label}
+                        className="w-full px-4 py-4 pt-6 bg-transparent text-white focus:outline-none text-sm"
                         {...props}
                     />
 
                     {/* Floating Label */}
                     <label className={`absolute left-12 transition-all duration-300 pointer-events-none ${isActive
-                            ? 'top-2 text-xs text-blue-400'
-                            : 'top-1/2 -translate-y-1/2 text-sm text-gray-500'
+                        ? 'top-2 text-xs text-blue-400'
+                        : 'top-1/2 -translate-y-1/2 text-sm text-gray-500'
                         }`}>
                         {label}
                     </label>

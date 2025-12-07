@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
-import { Car, Home, Ticket, Search, LogOut, Menu, X } from 'lucide-react'
+import { Home, Ticket, Search, LogOut, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
 export default function Navbar({ onLoginClick }) {
@@ -50,9 +51,13 @@ export default function Navbar({ onLoginClick }) {
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                                <Car className="w-6 h-6 text-white" />
-                            </div>
+                            <Image
+                                src="/logo1.png"
+                                alt="ParkSmart Logo"
+                                width={50}
+                                height={50}
+                                className="rounded-full"
+                            />
                             <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
                                 ParkSmart
                             </span>
@@ -142,9 +147,13 @@ export default function Navbar({ onLoginClick }) {
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                            <Car className="w-5 h-5 text-white" />
-                        </div>
+                        <Image
+                            src="/logo1.png"
+                            alt="ParkSmart Logo"
+                            width={50}
+                            height={50}
+                            className="rounded-lg"
+                        />
                         <span className="text-lg font-bold text-white hidden sm:block">ParkSmart</span>
                     </Link>
 
