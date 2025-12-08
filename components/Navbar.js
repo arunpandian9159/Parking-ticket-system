@@ -100,18 +100,18 @@ export default function Navbar({ onLoginClick }) {
     if (pathname === '/') {
         return (
             <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-14 sm:h-16">
                         {/* Logo */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                             <Image
                                 src="/logo2.png"
                                 alt="PARKINGTICKET Logo"
-                                width={40}
-                                height={40}
-                                className="rounded-full"
+                                width={32}
+                                height={32}
+                                className="rounded-full sm:w-10 sm:h-10"
                             />
-                            <span className="text-xl font-bold bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent">
+                            <span className="hidden sm:inline text-base sm:text-xl font-bold bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent">
                                 PARKINGTICKET
                             </span>
                         </div>
@@ -130,7 +130,7 @@ export default function Navbar({ onLoginClick }) {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                             {/* Theme Toggle */}
                             <ThemeToggle />
 
@@ -141,7 +141,7 @@ export default function Navbar({ onLoginClick }) {
                             </Link>
                             <Button
                                 onClick={onLoginClick}
-                                className="bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-sm px-5"
+                                className="bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-xs sm:text-sm px-3 sm:px-5 py-2"
                             >
                                 Login
                             </Button>
