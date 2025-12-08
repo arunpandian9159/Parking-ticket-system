@@ -47,7 +47,7 @@ export default function ParkingMap({ onSelectSlot, selectedSlot, vehicleType }) 
             {Object.entries(groupedSlots).map(([section, sectionSlots]) => (
                 <div key={section} className="bg-secondary/50 p-4 rounded-xl border border-border">
                     <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Section {section}</h3>
-                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
+                    <div className="grid grid-cols-5 sm:grid-cols-6 gap-3">
                         {sectionSlots.map((slot) => {
                             const isOccupied = slot.is_occupied
                             const isSelected = selectedSlot === slot.slot_number
@@ -60,7 +60,7 @@ export default function ParkingMap({ onSelectSlot, selectedSlot, vehicleType }) 
                                     disabled={isOccupied || !isCompatible}
                                     onClick={() => onSelectSlot(slot.slot_number)}
                                     className={`
-                    relative p-3 rounded-lg flex flex-col items-center justify-center gap-1 transition-all
+                    relative p-1 rounded-lg flex flex-col items-center justify-center gap-1 transition-all
                     border-2
                     ${isOccupied
                                             ? 'bg-red-500/10 border-red-500/30 cursor-not-allowed opacity-60'

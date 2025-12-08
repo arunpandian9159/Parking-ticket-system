@@ -447,64 +447,64 @@ export default function OfficerTicketsPage() {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                 {/* Total Tickets */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-teal-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-teal-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-teal-500/10 rounded-xl">
-                                <Ticket className="w-5 h-5 text-teal-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-teal-500/10 rounded-lg sm:rounded-xl">
+                                <Ticket className="w-4 h-4 sm:w-5 sm:h-5 text-teal-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Total</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Total</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">{stats.total}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Total Tickets</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.total}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Total Tickets</div>
                     </div>
                 </div>
 
                 {/* Pending */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-amber-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-amber-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-amber-500/10 rounded-xl">
-                                <Clock className="w-5 h-5 text-amber-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-amber-500/10 rounded-lg sm:rounded-xl">
+                                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Active</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Active</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">{stats.pending}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Awaiting Payment</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.pending}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Awaiting Payment</div>
                     </div>
                 </div>
 
                 {/* Paid */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-green-500/10 rounded-xl">
-                                <CheckCircle className="w-5 h-5 text-green-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-green-500/10 rounded-lg sm:rounded-xl">
+                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Completed</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Completed</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">{stats.paid}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Paid Tickets</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.paid}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Paid Tickets</div>
                     </div>
                 </div>
 
                 {/* Today's Revenue */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-purple-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-purple-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-purple-500/10 rounded-xl">
-                                <Calendar className="w-5 h-5 text-purple-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-purple-500/10 rounded-lg sm:rounded-xl">
+                                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Today</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Today</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">₹{stats.todayRevenue}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Today's Revenue</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">₹{stats.todayRevenue}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Today's Revenue</div>
                     </div>
                 </div>
             </div>
@@ -692,80 +692,80 @@ export default function OfficerTicketsPage() {
                     </div>
 
                     {/* Mobile Card View */}
-                    <div className="md:hidden space-y-4">
+                    <div className="md:hidden space-y-3">
                         {filteredTickets.map((ticket) => (
                             <div
                                 key={ticket.id}
-                                className="bg-card rounded-2xl border border-border p-4 space-y-4"
+                                className="bg-card rounded-xl border border-border p-3 space-y-3"
                             >
                                 {/* Header */}
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-teal-500/10 rounded-lg">
-                                            <Car className="w-4 h-4 text-teal-500" />
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-1.5 bg-teal-500/10 rounded-lg">
+                                            <Car className="w-3.5 h-3.5 text-teal-500" />
                                         </div>
                                         <div>
-                                            <span className="font-bold text-foreground tracking-wider">{ticket.license_plate}</span>
-                                            <div className="text-xs text-muted-foreground">{ticket.vehicle_name || ticket.vehicle_type}</div>
+                                            <span className="font-bold text-foreground text-sm tracking-wider">{ticket.license_plate}</span>
+                                            <div className="text-[10px] text-muted-foreground">{ticket.vehicle_name || ticket.vehicle_type}</div>
                                         </div>
                                     </div>
-                                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${ticket.status === 'Paid'
+                                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${ticket.status === 'Paid'
                                         ? 'bg-green-500/10 text-green-500 border border-green-500/20'
                                         : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
                                         }`}>
-                                        {ticket.status === 'Paid' ? <CheckCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                                        {ticket.status === 'Paid' ? <CheckCircle className="w-2.5 h-2.5" /> : <Clock className="w-2.5 h-2.5" />}
                                         {ticket.status}
                                     </span>
                                 </div>
 
                                 {/* Details Grid */}
-                                <div className="grid grid-cols-2 gap-3 text-sm">
-                                    <div className="bg-secondary/50 rounded-lg p-3">
-                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Customer</div>
-                                        <div className="font-medium text-foreground truncate">{ticket.customer_name}</div>
+                                <div className="grid grid-cols-2 gap-2 text-xs">
+                                    <div className="bg-secondary/50 rounded-lg p-2">
+                                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Customer</div>
+                                        <div className="font-medium text-foreground text-xs truncate">{ticket.customer_name}</div>
                                     </div>
-                                    <div className="bg-secondary/50 rounded-lg p-3">
-                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Spot</div>
-                                        <div className="font-medium text-foreground flex items-center gap-1">
-                                            <MapPin className="w-3 h-3 text-teal-500" />
+                                    <div className="bg-secondary/50 rounded-lg p-2">
+                                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Spot</div>
+                                        <div className="font-medium text-foreground text-xs flex items-center gap-1">
+                                            <MapPin className="w-2.5 h-2.5 text-teal-500" />
                                             {ticket.parking_spot}
                                         </div>
                                     </div>
-                                    <div className="bg-secondary/50 rounded-lg p-3">
-                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Date</div>
-                                        <div className="font-medium text-foreground">
+                                    <div className="bg-secondary/50 rounded-lg p-2">
+                                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Date</div>
+                                        <div className="font-medium text-foreground text-xs">
                                             {new Date(ticket.created_at).toLocaleDateString()}
                                         </div>
                                     </div>
-                                    <div className="bg-secondary/50 rounded-lg p-3">
-                                        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Amount</div>
-                                        <div className="font-bold text-foreground">₹{ticket.price}</div>
+                                    <div className="bg-secondary/50 rounded-lg p-2">
+                                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Amount</div>
+                                        <div className="font-bold text-foreground text-xs">₹{ticket.price}</div>
                                     </div>
                                 </div>
 
                                 {/* Actions */}
-                                <div className="flex gap-2 pt-2 border-t border-border">
+                                <div className="flex gap-1.5 pt-2 border-t border-border">
                                     <button
-                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 border border-border transition-all"
+                                        className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-teal-500 hover:bg-teal-500/10 border border-border transition-all"
                                         onClick={() => handleViewTicket(ticket)}
                                     >
-                                        <Eye className="w-4 h-4" />
+                                        <Eye className="w-3.5 h-3.5" />
                                         View
                                     </button>
                                     {ticket.status !== 'Paid' && (
                                         <button
-                                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-green-500 hover:bg-green-500/10 border border-border transition-all"
+                                            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-green-500 hover:bg-green-500/10 border border-border transition-all"
                                             onClick={() => handleMarkPaid(ticket, 0, 0)}
                                         >
-                                            <CheckCircle className="w-4 h-4" />
+                                            <CheckCircle className="w-3.5 h-3.5" />
                                             Paid
                                         </button>
                                     )}
                                     <button
-                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-red-500 hover:bg-red-500/10 border border-border transition-all"
+                                        className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-red-500 hover:bg-red-500/10 border border-border transition-all"
                                         onClick={() => handleDeleteTicket(ticket.id)}
                                     >
-                                        <Trash2 className="w-4 h-4" />
+                                        <Trash2 className="w-3.5 h-3.5" />
                                         Delete
                                     </button>
                                 </div>

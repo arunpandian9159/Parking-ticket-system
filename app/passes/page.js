@@ -365,7 +365,7 @@ export default function PassesPage() {
     }
 
     return (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-4 sm:space-y-8 animate-fadeIn">
             {/* Create/Edit Pass Modal */}
             <PassModal
                 isOpen={showModal}
@@ -401,64 +401,64 @@ export default function PassesPage() {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                 {/* Total Passes */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-purple-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-purple-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-purple-500/10 rounded-xl">
-                                <CreditCard className="w-5 h-5 text-purple-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-purple-500/10 rounded-lg sm:rounded-xl">
+                                <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Total</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Total</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">{stats.total}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Total Passes</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.total}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Total Passes</div>
                     </div>
                 </div>
 
                 {/* Active */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-green-500/10 rounded-xl">
-                                <CheckCircle className="w-5 h-5 text-green-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-green-500/10 rounded-lg sm:rounded-xl">
+                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Active</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Active</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">{stats.active}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Active Passes</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.active}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Active Passes</div>
                     </div>
                 </div>
 
                 {/* Expiring Soon */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-amber-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-amber-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-amber-500/10 rounded-xl">
-                                <AlertTriangle className="w-5 h-5 text-amber-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-amber-500/10 rounded-lg sm:rounded-xl">
+                                <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Expiring</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Expiring</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">{stats.expiring}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Expiring Soon</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.expiring}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Expiring Soon</div>
                     </div>
                 </div>
 
                 {/* Expired */}
-                <div className="group relative bg-card rounded-2xl border border-border p-6 hover:border-red-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/5">
-                    <div className="absolute inset-0 bg-linear-to-br from-red-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-red-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-red-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-red-500/10 rounded-xl">
-                                <XCircle className="w-5 h-5 text-red-500" />
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-red-500/10 rounded-lg sm:rounded-xl">
+                                <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
                             </div>
-                            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Expired</span>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Expired</span>
                         </div>
-                        <div className="text-3xl font-bold text-foreground">{stats.expired}</div>
-                        <div className="text-sm text-muted-foreground mt-1">Expired Passes</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.expired}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Expired Passes</div>
                     </div>
                 </div>
             </div>
@@ -531,66 +531,66 @@ export default function PassesPage() {
                     </div>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                     {filteredPasses.map((pass) => (
                         <div
                             key={pass.id}
-                            className="group relative bg-card rounded-2xl border border-border overflow-hidden hover:border-purple-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/5"
+                            className="group relative bg-card rounded-xl sm:rounded-2xl border border-border overflow-hidden hover:border-purple-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/5"
                         >
                             {/* Card Header with Gradient */}
-                            <div className="relative p-6 bg-linear-to-br from-purple-500/10 via-purple-500/5 to-transparent border-b border-border">
-                                <div className="absolute top-4 right-4 flex items-center gap-2">
-                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border ${getStatusStyles(pass.computedStatus)}`}>
+                            <div className="relative p-3 sm:p-6 bg-linear-to-br from-purple-500/10 via-purple-500/5 to-transparent border-b border-border">
+                                <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex items-center gap-2">
+                                    <span className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold border ${getStatusStyles(pass.computedStatus)}`}>
                                         {getStatusIcon(pass.computedStatus)}
-                                        {pass.computedStatus}
+                                        <span className="hidden sm:inline">{pass.computedStatus}</span>
                                     </span>
                                 </div>
 
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-purple-500/20 rounded-xl">
-                                        <CreditCard className="w-6 h-6 text-purple-500" />
+                                <div className="flex items-center gap-2 sm:gap-4">
+                                    <div className="p-2 sm:p-3 bg-purple-500/20 rounded-lg sm:rounded-xl">
+                                        <CreditCard className="w-4 h-4 sm:w-6 sm:h-6 text-purple-500" />
                                     </div>
                                     <div>
-                                        <div className="text-sm text-muted-foreground">Pass Holder</div>
-                                        <div className="text-xl font-bold text-foreground">{pass.customer_name}</div>
+                                        <div className="text-[10px] sm:text-sm text-muted-foreground">Pass Holder</div>
+                                        <div className="text-sm sm:text-xl font-bold text-foreground">{pass.customer_name}</div>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Card Body */}
-                            <div className="p-6 space-y-4">
+                            <div className="p-3 sm:p-6 space-y-2.5 sm:space-y-4">
                                 {/* Vehicle Number */}
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-secondary rounded-lg">
-                                        <Car className="w-4 h-4 text-muted-foreground" />
+                                <div className="flex items-center gap-2 sm:gap-3">
+                                    <div className="p-1.5 sm:p-2 bg-secondary rounded-lg">
+                                        <Car className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
                                     </div>
                                     <div>
-                                        <div className="text-xs text-muted-foreground uppercase tracking-wider">Vehicle Number</div>
-                                        <div className="font-mono font-bold text-foreground tracking-wider">{pass.vehicle_number}</div>
+                                        <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Vehicle Number</div>
+                                        <div className="font-mono font-bold text-foreground text-xs sm:text-base tracking-wider">{pass.vehicle_number}</div>
                                     </div>
                                 </div>
 
                                 {/* Phone */}
                                 {pass.phone_number && (
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-secondary rounded-lg">
-                                            <Phone className="w-4 h-4 text-muted-foreground" />
+                                    <div className="flex items-center gap-2 sm:gap-3">
+                                        <div className="p-1.5 sm:p-2 bg-secondary rounded-lg">
+                                            <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
                                         </div>
                                         <div>
-                                            <div className="text-xs text-muted-foreground uppercase tracking-wider">Phone</div>
-                                            <div className="font-medium text-foreground">{pass.phone_number}</div>
+                                            <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Phone</div>
+                                            <div className="font-medium text-foreground text-xs sm:text-base">{pass.phone_number}</div>
                                         </div>
                                     </div>
                                 )}
 
                                 {/* Validity */}
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-secondary rounded-lg">
-                                        <Calendar className="w-4 h-4 text-muted-foreground" />
+                                <div className="flex items-center gap-2 sm:gap-3">
+                                    <div className="p-1.5 sm:p-2 bg-secondary rounded-lg">
+                                        <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
                                     </div>
                                     <div>
-                                        <div className="text-xs text-muted-foreground uppercase tracking-wider">Valid Until</div>
-                                        <div className="font-medium text-foreground">
+                                        <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Valid Until</div>
+                                        <div className="font-medium text-foreground text-xs sm:text-base">
                                             {new Date(pass.end_date).toLocaleDateString('en-IN', {
                                                 day: 'numeric',
                                                 month: 'short',
@@ -601,7 +601,7 @@ export default function PassesPage() {
                                 </div>
 
                                 {/* Days Left Badge */}
-                                <div className={`flex items-center justify-center gap-2 py-3 rounded-xl border ${pass.daysLeft > 7
+                                <div className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-3 rounded-lg sm:rounded-xl border text-xs sm:text-sm ${pass.daysLeft > 7
                                     ? 'bg-green-500/5 border-green-500/20 text-green-500'
                                     : pass.daysLeft > 0
                                         ? 'bg-amber-500/5 border-amber-500/20 text-amber-500'
@@ -609,31 +609,31 @@ export default function PassesPage() {
                                     }`}>
                                     {pass.daysLeft > 0 ? (
                                         <>
-                                            <Clock className="w-4 h-4" />
+                                            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                             <span className="font-bold">{pass.daysLeft} days remaining</span>
                                         </>
                                     ) : (
                                         <>
-                                            <XCircle className="w-4 h-4" />
+                                            <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                             <span className="font-bold">Expired {Math.abs(pass.daysLeft)} days ago</span>
                                         </>
                                     )}
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className="flex gap-2 pt-2">
+                                <div className="flex gap-1.5 sm:gap-2 pt-1.5 sm:pt-2">
                                     <button
                                         onClick={() => handleEditPass(pass)}
-                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-purple-500/30 transition-all"
+                                        className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl border border-border text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-purple-500/30 transition-all"
                                     >
-                                        <Edit2 className="w-4 h-4" />
+                                        <Edit2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                         Edit
                                     </button>
                                     <button
                                         onClick={() => handleDeletePass(pass.id)}
-                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:text-red-500 hover:bg-red-500/10 hover:border-red-500/30 transition-all"
+                                        className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl border border-border text-xs sm:text-sm font-medium text-muted-foreground hover:text-red-500 hover:bg-red-500/10 hover:border-red-500/30 transition-all"
                                     >
-                                        <Trash2 className="w-4 h-4" />
+                                        <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                         Revoke
                                     </button>
                                 </div>

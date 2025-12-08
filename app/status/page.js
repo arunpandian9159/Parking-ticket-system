@@ -132,12 +132,6 @@ export default function StatusPage() {
                         </div>
                     </div>
                 )}
-
-                <div className="text-center">
-                    <Link href="/" className="text-sm text-muted-foreground hover:text-teal-500 transition-colors">
-                        Officer Login
-                    </Link>
-                </div>
             </div>
         </div>
     )
