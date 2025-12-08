@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
 import {
     Lock, Mail, User, X, Eye, EyeOff,
-    Sparkles, ArrowRight, CheckCircle2,
+    Sparkles, ArrowRight, ArrowLeft, CheckCircle2,
     AlertCircle, Loader2
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -77,21 +77,21 @@ function FloatingInput({
         <div className="relative">
             <div className={`relative group transition-all duration-300 ${error ? 'animate-shake' : ''}`}>
                 {/* Glow effect on focus */}
-                <div className={`absolute -inset-0.5 rounded-xl transition-all duration-300 ${isFocused
+                <div className={`absolute -inset-0.5 rounded-lg sm:rounded-xl transition-all duration-300 ${isFocused
                     ? 'bg-linear-to-r from-teal-500/30 to-cyan-500/30 blur'
                     : 'bg-transparent'
                     }`} />
 
-                <div className={`relative flex items-center border rounded-xl transition-all duration-300 ${error
+                <div className={`relative flex items-center border rounded-lg sm:rounded-xl transition-all duration-300 ${error
                     ? 'border-red-500/50 bg-red-500/5'
                     : isFocused
                         ? 'border-teal-500/50 bg-secondary/50'
                         : 'border-border bg-secondary/30 hover:border-muted-foreground'
                     }`}>
                     {/* Icon */}
-                    <div className={`pl-4 transition-colors duration-300 ${isFocused ? 'text-teal-500' : 'text-muted-foreground'
+                    <div className={`pl-3 sm:pl-4 transition-colors duration-300 ${isFocused ? 'text-teal-500' : 'text-muted-foreground'
                         }`}>
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
 
                     {/* Input */}
@@ -101,14 +101,14 @@ function FloatingInput({
                         onChange={onChange}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
-                        className="w-full px-4 py-4 pt-6 bg-transparent text-foreground focus:outline-none text-sm"
+                        className="w-full px-3 sm:px-4 py-3 sm:py-4 pt-5 sm:pt-6 bg-transparent text-foreground focus:outline-none text-xs sm:text-sm"
                         {...props}
                     />
 
                     {/* Floating Label */}
-                    <label className={`absolute left-12 transition-all duration-300 pointer-events-none ${isActive
-                        ? 'top-2 text-xs text-teal-500'
-                        : 'top-1/2 -translate-y-1/2 text-sm text-muted-foreground'
+                    <label className={`absolute left-10 sm:left-12 transition-all duration-300 pointer-events-none ${isActive
+                        ? 'top-1.5 sm:top-2 text-[10px] sm:text-xs text-teal-500'
+                        : 'top-1/2 -translate-y-1/2 text-xs sm:text-sm text-muted-foreground'
                         }`}>
                         {label}
                     </label>
@@ -118,9 +118,9 @@ function FloatingInput({
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="pr-4 text-muted-foreground hover:text-foreground transition-colors"
+                            className="pr-3 sm:pr-4 text-muted-foreground hover:text-foreground transition-colors"
                         >
-                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
                         </button>
                     )}
                 </div>
@@ -133,7 +133,7 @@ function FloatingInput({
                         initial={{ opacity: 0, y: -5, height: 0 }}
                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                         exit={{ opacity: 0, y: -5, height: 0 }}
-                        className="text-red-500 text-xs mt-1.5 flex items-center gap-1"
+                        className="text-red-500 text-[10px] sm:text-xs mt-1 sm:mt-1.5 flex items-center gap-1"
                     >
                         <AlertCircle className="w-3 h-3" />
                         {error}
@@ -150,7 +150,7 @@ function TabButton({ active, onClick, children }) {
         <button
             type="button"
             onClick={onClick}
-            className={`relative flex-1 py-3 text-sm font-medium transition-colors duration-300 ${active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+            className={`relative flex-1 py-2.5 sm:py-3 text-xs sm:text-sm font-medium transition-colors duration-300 ${active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
         >
             {children}
@@ -173,10 +173,10 @@ function SocialButton({ icon: Icon, label, onClick, disabled }) {
             type="button"
             onClick={onClick}
             disabled={disabled}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-border bg-secondary/30 hover:bg-secondary hover:border-muted-foreground transition-all duration-300 text-muted-foreground hover:text-foreground group disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl border border-border bg-secondary/30 hover:bg-secondary hover:border-muted-foreground transition-all duration-300 text-muted-foreground hover:text-foreground group disabled:opacity-50 disabled:cursor-not-allowed"
         >
-            <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            <span className="text-sm font-medium">{label}</span>
+            <Icon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
+            <span className="text-xs sm:text-sm font-medium">{label}</span>
         </button>
     )
 }
@@ -327,29 +327,42 @@ export default function LoginModal({ isOpen, onClose }) {
                             stiffness: 400,
                             damping: 30
                         }}
-                        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md p-4"
+                        className="fixed inset-0 sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-60 w-full sm:max-w-md sm:p-4 overflow-y-auto"
                     >
-                        <div className="relative">
-                            {/* Animated gradient background glow */}
-                            <div className="absolute -inset-1 bg-linear-to-r from-teal-600 via-cyan-600 to-teal-600 rounded-3xl blur-xl opacity-50 animate-pulse" />
+                        <div className="relative min-h-full sm:min-h-0">
+                            {/* Animated gradient background glow - hidden on mobile for performance */}
+                            <div className="hidden sm:block absolute -inset-1 bg-linear-to-r from-teal-600 via-cyan-600 to-teal-600 rounded-3xl blur-xl opacity-50 animate-pulse" />
 
                             {/* Main Card */}
-                            <div className="relative bg-card backdrop-blur-xl rounded-2xl border border-border shadow-2xl overflow-hidden">
-                                {/* Decorative gradient orbs */}
-                                <div className="absolute -top-24 -right-24 w-48 h-48 bg-teal-500/20 rounded-full blur-3xl" />
-                                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl" />
+                            <div className="relative bg-card backdrop-blur-xl sm:rounded-2xl border-0 sm:border border-border shadow-2xl overflow-hidden min-h-screen sm:min-h-0">
+                                {/* Decorative gradient orbs - smaller on mobile */}
+                                <div className="absolute -top-16 -right-16 sm:-top-24 sm:-right-24 w-32 h-32 sm:w-48 sm:h-48 bg-teal-500/20 rounded-full blur-3xl" />
+                                <div className="absolute -bottom-16 -left-16 sm:-bottom-24 sm:-left-24 w-32 h-32 sm:w-48 sm:h-48 bg-cyan-500/20 rounded-full blur-3xl" />
 
-                                {/* Close button */}
+                                {/* Mobile Header with Back Button */}
+                                <div className="sm:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3 bg-card/95 backdrop-blur-sm border-b border-border">
+                                    <button
+                                        onClick={onClose}
+                                        className="p-2 -ml-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-300"
+                                    >
+                                        <ArrowLeft className="w-5 h-5" />
+                                    </button>
+                                    <span className="text-sm font-medium text-foreground">
+                                        {isSignUp ? 'Create Account' : 'Sign In'}
+                                    </span>
+                                </div>
+
+                                {/* Close button - hidden on mobile, shown on desktop */}
                                 <button
                                     onClick={onClose}
-                                    className="absolute right-4 top-4 z-10 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-300 group"
+                                    className="hidden sm:block absolute right-4 top-4 z-10 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-300 group"
                                 >
                                     <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                                 </button>
 
-                                <div className="relative p-8">
+                                <div className="relative p-5 sm:p-8">
                                     {/* Header */}
-                                    <div className="text-center mb-8">
+                                    <div className="text-center mb-5 sm:mb-8">
                                         <motion.div
                                             initial={{ scale: 0, rotate: -180 }}
                                             animate={{ scale: 1, rotate: 0 }}
@@ -359,21 +372,21 @@ export default function LoginModal({ isOpen, onClose }) {
                                                 damping: 25,
                                                 delay: 0.1
                                             }}
-                                            className="mx-auto w-16 h-16 rounded-2xl overflow-hidden mb-5 shadow-lg shadow-teal-500/25"
+                                            className="mx-auto w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-5 shadow-lg shadow-teal-500/25"
                                         >
                                             <Image
                                                 src="/logo2.png"
                                                 alt="PARKINGTICKET Logo"
                                                 width={70}
                                                 height={70}
-                                                className="rounded-4xl"
+                                                className="rounded-xl sm:rounded-4xl w-full h-full object-cover"
                                             />
                                         </motion.div>
                                         <motion.h2
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.2 }}
-                                            className="text-2xl font-bold text-foreground mb-2"
+                                            className="text-lg sm:text-2xl font-bold text-foreground mb-1 sm:mb-2"
                                         >
                                             Welcome to PARKINGTICKET
                                         </motion.h2>
@@ -381,7 +394,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.3 }}
-                                            className="text-muted-foreground text-sm"
+                                            className="text-muted-foreground text-xs sm:text-sm"
                                         >
                                             {isSignUp
                                                 ? 'Create your account to get started'
@@ -390,7 +403,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                     </div>
 
                                     {/* Tab Switcher */}
-                                    <div className="flex border-b border-border mb-6">
+                                    <div className="flex border-b border-border mb-4 sm:mb-6">
                                         <TabButton
                                             active={!isSignUp}
                                             onClick={() => {
@@ -414,7 +427,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                     </div>
 
                                     {/* Form */}
-                                    <form onSubmit={handleAuth} className="space-y-5">
+                                    <form onSubmit={handleAuth} className="space-y-3 sm:space-y-5">
                                         <AnimatePresence mode="wait">
                                             {isSignUp && (
                                                 <motion.div
@@ -503,10 +516,10 @@ export default function LoginModal({ isOpen, onClose }) {
                                                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                                    className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3"
+                                                    className="p-3 sm:p-4 bg-red-500/10 border border-red-500/20 rounded-lg sm:rounded-xl flex items-start gap-2 sm:gap-3"
                                                 >
-                                                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                                                    <p className="text-red-500 text-sm">{error}</p>
+                                                    <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 shrink-0 mt-0.5" />
+                                                    <p className="text-red-500 text-xs sm:text-sm">{error}</p>
                                                 </motion.div>
                                             )}
                                             {success && (
@@ -514,10 +527,10 @@ export default function LoginModal({ isOpen, onClose }) {
                                                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                                    className="p-4 bg-teal-500/10 border border-teal-500/20 rounded-xl flex items-start gap-3"
+                                                    className="p-3 sm:p-4 bg-teal-500/10 border border-teal-500/20 rounded-lg sm:rounded-xl flex items-start gap-2 sm:gap-3"
                                                 >
-                                                    <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
-                                                    <p className="text-teal-500 text-sm">{success}</p>
+                                                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-teal-500 shrink-0 mt-0.5" />
+                                                    <p className="text-teal-500 text-xs sm:text-sm">{success}</p>
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
@@ -527,7 +540,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                             <div className="text-right">
                                                 <button
                                                     type="button"
-                                                    className="text-sm text-teal-500 hover:text-teal-400 transition-colors"
+                                                    className="text-xs sm:text-sm text-teal-500 hover:text-teal-400 transition-colors"
                                                 >
                                                     Forgot password?
                                                 </button>
@@ -538,36 +551,36 @@ export default function LoginModal({ isOpen, onClose }) {
                                         <Button
                                             type="submit"
                                             disabled={loading}
-                                            className="w-full py-4 bg-linear-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 text-white font-medium rounded-xl shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 group"
+                                            className="w-full py-3 sm:py-4 bg-linear-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 text-white font-medium rounded-lg sm:rounded-xl shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 group text-sm sm:text-base"
                                         >
                                             {loading ? (
                                                 <span className="flex items-center justify-center gap-2">
-                                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                                                     {isSignUp ? 'Creating Account...' : 'Signing In...'}
                                                 </span>
                                             ) : (
                                                 <span className="flex items-center justify-center gap-2">
                                                     {isSignUp ? 'Create Account' : 'Sign In'}
-                                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                                                 </span>
                                             )}
                                         </Button>
                                     </form>
 
                                     {/* Divider */}
-                                    <div className="relative my-6">
+                                    <div className="relative my-4 sm:my-6">
                                         <div className="absolute inset-0 flex items-center">
                                             <div className="w-full border-t border-border" />
                                         </div>
-                                        <div className="relative flex justify-center text-sm">
-                                            <span className="bg-card px-4 text-muted-foreground">
+                                        <div className="relative flex justify-center text-xs sm:text-sm">
+                                            <span className="bg-card px-3 sm:px-4 text-muted-foreground">
                                                 or continue with
                                             </span>
                                         </div>
                                     </div>
 
                                     {/* Social Login */}
-                                    <div className="flex gap-3">
+                                    <div className="flex gap-2 sm:gap-3">
                                         <SocialButton
                                             icon={({ className }) => (
                                                 <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -598,7 +611,7 @@ export default function LoginModal({ isOpen, onClose }) {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ delay: 0.5 }}
-                                        className="text-center text-xs text-muted-foreground mt-6 flex items-center justify-center gap-1"
+                                        className="text-center text-[10px] sm:text-xs text-muted-foreground mt-4 sm:mt-6 flex items-center justify-center gap-1"
                                     >
                                         <Sparkles className="w-3 h-3" />
                                         Secure login powered by Supabase

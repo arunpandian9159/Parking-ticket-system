@@ -91,7 +91,7 @@ function TestimonialCard({ quote, author, role, company, avatar }) {
 }
 
 // Pricing Card Component
-function PricingCard({ title, price, description, features, popular = false, ctaText = "Get Started" }) {
+function PricingCard({ title, price, description, features, popular = false, ctaText = "Get Started", onGetStarted }) {
     return (
         <SpotlightCard
             className={`p-4 sm:p-8 relative ${popular ? 'border-teal-500/50 ring-1 ring-teal-500/20' : ''}`}
@@ -120,7 +120,8 @@ function PricingCard({ title, price, description, features, popular = false, cta
                     ))}
                 </ul>
                 <Button
-                    className={`w-full py-2 sm:py-3 text-sm sm:text-base transition-all duration-300 hover:scale-[1.02] ${popular
+                    onClick={onGetStarted}
+                    className={`w-full py-2 sm:py-3 text-sm sm:text-base transition-all duration-300 hover:scale-[1.02] cursor-pointer ${popular
                         ? 'bg-linear-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500'
                         : 'bg-secondary hover:bg-secondary/80 border border-border'
                         }`}
@@ -534,7 +535,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-8 max-w-5xl mx-auto">
                         {pricingPlans.map((plan, index) => (
                             <FadeIn key={index} delay={index * 0.1}>
-                                <PricingCard {...plan} />
+                                <PricingCard {...plan} onGetStarted={() => setIsLoginOpen(true)} />
                             </FadeIn>
                         ))}
                     </div>

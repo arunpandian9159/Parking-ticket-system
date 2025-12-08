@@ -97,37 +97,37 @@ function RoleCard({ href, icon: Icon, title, description, color, features }) {
                 className={`h-full transition-all duration-300 ${styles.border} ${styles.shadow} hover:shadow-xl cursor-pointer`}
                 spotlightColor={styles.spotlight}
             >
-                <div className="p-8 flex flex-col h-full relative z-10">
+                <div className="p-4 sm:p-6 lg:p-8 flex flex-col h-full relative z-10">
                     {/* Icon with animated gradient background */}
-                    <div className="relative mb-6">
+                    <div className="relative mb-4 sm:mb-6">
                         <div className={`absolute inset-0 bg-linear-to-br ${styles.gradient} rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500`} />
-                        <div className={`relative w-20 h-20 ${styles.bg} ${styles.bgHover} rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110`}>
-                            <Icon className={`w-10 h-10 ${styles.text}`} />
+                        <div className={`relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 ${styles.bg} ${styles.bgHover} rounded-xl sm:rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110`}>
+                            <Icon className={`w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10 ${styles.text}`} />
                         </div>
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-2xl font-bold text-foreground mb-3">{title}</h2>
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">{title}</h2>
 
                     {/* Description */}
-                    <p className="text-muted-foreground mb-6 flex-1 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 flex-1 leading-relaxed">
                         {description}
                     </p>
 
                     {/* Features list */}
-                    <ul className="space-y-2 mb-6">
+                    <ul className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
                         {features.map((feature, index) => (
-                            <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <div className={`w-1.5 h-1.5 rounded-full bg-linear-to-r ${styles.gradient}`} />
+                            <li key={index} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                                <div className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-linear-to-r ${styles.gradient}`} />
                                 {feature}
                             </li>
                         ))}
                     </ul>
 
                     {/* CTA */}
-                    <div className={`${styles.text} font-semibold flex items-center gap-2 group-hover:gap-3 transition-all duration-300`}>
+                    <div className={`${styles.text} font-semibold text-sm sm:text-base flex items-center gap-2 group-hover:gap-3 transition-all duration-300`}>
                         Enter {title.split(' ')[0]}
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                     </div>
                 </div>
             </SpotlightCard>
@@ -152,12 +152,12 @@ function QuickStatCard({ icon: Icon, label, value, suffix = '', trend, trendUp =
     }
 
     return (
-        <div className={`bg-linear-to-br ${colorClasses[color]} border rounded-xl p-5 hover:scale-[1.02] transition-transform duration-300`}>
-            <div className="flex items-center justify-between mb-3">
-                <span className="text-muted-foreground text-sm font-medium">{label}</span>
-                <Icon className={`w-5 h-5 ${iconColors[color]}`} />
+        <div className={`bg-linear-to-br ${colorClasses[color]} border rounded-xl p-3 sm:p-4 lg:p-5 hover:scale-[1.02] transition-transform duration-300`}>
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <span className="text-muted-foreground text-xs sm:text-sm font-medium">{label}</span>
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${iconColors[color]}`} />
             </div>
-            <p className="text-2xl font-bold text-foreground mb-1">
+            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-0.5 sm:mb-1">
                 <AnimatedCounter end={value} suffix={suffix} duration={1500} />
             </p>
             {trend && (
@@ -186,15 +186,15 @@ function ActivityItem({ icon: Icon, title, time, color }) {
     }
 
     return (
-        <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/50 transition-colors group cursor-pointer">
-            <div className={`w-10 h-10 rounded-xl ${bgColors[color]} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                <Icon className={`w-5 h-5 ${textColors[color]}`} />
+        <div className="flex items-center gap-3 sm:gap-4 p-2 sm:p-3 rounded-lg hover:bg-secondary/50 transition-colors group cursor-pointer">
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${bgColors[color]} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${textColors[color]}`} />
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">{title}</p>
-                <p className="text-xs text-muted-foreground">{time}</p>
+                <p className="text-xs sm:text-sm font-medium text-foreground truncate">{title}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">{time}</p>
             </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+            <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
     )
 }
@@ -208,12 +208,12 @@ function QuickAction({ icon: Icon, label, href, color = 'teal' }) {
 
     return (
         <Link href={href}>
-            <button className={`w-full flex items-center gap-3 p-4 rounded-xl border border-border bg-card/50 text-muted-foreground ${colorClasses[color]} transition-all duration-300 group`}>
-                <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Icon className="w-5 h-5" />
+            <button className={`w-full flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl border border-border bg-card/50 text-muted-foreground ${colorClasses[color]} transition-all duration-300 group`}>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-secondary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <span className="font-medium text-sm">{label}</span>
-                <ArrowRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="font-medium text-xs sm:text-sm">{label}</span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
         </Link>
     )
@@ -374,14 +374,14 @@ export default function ChoiceDashboard() {
                     </FadeIn>
 
                     {/* Sidebar */}
-                    <FadeIn delay={0.3} className="space-y-6">
+                    <FadeIn delay={0.3} className="space-y-4 sm:space-y-6">
                         {/* Quick Actions */}
-                        <Card className="p-6">
-                            <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                                <Zap className="w-5 h-5 text-teal-500" />
+                        <Card className="p-4 sm:p-6">
+                            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4 flex items-center gap-2">
+                                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-teal-500" />
                                 Quick Actions
                             </h3>
-                            <div className="space-y-3">
+                            <div className="space-y-2 sm:space-y-3">
                                 <QuickAction icon={Ticket} label="Issue New Ticket" href="/officer" color="teal" />
                                 <QuickAction icon={BarChart3} label="View Analytics" href="/admin/analytics" color="cyan" />
                                 <QuickAction icon={Users} label="Manage Passes" href="/passes" color="teal" />
@@ -389,40 +389,40 @@ export default function ChoiceDashboard() {
                         </Card>
 
                         {/* Recent Activity */}
-                        <Card className="p-6">
-                            <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                                <Activity className="w-5 h-5 text-cyan-500" />
+                        <Card className="p-4 sm:p-6">
+                            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4 flex items-center gap-2">
+                                <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-500" />
                                 Recent Activity
                             </h3>
-                            <div className="space-y-1">
+                            <div className="space-y-0.5 sm:space-y-1">
                                 {recentActivity.map((item, index) => (
                                     <ActivityItem key={index} {...item} />
                                 ))}
                             </div>
-                            <button className="w-full mt-4 text-sm text-teal-500 hover:text-teal-400 font-medium flex items-center justify-center gap-1 transition-colors">
+                            <button className="w-full mt-3 sm:mt-4 text-xs sm:text-sm text-teal-500 hover:text-teal-400 font-medium flex items-center justify-center gap-1 transition-colors">
                                 View all activity
-                                <ChevronRight className="w-4 h-4" />
+                                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </button>
                         </Card>
 
                         {/* System Status */}
-                        <Card className="p-6 bg-linear-to-br from-teal-500/5 to-cyan-500/5">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
-                                <span className="text-sm font-medium text-foreground">System Status</span>
+                        <Card className="p-4 sm:p-6 bg-linear-to-br from-teal-500/5 to-cyan-500/5">
+                            <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="text-xs sm:text-sm font-medium text-foreground">System Status</span>
                             </div>
-                            <p className="text-xs text-muted-foreground mb-2">All systems operational</p>
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <p className="text-[10px] sm:text-xs text-muted-foreground mb-2">All systems operational</p>
+                            <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs text-muted-foreground">
                                 <span className="flex items-center gap-1">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500" />
                                     API
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500" />
                                     Database
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500" />
                                     Payments
                                 </span>
                             </div>
