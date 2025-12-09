@@ -5,8 +5,54 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
-import { Plus, Search, MapPin, Ticket, Clock, CheckCircle, AlertCircle, Filter, Eye, Calendar, Car, X, Printer, Trash2, Edit2, CreditCard, Phone, User, AlertTriangle } from 'lucide-react'
+import { Plus, Search, MapPin, Ticket, Clock, CheckCircle, AlertCircle, Filter, Eye, Calendar, Car, X, Printer, Trash2, Edit2, CreditCard, Phone, User, AlertTriangle, Hourglass } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
+
+// Helper function to determine dynamic ticket status based on time
+const getTicketStatus = (ticket) => {
+    if (ticket.status === 'Paid') return 'Paid'
+
+    const entryTime = new Date(ticket.created_at)
+    const currentTime = new Date()
+    const diffMs = currentTime - entryTime
+    const diffHours = diffMs / (1000 * 60 * 60)
+    const allowedHours = Number(ticket.hours)
+
+    // If time exceeded, mark as Pending
+    if (diffHours > allowedHours) {
+        return 'Pending'
+    }
+
+    return 'Active'
+}
+
+// Helper to get status styling
+const getStatusStyles = (status) => {
+    switch (status) {
+        case 'Paid':
+            return {
+                bg: 'bg-green-500/10',
+                text: 'text-green-500',
+                border: 'border-green-500/20',
+                icon: CheckCircle
+            }
+        case 'Pending':
+            return {
+                bg: 'bg-red-500/10',
+                text: 'text-red-500',
+                border: 'border-red-500/20',
+                icon: Hourglass
+            }
+        case 'Active':
+        default:
+            return {
+                bg: 'bg-amber-500/10',
+                text: 'text-amber-500',
+                border: 'border-amber-500/20',
+                icon: Clock
+            }
+    }
+}
 
 // Ticket View Modal Component
 function TicketModal({ ticket, isOpen, onClose, onMarkPaid, onDelete }) {
@@ -73,15 +119,20 @@ function TicketModal({ ticket, isOpen, onClose, onMarkPaid, onDelete }) {
                             </div>
                         </div>
 
-                        <div className={`
-                            inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium
-                            ${ticket.status === 'Paid'
-                                ? 'bg-green-500/10 text-green-500 border border-green-500/20'
-                                : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'}
-                        `}>
-                            {ticket.status === 'Paid' ? <CheckCircle className="w-4 h-4 mr-2" /> : <Clock className="w-4 h-4 mr-2" />}
-                            {ticket.status}
-                        </div>
+                        {(() => {
+                            const dynamicStatus = getTicketStatus(ticket)
+                            const styles = getStatusStyles(dynamicStatus)
+                            const StatusIcon = styles.icon
+                            return (
+                                <div className={`
+                                    inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium
+                                    ${styles.bg} ${styles.text} border ${styles.border}
+                                `}>
+                                    <StatusIcon className="w-4 h-4 mr-2" />
+                                    {dynamicStatus}
+                                </div>
+                            )
+                        })()}
                     </div>
                 </div>
 
@@ -376,18 +427,28 @@ export default function OfficerTicketsPage() {
         }
     }
 
-    const filteredTickets = tickets.filter(t => {
+    const filteredTickets = tickets.map(t => ({
+        ...t,
+        dynamicStatus: getTicketStatus(t)
+    })).filter(t => {
         const matchesSearch = t.license_plate.toLowerCase().includes(search.toLowerCase()) ||
             t.customer_name.toLowerCase().includes(search.toLowerCase())
-        const matchesStatus = statusFilter === 'all' || t.status.toLowerCase() === statusFilter.toLowerCase()
+        const matchesStatus = statusFilter === 'all' || t.dynamicStatus.toLowerCase() === statusFilter.toLowerCase()
         return matchesSearch && matchesStatus
     })
 
-    // Calculate stats
+    // Calculate dynamic status for all tickets
+    const ticketsWithStatus = tickets.map(t => ({
+        ...t,
+        dynamicStatus: getTicketStatus(t)
+    }))
+
+    // Calculate stats with dynamic status
     const stats = {
         total: tickets.length,
-        pending: tickets.filter(t => t.status === 'Pending' || t.status === 'Active').length,
-        paid: tickets.filter(t => t.status === 'Paid').length,
+        active: ticketsWithStatus.filter(t => t.dynamicStatus === 'Active').length,
+        pending: ticketsWithStatus.filter(t => t.dynamicStatus === 'Pending').length,
+        paid: ticketsWithStatus.filter(t => t.dynamicStatus === 'Paid').length,
         todayRevenue: tickets
             .filter(t => {
                 const today = new Date().toDateString()
@@ -398,7 +459,8 @@ export default function OfficerTicketsPage() {
 
     const statusTabs = [
         { id: 'all', label: 'All Tickets', count: stats.total, icon: Ticket },
-        { id: 'active', label: 'Active', count: stats.pending, icon: Clock },
+        { id: 'active', label: 'Active', count: stats.active, icon: Clock },
+        { id: 'pending', label: 'Pending', count: stats.pending, icon: Hourglass },
         { id: 'paid', label: 'Paid', count: stats.paid, icon: CheckCircle },
     ]
 
@@ -447,7 +509,7 @@ export default function OfficerTicketsPage() {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
                 {/* Total Tickets */}
                 <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-teal-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/5">
                     <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -463,7 +525,7 @@ export default function OfficerTicketsPage() {
                     </div>
                 </div>
 
-                {/* Pending */}
+                {/* Active */}
                 <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-amber-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5">
                     <div className="absolute inset-0 bg-linear-to-br from-amber-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="relative">
@@ -473,8 +535,23 @@ export default function OfficerTicketsPage() {
                             </div>
                             <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Active</span>
                         </div>
-                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.pending}</div>
-                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Awaiting Payment</div>
+                        <div className="text-xl sm:text-3xl font-bold text-foreground">{stats.active}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Time Remaining</div>
+                    </div>
+                </div>
+
+                {/* Pending (Overdue) */}
+                <div className="group relative bg-card rounded-xl sm:rounded-2xl border border-border p-3 sm:p-6 hover:border-red-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/5">
+                    <div className="absolute inset-0 bg-linear-to-br from-red-500/5 to-transparent rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="relative">
+                        <div className="flex items-center justify-between mb-2 sm:mb-4">
+                            <div className="p-1.5 sm:p-2 bg-red-500/10 rounded-lg sm:rounded-xl">
+                                <Hourglass className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+                            </div>
+                            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">Pending</span>
+                        </div>
+                        <div className="text-xl sm:text-3xl font-bold text-red-500">{stats.pending}</div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">Time Exceeded</div>
                     </div>
                 </div>
 
@@ -632,17 +709,16 @@ export default function OfficerTicketsPage() {
                                                 <div className="text-sm font-medium text-foreground">{ticket.customer_name}</div>
                                             </td>
                                             <td className="px-6 py-5">
-                                                <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${ticket.status === 'Paid'
-                                                    ? 'bg-green-500/10 text-green-500 border border-green-500/20'
-                                                    : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
-                                                    }`}>
-                                                    {ticket.status === 'Paid' ? (
-                                                        <CheckCircle className="w-3 h-3" />
-                                                    ) : (
-                                                        <Clock className="w-3 h-3" />
-                                                    )}
-                                                    {ticket.status}
-                                                </span>
+                                                {(() => {
+                                                    const styles = getStatusStyles(ticket.dynamicStatus)
+                                                    const StatusIcon = styles.icon
+                                                    return (
+                                                        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${styles.bg} ${styles.text} border ${styles.border}`}>
+                                                            <StatusIcon className="w-3 h-3" />
+                                                            {ticket.dynamicStatus}
+                                                        </span>
+                                                    )
+                                                })()}
                                             </td>
                                             <td className="px-6 py-5 text-right">
                                                 <div className="font-bold text-lg text-foreground">₹{ticket.price}</div>
@@ -709,13 +785,16 @@ export default function OfficerTicketsPage() {
                                             <div className="text-[10px] text-muted-foreground">{ticket.vehicle_name || ticket.vehicle_type}</div>
                                         </div>
                                     </div>
-                                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${ticket.status === 'Paid'
-                                        ? 'bg-green-500/10 text-green-500 border border-green-500/20'
-                                        : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
-                                        }`}>
-                                        {ticket.status === 'Paid' ? <CheckCircle className="w-2.5 h-2.5" /> : <Clock className="w-2.5 h-2.5" />}
-                                        {ticket.status}
-                                    </span>
+                                    {(() => {
+                                        const styles = getStatusStyles(ticket.dynamicStatus)
+                                        const StatusIcon = styles.icon
+                                        return (
+                                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${styles.bg} ${styles.text} border ${styles.border}`}>
+                                                <StatusIcon className="w-2.5 h-2.5" />
+                                                {ticket.dynamicStatus}
+                                            </span>
+                                        )
+                                    })()}
                                 </div>
 
                                 {/* Details Grid */}
