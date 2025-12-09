@@ -7,11 +7,13 @@ import { FadeIn, SpotlightCard } from '@/components/ui/ReactBits'
 import {
     UserCog, Shield, ArrowRight, Car, CreditCard,
     Activity, ChevronRight, Sparkles, Zap, Calendar,
-    Users, BarChart3, Ticket, ParkingCircle, Bell, Settings
+    Users, BarChart3, Ticket, ParkingCircle, Bell, Settings,
+    X, Moon, Sun, User, Mail, LogOut, Check, Smartphone
 } from 'lucide-react'
 import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { useTheme } from '@/lib/ThemeContext'
 
 // Animated Counter Component
 function AnimatedCounter({ end, duration = 2000, suffix = '', prefix = '' }) {
@@ -219,11 +221,192 @@ function QuickAction({ icon: Icon, label, href, color = 'teal' }) {
     )
 }
 
+// Settings Modal Component
+function SettingsModal({ isOpen, onClose, user }) {
+    const router = useRouter()
+    const { theme, toggleTheme } = useTheme()
+    const [activeTab, setActiveTab] = useState('general')
+    const [notifications, setNotifications] = useState({
+        email: true,
+        push: true,
+        summary: false
+    })
+
+    if (!isOpen) return null
+
+    const tabs = [
+        { id: 'general', label: 'General', icon: Settings },
+        { id: 'notifications', label: 'Notifications', icon: Bell },
+        { id: 'account', label: 'Account', icon: User },
+    ]
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-200">
+            <div className="w-full max-w-2xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+                {/* Header */}
+                <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border bg-secondary/30">
+                    <h2 className="text-xl font-bold flex items-center gap-2">
+                        <Settings className="w-5 h-5 text-teal-500" />
+                        Settings
+                    </h2>
+                    <button
+                        onClick={onClose}
+                        className="p-2 rounded-full hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                <div className="flex flex-col sm:flex-row h-[500px] sm:h-[400px]">
+                    {/* Sidebar */}
+                    <div className="w-full sm:w-48 border-b sm:border-b-0 sm:border-r border-border bg-secondary/10 p-2 sm:p-4 gap-1 flex sm:flex-col overflow-x-auto sm:overflow-visible">
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap
+                                    ${activeTab === tab.id
+                                        ? 'bg-teal-500/10 text-teal-500 shadow-xs'
+                                        : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+                                    }`}
+                            >
+                                <tab.icon className="w-4 h-4" />
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
+                        {activeTab === 'general' && (
+                            <div className="space-y-6">
+                                <div>
+                                    <h3 className="text-lg font-semibold mb-4">Appearance</h3>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            onClick={() => theme === 'light' && toggleTheme()}
+                                            className={`p-4 rounded-xl border-2 transition-all duration-200 flex flex-col items-center gap-3
+                                                ${theme === 'dark'
+                                                    ? 'border-teal-500 bg-teal-500/5'
+                                                    : 'border-border hover:border-border/80'
+                                                }`}
+                                        >
+                                            <div className="w-full aspect-video rounded-lg bg-[#0f172a] border border-slate-700/50 relative overflow-hidden group">
+                                                <div className="absolute inset-0 bg-linear-to-br from-teal-500/10 to-transparent opacity-50" />
+                                                <div className="absolute top-2 left-2 w-16 h-4 bg-slate-800 rounded-md" />
+                                                <div className="absolute top-8 left-2 right-2 bottom-2 bg-slate-900/50 rounded-md" />
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Moon className={`w-4 h-4 ${theme === 'dark' ? 'text-teal-500' : 'text-muted-foreground'}`} />
+                                                <span className={`text-sm font-medium ${theme === 'dark' && 'text-teal-500'}`}>Dark Mode</span>
+                                            </div>
+                                        </button>
+
+                                        <button
+                                            onClick={() => theme === 'dark' && toggleTheme()}
+                                            className={`p-4 rounded-xl border-2 transition-all duration-200 flex flex-col items-center gap-3
+                                                ${theme === 'light'
+                                                    ? 'border-teal-500 bg-teal-500/5'
+                                                    : 'border-border hover:border-border/80'
+                                                }`}
+                                        >
+                                            <div className="w-full aspect-video rounded-lg bg-white border border-slate-200 relative overflow-hidden group">
+                                                <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 to-transparent opacity-50" />
+                                                <div className="absolute top-2 left-2 w-16 h-4 bg-slate-100 rounded-md" />
+                                                <div className="absolute top-8 left-2 right-2 bottom-2 bg-slate-50 rounded-md" />
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Sun className={`w-4 h-4 ${theme === 'light' ? 'text-teal-500' : 'text-muted-foreground'}`} />
+                                                <span className={`text-sm font-medium ${theme === 'light' && 'text-teal-500'}`}>Light Mode</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'notifications' && (
+                            <div className="space-y-6">
+                                <h3 className="text-lg font-semibold mb-4">Notification Preferences</h3>
+                                <div className="space-y-4">
+                                    {[
+                                        { id: 'email', label: 'Email Notifications', desc: 'Receive updates via email', icon: Mail },
+                                        { id: 'push', label: 'Push Notifications', desc: 'Receive notifications on your device', icon: Smartphone },
+                                        { id: 'summary', label: 'Weekly Summary', desc: 'Get a weekly report of your activity', icon: Calendar }
+                                    ].map((item) => (
+                                        <div key={item.id} className="flex items-center justify-between p-4 rounded-xl border border-border bg-card">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground">
+                                                    <item.icon className="w-5 h-5" />
+                                                </div>
+                                                <div>
+                                                    <p className="font-medium text-sm sm:text-base">{item.label}</p>
+                                                    <p className="text-xs text-muted-foreground">{item.desc}</p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={() => setNotifications(prev => ({ ...prev, [item.id]: !prev[item.id] }))}
+                                                className={`w-12 h-6 rounded-full transition-colors duration-200 relative ${notifications[item.id] ? 'bg-teal-500' : 'bg-secondary'}`}
+                                            >
+                                                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform duration-200 shadow-sm ${notifications[item.id] ? 'left-7' : 'left-1'}`} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'account' && (
+                            <div className="space-y-6">
+                                <h3 className="text-lg font-semibold mb-4">Account Information</h3>
+                                <div className="p-4 rounded-xl border border-border bg-card space-y-4">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-16 h-16 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-500 text-2xl font-bold">
+                                            {user?.email?.[0].toUpperCase()}
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold text-lg">{user?.user_metadata?.full_name || 'User'}</p>
+                                            <p className="text-muted-foreground text-sm">{user?.email}</p>
+                                            <div className="mt-2 inline-flex items-center px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-medium border border-emerald-500/20">
+                                                <Check className="w-3 h-3 mr-1" />
+                                                Active Account
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pt-4 border-t border-border">
+                                        <button
+                                            onClick={async () => {
+                                                await supabase.auth.signOut()
+                                                router.push('/')
+                                            }}
+                                            className="text-red-500 hover:text-red-400 text-sm font-medium flex items-center gap-2 transition-colors"
+                                        >
+                                            <LogOut className="w-4 h-4" />
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                {/* Footer */}
+                <div className="p-4 border-t border-border bg-secondary/30 flex justify-end">
+                    <Button onClick={onClose} className="bg-teal-500 hover:bg-teal-600">
+                        Done
+                    </Button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export default function ChoiceDashboard() {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
     const [currentTime, setCurrentTime] = useState(new Date())
+    const [showSettings, setShowSettings] = useState(false)
 
     useEffect(() => {
         const checkUser = async () => {
@@ -282,6 +465,7 @@ export default function ChoiceDashboard() {
 
     return (
         <div className="min-h-screen bg-background pb-8 sm:pb-12 overflow-x-hidden">
+            <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} user={user} />
             {/* Background decoration */}
             <div className="fixed inset-0 -z-10 overflow-hidden">
                 <div className="absolute top-0 right-0 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] rounded-full bg-teal-500/5 blur-[120px]" />
@@ -317,6 +501,7 @@ export default function ChoiceDashboard() {
                             </Button>
                             <Button
                                 variant="outline"
+                                onClick={() => setShowSettings(true)}
                                 className="p-2 sm:px-4 sm:py-2 border-border hover:border-cyan-500/30 hover:bg-cyan-500/10 text-sm"
                             >
                                 <Settings className="w-4 h-4 sm:mr-2" />
