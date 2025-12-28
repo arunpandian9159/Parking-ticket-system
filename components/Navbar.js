@@ -205,7 +205,7 @@ export default function Navbar({ onLoginClick }) {
                     <Link href="/dashboard" className="flex items-center gap-3">
                         <Image
                             src="/logo2.png"
-                            alt="PARKINGTICKET Logo"
+                            alt="PARKINGTICKET Logo" 
                             width={40}
                             height={40}
                             className="rounded-lg"
