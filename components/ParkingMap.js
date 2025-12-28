@@ -53,7 +53,7 @@ export default function ParkingMap({ onSelectSlot, selectedSlot, vehicleType }) 
                             const isSelected = selectedSlot === slot.slot_number
                             const isCompatible = vehicleType ? (slot.vehicle_type_allowed === 'Any' || slot.vehicle_type_allowed === vehicleType) : true
 
-                            return (
+                            return ( 
                                 <button
                                     key={slot.id}
                                     type="button"
