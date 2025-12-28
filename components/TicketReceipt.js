@@ -15,7 +15,7 @@ export default function TicketReceipt({ ticket }) {
                     <span className="text-gray-600">Ticket ID:</span>
                     <span className="font-bold">{ticket.id.slice(0, 8)}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between"> 
                     <span className="text-gray-600">Spot:</span>
                     <span className="font-bold text-lg">{ticket.parking_spot}</span>
                 </div>
