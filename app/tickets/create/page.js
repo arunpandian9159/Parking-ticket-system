@@ -12,7 +12,7 @@ import ParkingMap from '@/components/ParkingMap'
 
 export default function CreateTicketPage() {
     const router = useRouter()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false) 
     const [rates, setRates] = useState([])
     const [passHolder, setPassHolder] = useState(null)
 
