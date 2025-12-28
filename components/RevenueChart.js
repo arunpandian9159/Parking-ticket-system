@@ -13,7 +13,7 @@ export default function RevenueChart({ data }) {
                 No data available
             </div>
         )
-    }
+    } 
 
     return (
         <div className="h-80 w-full">
