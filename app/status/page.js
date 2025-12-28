@@ -117,7 +117,7 @@ export default function StatusPage() {
                                 <span className="text-muted-foreground">Duration</span>
                                 <span className="text-foreground">{((new Date() - new Date(ticket.created_at)) / (1000 * 60 * 60)).toFixed(1)} hrs</span>
                             </div>
-
+ 
                             {ticket.is_pass_holder && (
                                 <div className="bg-teal-500/10 text-teal-500 p-2 rounded text-center font-medium text-xs border border-teal-500/20">
                                     <CheckCircle className="w-3 h-3 inline mr-1" /> Monthly Pass Active
