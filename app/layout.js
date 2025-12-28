@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
     title: "Parking Ticket System",
     description: "Officer Dashboard for Parking Management",
-};
+}; 
 
 export default function RootLayout({ children }) {
     return (
