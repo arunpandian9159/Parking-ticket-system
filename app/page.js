@@ -526,7 +526,7 @@ export default function LandingPage() {
                             Pricing
                         </span>
                         <h2 className="text-xl sm:text-3xl lg:text-5xl font-bold tracking-tight text-foreground mb-2 sm:mb-6">
-                            Plans that scale with your business
+                            Plans that scale with your business 
                         </h2>
                         <p className="text-sm sm:text-lg text-muted-foreground">
                             Choose the perfect plan for your parking facility. All plans include a 14-day free trial.
