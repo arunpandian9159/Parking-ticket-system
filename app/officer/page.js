@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
 import { Plus, Search, MapPin, Ticket, Clock, CheckCircle, AlertCircle, Filter, Eye, Calendar, Car, X, Printer, Trash2, Edit2, CreditCard, Phone, User, AlertTriangle, Hourglass } from 'lucide-react'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/Input' 
 
 // Helper function to determine dynamic ticket status based on time
 const getTicketStatus = (ticket) => {
