@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { FadeIn, SpotlightCard } from '@/components/ui/ReactBits'
-import {
+import { 
     UserCog, Shield, ArrowRight, Car, CreditCard,
     Activity, ChevronRight, Sparkles, Zap, Calendar,
     Users, BarChart3, Ticket, ParkingCircle, Bell, Settings,
