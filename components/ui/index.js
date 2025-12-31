@@ -6,9 +6,5 @@
 export { Button } from './Button'
 export { Card } from './Card'
 export { Input } from './Input'
-export {
-    FadeIn,
-    GradientText,
-    SpotlightCard,
-    AnimatedBackground
-} from './ReactBits'
+export { Avatar, AvatarWithStatus, UserInfo } from './Avatar'
+export { FadeIn, GradientText, SpotlightCard, AnimatedBackground } from './ReactBits'
