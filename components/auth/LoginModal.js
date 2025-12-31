@@ -324,17 +324,17 @@ export default function LoginModal({ isOpen, onClose }) {
     setLoading(true)
     setError(null)
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback?next=/dashboard`
+      // Store the intended destination in sessionStorage
+      sessionStorage.setItem('authRedirectTo', '/dashboard')
+
+      const redirectUrl = `${window.location.origin}/auth/callback`
       console.log('Google OAuth redirect URL:', redirectUrl)
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: redirectUrl,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
+          skipBrowserRedirect: false,
         },
       })
       if (error) throw error

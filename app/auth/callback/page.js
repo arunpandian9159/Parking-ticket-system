@@ -12,17 +12,17 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        // Get the next URL from query params
-        const next = searchParams.get('next') || '/dashboard'
+        // Get the next URL from sessionStorage or query params or default
+        const next =
+          sessionStorage.getItem('authRedirectTo') || searchParams.get('next') || '/dashboard'
+
+        // Clear the stored redirect
+        sessionStorage.removeItem('authRedirectTo')
 
         console.log('Auth callback page loaded')
         console.log('Current URL:', window.location.href)
+        console.log('Hash present:', !!window.location.hash)
         console.log('Next destination:', next)
-
-        // Check if there's a hash (implicit flow)
-        if (window.location.hash) {
-          console.log('Hash detected, Supabase will handle automatically')
-        }
 
         // Check for error in URL
         const error = searchParams.get('error')
@@ -35,17 +35,32 @@ export default function AuthCallbackPage() {
           return
         }
 
-        // Wait a moment for Supabase to process the session
-        // Supabase client library automatically handles the hash fragment
-        await new Promise(resolve => setTimeout(resolve, 500))
+        // Supabase client automatically detects and processes the OAuth response
+        // from both hash fragments (#access_token=...) and query params (?code=...)
+        // We need to give it a moment to do so
 
-        // Check if we now have a session
+        // Listen for auth state change
+        const {
+          data: { subscription },
+        } = supabase.auth.onAuthStateChange(async (event, session) => {
+          console.log('Auth state changed:', event, session?.user?.email)
+
+          if (event === 'SIGNED_IN' && session) {
+            setStatus('Authentication successful! Redirecting...')
+            // Small delay to ensure cookies are set
+            setTimeout(() => {
+              router.push(next)
+            }, 500)
+          }
+        })
+
+        // Also check for existing session (in case auth already happened)
         const {
           data: { session },
           error: sessionError,
         } = await supabase.auth.getSession()
 
-        console.log('Session check:', {
+        console.log('Initial session check:', {
           hasSession: !!session,
           userEmail: session?.user?.email,
           error: sessionError?.message,
@@ -53,31 +68,18 @@ export default function AuthCallbackPage() {
 
         if (session) {
           setStatus('Authentication successful! Redirecting...')
-          console.log('Session found, redirecting to:', next)
+          subscription.unsubscribe()
           router.push(next)
-        } else {
-          // Try to exchange code if present in URL
-          const code = searchParams.get('code')
-          if (code) {
-            console.log('Code found in URL, exchanging for session...')
-            const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
-
-            if (exchangeError) {
-              console.error('Code exchange error:', exchangeError)
-              setStatus('Authentication failed. Redirecting...')
-              setTimeout(() => router.push('/'), 2000)
-              return
-            }
-
-            // Session should now be set
-            setStatus('Authentication successful! Redirecting...')
-            router.push(next)
-          } else {
-            console.log('No session and no code found')
-            setStatus('No authentication session found. Redirecting...')
-            setTimeout(() => router.push('/'), 2000)
-          }
+          return
         }
+
+        // If no session after 5 seconds, redirect to home
+        setTimeout(() => {
+          console.log('Auth timeout - no session detected')
+          subscription.unsubscribe()
+          setStatus('Authentication timed out. Redirecting...')
+          router.push('/')
+        }, 5000)
       } catch (err) {
         console.error('Callback error:', err)
         setStatus('An error occurred. Redirecting...')

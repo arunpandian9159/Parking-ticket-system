@@ -27,38 +27,9 @@ export async function middleware(request) {
     }
   )
 
-  // Skip auth check for auth callback route
-  if (request.nextUrl.pathname.startsWith('/auth/callback')) {
-    return supabaseResponse
-  }
-
-  // Get user session
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser()
-
-  // Debug logging
-  const isProtectedPath = ['/dashboard', '/admin', '/officer'].some(path =>
-    request.nextUrl.pathname.startsWith(path)
-  )
-
-  if (isProtectedPath) {
-    console.log('Middleware check:', {
-      path: request.nextUrl.pathname,
-      hasUser: !!user,
-      userId: user?.id?.slice(0, 8),
-      error: error?.message,
-      cookies: request.cookies.getAll().map(c => c.name),
-    })
-  }
-
-  // Redirect to home if not authenticated and trying to access protected route
-  if (isProtectedPath && !user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    return NextResponse.redirect(url)
-  }
+  // Refresh session if it exists (this helps keep the session alive)
+  // But don't block routes - let client-side pages handle auth
+  await supabase.auth.getUser()
 
   return supabaseResponse
 }
@@ -71,7 +42,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
+     * - auth/callback (OAuth callback)
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|auth/callback|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
