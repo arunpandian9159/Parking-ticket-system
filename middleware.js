@@ -32,17 +32,29 @@ export async function middleware(request) {
     return supabaseResponse
   }
 
-  // Refresh session if expired
+  // Get user session
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser()
 
-  // Protected routes that require authentication
-  const protectedPaths = ['/dashboard', '/admin', '/officer']
-  const isProtectedRoute = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
+  // Debug logging
+  const isProtectedPath = ['/dashboard', '/admin', '/officer'].some(path =>
+    request.nextUrl.pathname.startsWith(path)
+  )
+
+  if (isProtectedPath) {
+    console.log('Middleware check:', {
+      path: request.nextUrl.pathname,
+      hasUser: !!user,
+      userId: user?.id?.slice(0, 8),
+      error: error?.message,
+      cookies: request.cookies.getAll().map(c => c.name),
+    })
+  }
 
   // Redirect to home if not authenticated and trying to access protected route
-  if (isProtectedRoute && !user) {
+  if (isProtectedPath && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/'
     return NextResponse.redirect(url)
