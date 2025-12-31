@@ -27,22 +27,25 @@ export async function middleware(request) {
     }
   )
 
+  // Skip auth check for auth callback route
+  if (request.nextUrl.pathname.startsWith('/auth/callback')) {
+    return supabaseResponse
+  }
+
   // Refresh session if expired
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protect dashboard routes - redirect to home if not authenticated
-  if (
-    request.nextUrl.pathname.startsWith('/dashboard') ||
-    request.nextUrl.pathname.startsWith('/admin') ||
-    request.nextUrl.pathname.startsWith('/officer')
-  ) {
-    if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/'
-      return NextResponse.redirect(url)
-    }
+  // Protected routes that require authentication
+  const protectedPaths = ['/dashboard', '/admin', '/officer']
+  const isProtectedRoute = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
+
+  // Redirect to home if not authenticated and trying to access protected route
+  if (isProtectedRoute && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
   }
 
   return supabaseResponse
