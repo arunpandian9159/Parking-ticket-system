@@ -7,6 +7,8 @@ export async function GET(request) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/dashboard'
 
+  console.log('Auth callback received:', { origin, code: code ? 'present' : 'missing', next })
+
   if (code) {
     const cookieStore = await cookies()
 
@@ -36,6 +38,7 @@ export async function GET(request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
+      console.log('Auth successful, redirecting to:', `${origin}${next}`)
       return NextResponse.redirect(`${origin}${next}`)
     }
 
@@ -43,5 +46,6 @@ export async function GET(request) {
   }
 
   // Return to home if there's an error
+  console.log('Auth failed, redirecting to home')
   return NextResponse.redirect(`${origin}/?error=auth_callback_error`)
 }
