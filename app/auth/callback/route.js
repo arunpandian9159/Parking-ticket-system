@@ -12,6 +12,9 @@ export async function GET(request) {
   if (code) {
     const cookieStore = await cookies()
 
+    // We need to collect cookies to set them on the response
+    const cookiesToSet = []
+
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -20,29 +23,38 @@ export async function GET(request) {
           getAll() {
             return cookieStore.getAll()
           },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // The `setAll` method was called from a Server Component.
-              // This can be ignored if you have middleware refreshing
-              // user sessions.
-            }
+          setAll(cookies) {
+            cookies.forEach(cookie => {
+              cookiesToSet.push(cookie)
+            })
           },
         },
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
-    if (!error) {
-      console.log('Auth successful, redirecting to:', `${origin}${next}`)
-      return NextResponse.redirect(`${origin}${next}`)
+    if (!error && data.session) {
+      console.log('Auth successful, user:', data.session.user.email)
+      console.log(
+        'Setting cookies:',
+        cookiesToSet.map(c => c.name)
+      )
+
+      // Create redirect response
+      const redirectUrl = `${origin}${next}`
+      const response = NextResponse.redirect(redirectUrl)
+
+      // Set all the auth cookies on the response
+      cookiesToSet.forEach(({ name, value, options }) => {
+        response.cookies.set(name, value, options)
+      })
+
+      console.log('Redirecting to:', redirectUrl)
+      return response
     }
 
-    console.error('Auth callback error:', error.message)
+    console.error('Auth callback error:', error?.message || 'No session returned')
   }
 
   // Return to home if there's an error
