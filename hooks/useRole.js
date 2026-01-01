@@ -9,7 +9,12 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from './useAuth'
 import { ROLES, PERMISSIONS, ROLE_PERMISSIONS, NAV_ITEMS, DEFAULT_ROLE } from '@/lib/roles'
-import { hasPermission, filterNavByRole, isAdmin, isAtLeastManager } from '@/lib/rbac'
+import {
+  hasPermission,
+  filterNavByRole,
+  isAdmin as checkIsAdmin,
+  isAtLeastManager,
+} from '@/lib/rbac'
 
 /**
  * Hook to get user role and permissions
@@ -28,27 +33,33 @@ export function useRole() {
       }
 
       try {
+        console.log('Fetching role for user:', user.id)
+
         // Fetch user role from user_roles table with roles join
         const { data, error } = await supabase
           .from('user_roles')
           .select(
             `
-                        role_id,
-                        roles (
-                            id,
-                            name,
-                            permissions
-                        )
-                    `
+            role_id,
+            roles (
+              id,
+              name,
+              permissions
+            )
+          `
           )
           .eq('user_id', user.id)
-          .single()
+          .maybeSingle() // Use maybeSingle instead of single to avoid error when no row found
 
-        if (error && error.code !== 'PGRST116') {
+        console.log('Role fetch result:', { data, error })
+
+        if (error) {
           console.error('Error fetching role:', error)
+          // Still try to set default role
         }
 
         if (data?.roles) {
+          console.log('Role found:', data.roles.name)
           setRoleData({
             name: data.roles.name,
             id: data.roles.id,
@@ -56,6 +67,7 @@ export function useRole() {
               data.roles.permissions || ROLE_PERMISSIONS[data.roles.name]?.permissions || [],
           })
         } else {
+          console.log('No role found, defaulting to:', DEFAULT_ROLE)
           // Default to Officer role if no role assigned
           setRoleData({
             name: DEFAULT_ROLE,
@@ -64,7 +76,7 @@ export function useRole() {
           })
         }
       } catch (error) {
-        console.error('Error fetching role:', error)
+        console.error('Error in fetchRole:', error)
         // Default fallback
         setRoleData({
           name: DEFAULT_ROLE,
@@ -98,7 +110,7 @@ export function useRole() {
 
   // Role checks
   const isAdminUser = roleData?.name === ROLES.ADMIN
-  const isManagerUser = isAtLeastManager(roleData?.name)
+  const isManagerUser = roleData?.name === ROLES.MANAGER || roleData?.name === ROLES.ADMIN
   const isOfficerUser = !!roleData?.name
 
   return {
@@ -136,7 +148,7 @@ export function useRoleAssignment() {
           .from('user_roles')
           .select('*')
           .eq('user_id', userId)
-          .single()
+          .maybeSingle()
 
         if (existing) {
           // Update existing role

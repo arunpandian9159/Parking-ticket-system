@@ -4,6 +4,48 @@ import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
+// Helper function to ensure new users have a role assigned
+async function ensureUserRole(userId) {
+  try {
+    // Check if user already has a role
+    const { data: existingRole } = await supabase
+      .from('user_roles')
+      .select('id')
+      .eq('user_id', userId)
+      .single()
+
+    if (existingRole) {
+      console.log('User already has a role assigned')
+      return
+    }
+
+    // Get the Officer role ID (default for new users)
+    const { data: officerRole } = await supabase
+      .from('roles')
+      .select('id')
+      .eq('name', 'Officer')
+      .single()
+
+    if (!officerRole) {
+      console.log('Officer role not found - run supabase_schema_updates.sql')
+      return
+    }
+
+    // Assign Officer role to new user
+    const { error } = await supabase
+      .from('user_roles')
+      .insert([{ user_id: userId, role_id: officerRole.id }])
+
+    if (error) {
+      console.error('Error assigning role:', error)
+    } else {
+      console.log('Default Officer role assigned to new user')
+    }
+  } catch (err) {
+    console.error('Error in ensureUserRole:', err)
+  }
+}
+
 export default function AuthCallbackPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -46,7 +88,12 @@ export default function AuthCallbackPage() {
           console.log('Auth state changed:', event, session?.user?.email)
 
           if (event === 'SIGNED_IN' && session) {
-            setStatus('Authentication successful! Redirecting...')
+            setStatus('Authentication successful! Setting up account...')
+
+            // Ensure user has a role assigned
+            await ensureUserRole(session.user.id)
+
+            setStatus('Redirecting to dashboard...')
             // Small delay to ensure cookies are set
             setTimeout(() => {
               router.push(next)
