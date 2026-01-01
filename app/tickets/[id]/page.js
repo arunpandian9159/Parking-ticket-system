@@ -7,201 +7,218 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { ArrowLeft, Printer, CheckCircle, Clock, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
-import TicketReceipt from '@/components/TicketReceipt'
+import TicketReceipt from '@/components/ticket/TicketReceipt'
 
 export default function TicketDetailsPage() {
-    const params = useParams()
-    const router = useRouter()
-    const [ticket, setTicket] = useState(null)
-    const [loading, setLoading] = useState(true)
+  const params = useParams()
+  const router = useRouter()
+  const [ticket, setTicket] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-    const [fine, setFine] = useState(0)
-    const [overdueHours, setOverdueHours] = useState(0)
+  const [fine, setFine] = useState(0)
+  const [overdueHours, setOverdueHours] = useState(0)
 
-    useEffect(() => {
-        fetchTicket()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params.id])
+  useEffect(() => {
+    fetchTicket()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id])
 
-    useEffect(() => {
-        if (ticket && ticket.status === 'Active') {
-            const entryTime = new Date(ticket.created_at)
-            const exitTime = new Date()
-            const diffMs = exitTime - entryTime
-            const diffHours = diffMs / (1000 * 60 * 60)
+  useEffect(() => {
+    if (ticket && ticket.status === 'Active') {
+      const entryTime = new Date(ticket.created_at)
+      const exitTime = new Date()
+      const diffMs = exitTime - entryTime
+      const diffHours = diffMs / (1000 * 60 * 60)
 
-            const allowedHours = Number(ticket.hours)
-            if (diffHours > allowedHours) {
-                const extra = diffHours - allowedHours
-                setOverdueHours(extra.toFixed(1))
-                // Fine policy: ₹50 penalty + ₹20 for every extra hour
-                const calculatedFine = 50 + (Math.ceil(extra) * 20)
-                setFine(calculatedFine)
-            }
-        }
-    }, [ticket])
-
-    const fetchTicket = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('tickets')
-                .select('*')
-                .eq('id', params.id)
-                .single()
-
-            if (error) throw error
-            setTicket(data)
-        } catch (error) {
-            console.error('Error fetching ticket:', error)
-            router.push('/officer')
-        } finally {
-            setLoading(false)
-        }
+      const allowedHours = Number(ticket.hours)
+      if (diffHours > allowedHours) {
+        const extra = diffHours - allowedHours
+        setOverdueHours(extra.toFixed(1))
+        // Fine policy: ₹50 penalty + ₹20 for every extra hour
+        const calculatedFine = 50 + Math.ceil(extra) * 20
+        setFine(calculatedFine)
+      }
     }
+  }, [ticket])
 
-    const handlePrint = () => {
-        window.print()
+  const fetchTicket = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('tickets')
+        .select('*')
+        .eq('id', params.id)
+        .single()
+
+      if (error) throw error
+      setTicket(data)
+    } catch (error) {
+      console.error('Error fetching ticket:', error)
+      router.push('/officer')
+    } finally {
+      setLoading(false)
     }
+  }
 
-    const handleMarkPaid = async () => {
-        const confirmMsg = fine > 0
-            ? `Ticket is OVERDUE by ${overdueHours} hrs.\nTotal Fine: ₹${fine}.\n\nMark as PAID (Total: ₹${ticket.price + fine})?`
-            : 'Mark this ticket as PAID?'
+  const handlePrint = () => {
+    window.print()
+  }
 
-        if (!confirm(confirmMsg)) return
+  const handleMarkPaid = async () => {
+    const confirmMsg =
+      fine > 0
+        ? `Ticket is OVERDUE by ${overdueHours} hrs.\nTotal Fine: ₹${fine}.\n\nMark as PAID (Total: ₹${
+            ticket.price + fine
+          })?`
+        : 'Mark this ticket as PAID?'
 
-        try {
-            const { error } = await supabase
-                .from('tickets')
-                .update({
-                    status: 'Paid',
-                    actual_exit_time: new Date().toISOString(),
-                    fine_amount: fine
-                })
-                .eq('id', ticket.id)
+    if (!confirm(confirmMsg)) return
 
-            if (error) throw error
+    try {
+      const { error } = await supabase
+        .from('tickets')
+        .update({
+          status: 'Paid',
+          actual_exit_time: new Date().toISOString(),
+          fine_amount: fine,
+        })
+        .eq('id', ticket.id)
 
-            // Free up the slot
-            await supabase
-                .from('parking_slots')
-                .update({ is_occupied: false })
-                .eq('slot_number', ticket.parking_spot)
+      if (error) throw error
 
-            alert('Ticket marked as Paid!')
-            router.push('/officer')
-        } catch (error) {
-            alert('Error updating ticket: ' + error.message)
-        }
+      // Free up the slot
+      await supabase
+        .from('parking_slots')
+        .update({ is_occupied: false })
+        .eq('slot_number', ticket.parking_spot)
+
+      alert('Ticket marked as Paid!')
+      router.push('/officer')
+    } catch (error) {
+      alert('Error updating ticket: ' + error.message)
     }
+  }
 
-    if (loading) return <div className="p-8 text-center text-muted-foreground">Loading ticket...</div>
-    if (!ticket) return null
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading ticket...</div>
+  if (!ticket) return null
 
-    return (
-        <div className="max-w-2xl mx-auto space-y-6">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4"> 
-                    <Link href="/officer">
-                        <Button variant="ghost" className="p-2">
-                            <ArrowLeft className="w-5 h-5" />
-                        </Button>
-                    </Link>
-                    <div>
-                        <h1 className="text-2xl font-bold text-foreground">Ticket Details</h1>
-                        <p className="text-sm text-muted-foreground">ID: {ticket.id}</p>
-                    </div>
-                </div>
-                <div className="flex gap-2">
-                    <Button variant="outline" onClick={handlePrint}>
-                        <Printer className="w-4 h-4 mr-2" />
-                        Print
-                    </Button>
-                    {ticket.status !== 'Paid' && (
-                        <Button onClick={handleMarkPaid} className="bg-teal-600 hover:bg-teal-700 text-white">
-                            <CheckCircle className="w-4 h-4 mr-2" />
-                            Mark Paid
-                        </Button>
-                    )}
-                </div>
-            </div>
-
-            <Card className="p-8 space-y-8">
-                {/* Status Badge */}
-                <div className="flex justify-between items-start">
-                    <div className={`
-                        inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                        ${ticket.status === 'Paid' ? 'bg-teal-500/10 text-teal-500 border border-teal-500/20' : 'bg-cyan-500/10 text-cyan-500 border border-cyan-500/20'}
-                    `}>
-                        {ticket.status === 'Paid' ? <CheckCircle className="w-4 h-4 mr-2" /> : <Clock className="w-4 h-4 mr-2" />}
-                        {ticket.status}
-                    </div>
-                    <div className="text-right">
-                        <div className="text-3xl font-bold text-foreground">₹{ticket.price}</div>
-                        <div className="text-sm text-muted-foreground">{ticket.hours} hours</div>
-                    </div>
-                </div>
-
-                {/* Fine/Overdue Alert */}
-                {fine > 0 && ticket.status === 'Active' && (
-                    <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3">
-                        <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
-                        <div>
-                            <h4 className="font-bold text-red-500">Ticket Overdue!</h4>
-                            <p className="text-sm text-red-500/80">
-                                Vehicle exceeded time by <strong>{overdueHours} hours</strong>.
-                                <br />
-                                Additional Fine: <strong>₹{fine}</strong>
-                            </p>
-                        </div>
-                    </div>
-                )}
-
-                <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                        <h3 className="font-semibold text-foreground border-b border-border pb-2">Vehicle</h3>
-                        <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Plate:</span>
-                                <span className="font-mono font-bold text-foreground">{ticket.license_plate}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Type:</span>
-                                <span className="text-foreground">{ticket.vehicle_type || 'N/A'}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Details:</span>
-                                <span className="text-foreground">{ticket.vehicle_name} - {ticket.vehicle_color}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-4">
-                        <h3 className="font-semibold text-foreground border-b border-border pb-2">Parking</h3>
-                        <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Spot:</span>
-                                <span className="font-bold text-foreground">{ticket.parking_spot}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Entry:</span>
-                                <span className="text-foreground">{new Date(ticket.created_at).toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Customer:</span>
-                                <span className="text-foreground">{ticket.customer_name}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Phone:</span>
-                                <span className="text-foreground">{ticket.customer_phone}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Card>
-
-            {/* Hidden Receipt Component */}
-            <TicketReceipt ticket={ticket} />
+  return (
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link href="/officer">
+            <Button variant="ghost" className="p-2">
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Ticket Details</h1>
+            <p className="text-sm text-muted-foreground">ID: {ticket.id}</p>
+          </div>
         </div>
-    )
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handlePrint}>
+            <Printer className="w-4 h-4 mr-2" />
+            Print
+          </Button>
+          {ticket.status !== 'Paid' && (
+            <Button onClick={handleMarkPaid} className="bg-teal-600 hover:bg-teal-700 text-white">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Mark Paid
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <Card className="p-8 space-y-8">
+        {/* Status Badge */}
+        <div className="flex justify-between items-start">
+          <div
+            className={`
+                        inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                        ${
+                          ticket.status === 'Paid'
+                            ? 'bg-teal-500/10 text-teal-500 border border-teal-500/20'
+                            : 'bg-cyan-500/10 text-cyan-500 border border-cyan-500/20'
+                        }
+                    `}
+          >
+            {ticket.status === 'Paid' ? (
+              <CheckCircle className="w-4 h-4 mr-2" />
+            ) : (
+              <Clock className="w-4 h-4 mr-2" />
+            )}
+            {ticket.status}
+          </div>
+          <div className="text-right">
+            <div className="text-3xl font-bold text-foreground">₹{ticket.price}</div>
+            <div className="text-sm text-muted-foreground">{ticket.hours} hours</div>
+          </div>
+        </div>
+
+        {/* Fine/Overdue Alert */}
+        {fine > 0 && ticket.status === 'Active' && (
+          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
+            <div>
+              <h4 className="font-bold text-red-500">Ticket Overdue!</h4>
+              <p className="text-sm text-red-500/80">
+                Vehicle exceeded time by <strong>{overdueHours} hours</strong>.
+                <br />
+                Additional Fine: <strong>₹{fine}</strong>
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground border-b border-border pb-2">Vehicle</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Plate:</span>
+                <span className="font-mono font-bold text-foreground">{ticket.license_plate}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Type:</span>
+                <span className="text-foreground">{ticket.vehicle_type || 'N/A'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Details:</span>
+                <span className="text-foreground">
+                  {ticket.vehicle_name} - {ticket.vehicle_color}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground border-b border-border pb-2">Parking</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Spot:</span>
+                <span className="font-bold text-foreground">{ticket.parking_spot}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Entry:</span>
+                <span className="text-foreground">
+                  {new Date(ticket.created_at).toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Customer:</span>
+                <span className="text-foreground">{ticket.customer_name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Phone:</span>
+                <span className="text-foreground">{ticket.customer_phone}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Hidden Receipt Component */}
+      <TicketReceipt ticket={ticket} />
+    </div>
+  )
 }

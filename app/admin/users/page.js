@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
 import { useRole, useRoleAssignment } from '@/hooks/useRole'
-import { RequireAdmin, AccessDenied } from '@/components/RoleGuard'
+import { RequireAdmin, AccessDenied } from '@/components/common/RoleGuard'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -227,7 +227,7 @@ export default function UsersPage() {
                   className="p-4 flex items-center justify-between hover:bg-secondary/50 transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center text-white font-bold">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-teal-500 to-cyan-500 flex items-center justify-center text-white font-bold">
                       {userRole.user_id?.slice(0, 2).toUpperCase()}
                     </div>
                     <div>

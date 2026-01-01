@@ -1,7 +1,7 @@
 'use client'
 
-import { Providers } from '@/components/Providers'
-import Navbar from '@/components/Navbar'
+import { Providers } from './Providers'
+import Navbar from './Navbar'
 
 export default function ClientLayout({ children }) {
   return (

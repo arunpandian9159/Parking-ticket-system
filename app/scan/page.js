@@ -8,7 +8,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { QRScanner } from '@/components/QRScanner'
+import { QRScanner } from '@/components/ticket/QRScanner'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { toast } from 'sonner'

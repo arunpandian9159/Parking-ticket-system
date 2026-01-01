@@ -1,7 +1,7 @@
 'use client'
 
 import { QRCodeSVG } from 'qrcode.react'
-import { getTicketQRUrl } from '@/components/QRCodeGenerator'
+import { getTicketQRUrl } from './QRCodeGenerator'
 
 export default function TicketReceipt({ ticket }) {
   if (!ticket) return null

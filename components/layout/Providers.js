@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from '@/lib/ThemeContext'
 import { Toaster } from '@/components/ui/Toast'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { ErrorBoundary } from '@/components/common/ErrorBoundary'
 
 export function Providers({ children }) {
   const [queryClient] = useState(
