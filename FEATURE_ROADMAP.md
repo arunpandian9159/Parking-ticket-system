@@ -162,8 +162,7 @@ Features to add:
 Features to add:
 ├── Admin role (full access)
 ├── Manager role (analytics + rates)
-├── Officer role (tickets only)
-├── Cashier role (payments only)
+├── Officer role (tickets and payments)
 ├── Audit logs for all actions
 ├── Role-based navigation
 └── User management panel
