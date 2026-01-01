@@ -21,7 +21,14 @@ export function Avatar({ src, alt = 'User avatar', initials = 'U', size = 'md', 
   if (src) {
     return (
       <div className={`${baseClasses} relative`}>
-        <Image src={src} alt={alt} fill className="object-cover" referrerPolicy="no-referrer" />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="80px"
+          className="object-cover"
+          referrerPolicy="no-referrer"
+        />
       </div>
     )
   }
