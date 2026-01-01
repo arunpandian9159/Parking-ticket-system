@@ -29,7 +29,10 @@ import {
   ShieldCheck,
   Sparkles,
 } from 'lucide-react'
-import { calculateLoyaltyPoints, getLoyaltyTier, LOYALTY_TIERS } from '@/services/vehicleService'
+import { calculatePoints, getTierFromPoints, LOYALTY_TIERS } from '@/services/vehicleService'
+
+// Convert LOYALTY_TIERS object to array for mapping
+const TIERS_ARRAY = Object.entries(LOYALTY_TIERS).map(([name, data]) => ({ name, ...data }))
 
 export default function VehiclesPage() {
   const { user, loading: authLoading } = useAuth({ requireAuth: true, redirectTo: '/' })
@@ -77,9 +80,10 @@ export default function VehiclesPage() {
 
       // Calculate loyalty points and tiers
       const vehicleList = Object.values(vehicles).map(v => {
-        const points = calculateLoyaltyPoints(v.total_spent)
-        const tier = getLoyaltyTier(points)
-        return { ...v, points, tier }
+        const points = calculatePoints(v.total_spent)
+        const tierName = getTierFromPoints(points)
+        const tier = LOYALTY_TIERS[tierName] || LOYALTY_TIERS.Regular
+        return { ...v, points, tier: { name: tierName, ...tier } }
       })
 
       setSearchResults(vehicleList)
@@ -108,14 +112,15 @@ export default function VehiclesPage() {
 
       // Calculate stats
       const totalSpent = data.reduce((sum, t) => sum + (t.price || 0), 0)
-      const points = calculateLoyaltyPoints(totalSpent)
-      const tier = getLoyaltyTier(points)
+      const points = calculatePoints(totalSpent)
+      const tierName = getTierFromPoints(points)
+      const tier = LOYALTY_TIERS[tierName] || LOYALTY_TIERS.Regular
 
       setStats({
         totalVisits: data.length,
         totalSpent,
         points,
-        tier,
+        tier: { name: tierName, ...tier },
         avgSpend: data.length > 0 ? Math.round(totalSpent / data.length) : 0,
         firstVisit: data.length > 0 ? data[data.length - 1].created_at : null,
         lastVisit: data.length > 0 ? data[0].created_at : null,
@@ -142,7 +147,7 @@ export default function VehiclesPage() {
   }
 
   const getTierStyle = tierName => {
-    const tier = LOYALTY_TIERS.find(t => t.name === tierName) || LOYALTY_TIERS[0]
+    const tier = LOYALTY_TIERS[tierName] || LOYALTY_TIERS.Regular
     return {
       bg: `${tier.color}/10`,
       text: tier.color,
@@ -198,7 +203,7 @@ export default function VehiclesPage() {
 
       {/* Loyalty Tiers Info */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {LOYALTY_TIERS.map(tier => {
+        {TIERS_ARRAY.map(tier => {
           const Icon = getTierIcon(tier.name)
           return (
             <div
