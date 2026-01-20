@@ -9,7 +9,7 @@ import { Plus, Search, MapPin, Ticket, Clock, CheckCircle, AlertCircle, Filter, 
 import { Input } from '@/components/ui/Input' 
 
 // Helper function to determine dynamic ticket status based on time
-const getTicketStatus = (ticket) => {
+const getTicketStatus = (ticket) => { 
     if (ticket.status === 'Paid') return 'Paid'
 
     const entryTime = new Date(ticket.created_at)
