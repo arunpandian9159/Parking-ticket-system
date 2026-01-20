@@ -13,7 +13,7 @@ import {
   hasPermission,
   filterNavByRole,
   isAdmin as checkIsAdmin,
-  isAtLeastManager,
+  isAtLeastManager, 
 } from '@/lib/rbac'
 
 /**
