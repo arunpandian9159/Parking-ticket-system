@@ -9,7 +9,7 @@ async function ensureUserRole(userId) {
   try {
     // Check if user already has a role
     const { data: existingRole } = await supabase
-      .from('user_roles')
+      .from('user_roles') 
       .select('id')
       .eq('user_id', userId)
       .single()
