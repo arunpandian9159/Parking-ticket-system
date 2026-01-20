@@ -10,7 +10,7 @@ import { debounce } from '@/lib/utils'
 
 const RECENT_SEARCHES_KEY = 'parking_recent_searches'
 const MAX_RECENT_ITEMS = 5
-
+ 
 /**
  * Hook for debounced search with recent items
  */
