@@ -8,7 +8,7 @@ import { Trash2, Plus, Save } from 'lucide-react'
 
 export default function ParkingRates() {
     const [rates, setRates] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true) 
     const [newRate, setNewRate] = useState({ vehicle_type: '', hourly_rate: '' })
 
     useEffect(() => {
