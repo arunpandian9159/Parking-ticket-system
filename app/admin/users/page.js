@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase' 
 import { useAuth } from '@/hooks/useAuth'
 import { useRole, useRoleAssignment } from '@/hooks/useRole'
 import { RequireAdmin, AccessDenied } from '@/components/common/RoleGuard'
