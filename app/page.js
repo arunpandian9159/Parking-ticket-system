@@ -16,7 +16,7 @@ import {
   CheckCircle2,
   ArrowRight,
   Quote,
-  Smartphone,
+  Smartphone, 
   BadgeCheck,
   Timer,
   TrendingUp,
