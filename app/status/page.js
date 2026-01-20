@@ -15,7 +15,7 @@ export default function StatusPage() {
     const [liveBill, setLiveBill] = useState(0)
 
     const handleSearch = async (e) => {
-        e.preventDefault()
+        e.preventDefault() 
         setLoading(true)
         setError('')
         setTicket(null)
