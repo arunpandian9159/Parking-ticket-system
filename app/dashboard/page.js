@@ -10,7 +10,7 @@ import {
   Shield,
   ArrowRight,
   Car,
-  CreditCard,
+  CreditCard, 
   Activity,
   ChevronRight,
   Sparkles,
