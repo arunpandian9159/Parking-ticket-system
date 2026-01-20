@@ -12,7 +12,7 @@ import TicketReceipt from '@/components/ticket/TicketReceipt'
 export default function TicketDetailsPage() {
   const params = useParams()
   const router = useRouter()
-  const [ticket, setTicket] = useState(null)
+  const [ticket, setTicket] = useState(null) 
   const [loading, setLoading] = useState(true)
 
   const [fine, setFine] = useState(0)
