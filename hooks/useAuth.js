@@ -12,7 +12,7 @@ import { getProfile } from '@/lib/profile'
 
 /**
  * Hook to get current user and authentication status
- */
+ */ 
 export function useAuth(options = {}) {
   const { requireAuth = false, redirectTo = '/' } = options
   const [user, setUser] = useState(null)
