@@ -6,7 +6,7 @@ import RevenueChart from '@/components/common/RevenueChart'
 import { Card } from '@/components/ui/Card'
 import { ListFilter } from 'lucide-react'
 
-export default function AnalyticsPage() {
+export default function AnalyticsPage() { 
   const [chartData, setChartData] = useState([])
   const [loading, setLoading] = useState(true)
   const [totalRevenue, setTotalRevenue] = useState(0)
